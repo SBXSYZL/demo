@@ -49,7 +49,6 @@
       },
       handleClose (key, keyPath) {
         console.log(key, keyPath)
-        console.log(123)
       }
     }
   }

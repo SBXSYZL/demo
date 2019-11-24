@@ -5,7 +5,6 @@
 </template>
 
 <script>
-
   export default {
     name: 'test',
     data () {
@@ -18,7 +17,7 @@
       getTest () {
         this.$axios.get(this.URL_DEFINE_ROOT + 'user/', {}).then(res => {
           console.log(res)
-          this.test = res.data.data;
+          this.test = res.data.data
         })
       }
     },

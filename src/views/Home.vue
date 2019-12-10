@@ -1,64 +1,131 @@
 <template>
-  <div class="home">
-    <el-container>
-      <el-aside width="200px">
-        <Sidebar/>
-      </el-aside>
-      <el-container>
-        <el-header>
-          <Header/>
-        </el-header>
-        <el-main>
-          <router-view/>
-        </el-main>
-      </el-container>
-    </el-container>
+  <div class="wrapper">
+    <Header></Header>
+
+    <Sidebar></Sidebar>
+    <div class="content-box"
+         :class="{'content-collapse':collapse}">
+      <div class="content">
+        <transition name="move"
+                    mode="out-in">
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
+        </transition>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
   // @ is an alias to /src
-
+  import bus from '../assets/js/bus.js'
   import Sidebar from '../components/Sidebar'
   import Header from '../components/Header'
 
   export default {
     name: 'home',
-    components: { Header, Sidebar }
+    components: { Header, Sidebar },
+    data () {
+      return {
+        collapse: false,
+        role: '',
+        admin: sessionStorage.getItem('admin')
+      }
+    },
+    created () {
+      bus.$on('collapse', msg => {
+        this.collapse = msg
+      })
+    }
   }
 </script>
 <style>
-  .el-header, .el-footer {
-    background-color: #535b63;
-    color: #333;
+  .header {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 70px;
+    font-size: 22px;
+    color: #fff;
+  }
+
+  .collapse-btn {
+    float: left;
+    padding: 0 21px;
+    cursor: pointer;
+    line-height: 70px;
+  }
+
+  .header .logo {
+    float: left;
+    width: 250px;
+    line-height: 70px;
+  }
+
+  .header-right {
+    float: right;
+    padding-right: 50px;
+  }
+
+  .header-user-con {
+    display: flex;
+    height: 70px;
+    align-items: center;
+  }
+
+  .btn-fullscreen {
+    transform: rotate(45deg);
+    margin-right: 5px;
+    font-size: 24px;
+  }
+
+  .btn-bell,
+  .btn-fullscreen {
+    position: relative;
+    width: 30px;
+    height: 30px;
     text-align: center;
-    line-height: 60px;
+    border-radius: 15px;
+    cursor: pointer;
   }
 
-  .el-aside {
-    background-color: #535b63;
-    color: #333;
+  .btn-bell-badge {
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background: #f56c6c;
+    color: #fff;
+  }
+
+  .btn-bell .el-icon-bell {
+    color: #fff;
+  }
+
+  .user-name {
+    margin-left: 10px;
+  }
+
+  .user-avator {
+    margin-left: 20px;
+  }
+
+  .user-avator img {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  .el-dropdown-link {
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .el-dropdown-menu__item {
     text-align: center;
-    line-height: 200px;
-  }
-
-  .el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-    line-height: 160px;
-  }
-
-  body > .el-container {
-    margin-bottom: 40px;
-  }
-
-  .el-container:nth-child(5) .el-aside,
-  .el-container:nth-child(6) .el-aside {
-    line-height: 260px;
-  }
-
-  .el-container:nth-child(7) .el-aside {
-    line-height: 320px;
   }
 </style>

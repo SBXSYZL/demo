@@ -11,13 +11,23 @@ const routes = [
     component: Home,
     children: [
       {
-        path: '/test',
-        name: 'test',
-        component: resolve => require(['../views/test.vue'], resolve)
+        path: '/foodNews',
+        name: 'foodNews',
+        component: resolve => require(['../views/FoodNews.vue'], resolve)
+      },
+      {
+        path: '/recipe',
+        name: 'recipe',
+        component: resolve => require(['../views/Recipe.vue'], resolve)
+      },
+      {
+        path: '/foodIllustratedBook',
+        name: 'foodIllustratedBook',
+        component: resolve => require(['../views/FoodIllustratedBook.vue'], resolve)
       },
       {
         path: '/',
-        redirect: 'test'
+        redirect: 'foodNews'
       }
     ]
   },

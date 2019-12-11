@@ -1,20 +1,26 @@
 <template>
   <div>
-    <el-row>
-      <el-col :span="5" v-for="(o, index) in 100" :key="o" :offset="1">
-        <el-card :body-style="{ padding: '0px' ,margin:'10px'}">
-          <img :src="img" class="image">
-          <div style="padding: 14px;">
-            <span>{{title}}</span>
-            <div class="bottom clearfix">
-              {{summary}}
+    <div class="container">
+      <h3>食品资讯</h3>
+    </div>
+    <div class="container">
+      <el-row>
+        <el-col :span="5" v-for="item in items" :key="item.id" :offset="1">
+          <el-card :body-style="{ padding: '0px' ,margin:'10px'}">
+            <img :src="item.img" class="image card-img">
+            <div style="padding: 14px;">
+              <span>{{item.title}}</span>
+              <div class="bottom clearfix">
+                {{item.summary}}
+                <el-button type="text" class="button" @click="itemClick(item.id)">了解详情</el-button>
+              </div>
             </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -22,9 +28,117 @@
     name: 'FoodNews',
     data () {
       return {
-        img: 'https://images.chinatimes.com/newsphoto/2018-03-01/900/20180301004735.jpg',
-        title: '某条食品资讯',
-        summary: '该咨询的摘要'
+        items: [
+          {
+            id: 1,
+            img: 'http://5b0988e595225.cdn.sohucs.com/images/20190116/bc7e628e4cfc4da7994e8c1cd7d4e77a.jpeg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+          {
+            id: 2,
+            img: 'https://storage.googleapis.com/www-cw-com-tw/article/201809/article-5b8ccde368b1a.jpg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+
+          },
+          {
+            id: 3,
+            img: 'https://tw.bring-you.info/imgs/2018/11/mukshidonna-4-900x600.jpg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+          {
+            id: 4,
+            img: 'http://img6.16fan.com/attachments/wenzhang/20172/15/148713753043200ge.jpeg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+
+          {
+            id: 1,
+            img: 'http://5b0988e595225.cdn.sohucs.com/images/20190116/bc7e628e4cfc4da7994e8c1cd7d4e77a.jpeg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+          {
+            id: 2,
+            img: 'https://storage.googleapis.com/www-cw-com-tw/article/201809/article-5b8ccde368b1a.jpg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+
+          },
+          {
+            id: 3,
+            img: 'https://tw.bring-you.info/imgs/2018/11/mukshidonna-4-900x600.jpg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+          {
+            id: 4,
+            img: 'http://img6.16fan.com/attachments/wenzhang/20172/15/148713753043200ge.jpeg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+
+          {
+            id: 1,
+            img: 'http://5b0988e595225.cdn.sohucs.com/images/20190116/bc7e628e4cfc4da7994e8c1cd7d4e77a.jpeg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+          {
+            id: 2,
+            img: 'https://storage.googleapis.com/www-cw-com-tw/article/201809/article-5b8ccde368b1a.jpg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+
+          },
+          {
+            id: 3,
+            img: 'https://tw.bring-you.info/imgs/2018/11/mukshidonna-4-900x600.jpg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+          {
+            id: 4,
+            img: 'http://img6.16fan.com/attachments/wenzhang/20172/15/148713753043200ge.jpeg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+
+          {
+            id: 1,
+            img: 'http://5b0988e595225.cdn.sohucs.com/images/20190116/bc7e628e4cfc4da7994e8c1cd7d4e77a.jpeg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+          {
+            id: 2,
+            img: 'https://storage.googleapis.com/www-cw-com-tw/article/201809/article-5b8ccde368b1a.jpg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+
+          },
+          {
+            id: 3,
+            img: 'https://tw.bring-you.info/imgs/2018/11/mukshidonna-4-900x600.jpg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+          {
+            id: 4,
+            img: 'http://img6.16fan.com/attachments/wenzhang/20172/15/148713753043200ge.jpeg',
+            title: '某条食品资讯',
+            summary: '该咨询的摘要...'
+          },
+
+        ]
+      }
+    },
+    methods: {
+      itemClick (key) {
+        this.$router.push('/newsDetails')
       }
     }
   }
@@ -59,5 +173,10 @@
 
   .clearfix:after {
     clear: both
+  }
+
+  .card-img {
+    height: 250px;
+    width: 250px;
   }
 </style>

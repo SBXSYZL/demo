@@ -60,7 +60,7 @@
       handleCommand (command) {
         if (command === 'loginout') {
           sessionStorage.removeItem('account')
-          this.$router.push('/userlogin')
+          this.$router.push('/login')
         }
       },
       // 全屏事件
@@ -89,7 +89,8 @@
           }
         }
         this.fullscreen = !this.fullscreen
-      }
+      },
+
     },
     mounted () {
       if (document.body.clientWidth < 1500) {

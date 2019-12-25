@@ -47,7 +47,7 @@
           '</div>' +
           '</div>' +
           '<div style="text-align: right;width: 20%">' +
-          '<img style="height: 300px;width: 300px"' +
+          '<img style="height: 300px;width: 250px"' +
           'src="https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg"/>' +
           '</div>' +
           '</div>'

@@ -129,7 +129,7 @@
 
         ],
         activeName2: '肉禽蛋类',
-        currentPage4: 4
+        currentPage4: 1
       }
     },
     methods: {

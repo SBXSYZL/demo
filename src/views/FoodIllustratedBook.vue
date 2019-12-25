@@ -10,6 +10,11 @@
 
     </div>
     <div class="container">
+      <div style="margin-bottom: 15px;">
+        <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search"></el-button>
+        </el-input>
+      </div>
       <!--标签-->
       <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
         <el-tab-pane v-for="label in labels" :key="label.id" :label="label.label" :name="label.label"></el-tab-pane>
@@ -131,7 +136,8 @@
 
         ],
         activeName2: '肉禽蛋类',
-        currentPage4: 1
+        currentPage4: 1,
+        input5: ''
       }
     },
     methods: {
@@ -188,5 +194,11 @@
   .card-img {
     height: 250px;
     width: 250px;
+  }
+  .el-select .el-input {
+    width: 130px;
+  }
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
   }
 </style>

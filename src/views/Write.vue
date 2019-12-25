@@ -1,9 +1,9 @@
 <template>
   <div class="container">
+    <el-tag type="warning">编辑框支持伸缩哦</el-tag>
     <TinymceEditor ref="editor"
                    v-model="msg"
-                   :disabled="disabled"
-    >
+                   :disabled="disabled">
     </TinymceEditor>
     <div style="text-align: center;margin-top: 20px">
       <el-button @click="refresh">刷新</el-button>

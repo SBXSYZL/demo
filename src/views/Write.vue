@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-tag type="warning">编辑框支持伸缩哦</el-tag>
+    <el-tag type="warning">编辑框支持伸缩哦，出现问题请刷新再尝试！</el-tag>
     <TinymceEditor ref="editor"
                    v-model="msg"
                    :disabled="disabled">

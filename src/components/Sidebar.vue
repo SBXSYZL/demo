@@ -57,6 +57,11 @@
         collapse: false,
         items: [
           {
+            icon: 'el-icon-service',
+            index: 'forum',
+            title: '论坛'
+          },
+          {
             icon: 'el-icon-info',
             index: 'foodNews',
             title: '食品资讯'

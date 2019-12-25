@@ -33,6 +33,9 @@
         admin: sessionStorage.getItem('admin')
       }
     },
+    methods:{
+    },
+
     created () {
       bus.$on('collapse', msg => {
         this.collapse = msg

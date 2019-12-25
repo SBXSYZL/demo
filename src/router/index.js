@@ -28,6 +28,10 @@ const routes = [
         component: resolve => require(['../views/NewsDetails.vue'], resolve)
       },
       {
+        path: '/forum',
+        component: resolve => require(['../views/Forum.vue'], resolve)
+      },
+      {
         path: '/',
         redirect: '/foodNews'
       }

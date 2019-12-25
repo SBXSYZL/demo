@@ -29,110 +29,12 @@
     data () {
       return {
         items: [
-          {
-            id: 1,
-            img: 'http://5b0988e595225.cdn.sohucs.com/images/20190116/bc7e628e4cfc4da7994e8c1cd7d4e77a.jpeg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-          {
-            id: 2,
-            img: 'https://storage.googleapis.com/www-cw-com-tw/article/201809/article-5b8ccde368b1a.jpg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-
-          },
-          {
-            id: 3,
-            img: 'https://tw.bring-you.info/imgs/2018/11/mukshidonna-4-900x600.jpg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-          {
-            id: 4,
-            img: 'http://img6.16fan.com/attachments/wenzhang/20172/15/148713753043200ge.jpeg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-
-          {
-            id: 1,
-            img: 'http://5b0988e595225.cdn.sohucs.com/images/20190116/bc7e628e4cfc4da7994e8c1cd7d4e77a.jpeg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-          {
-            id: 2,
-            img: 'https://storage.googleapis.com/www-cw-com-tw/article/201809/article-5b8ccde368b1a.jpg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-
-          },
-          {
-            id: 3,
-            img: 'https://tw.bring-you.info/imgs/2018/11/mukshidonna-4-900x600.jpg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-          {
-            id: 4,
-            img: 'http://img6.16fan.com/attachments/wenzhang/20172/15/148713753043200ge.jpeg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-
-          {
-            id: 1,
-            img: 'http://5b0988e595225.cdn.sohucs.com/images/20190116/bc7e628e4cfc4da7994e8c1cd7d4e77a.jpeg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-          {
-            id: 2,
-            img: 'https://storage.googleapis.com/www-cw-com-tw/article/201809/article-5b8ccde368b1a.jpg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-
-          },
-          {
-            id: 3,
-            img: 'https://tw.bring-you.info/imgs/2018/11/mukshidonna-4-900x600.jpg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-          {
-            id: 4,
-            img: 'http://img6.16fan.com/attachments/wenzhang/20172/15/148713753043200ge.jpeg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-
-          {
-            id: 1,
-            img: 'http://5b0988e595225.cdn.sohucs.com/images/20190116/bc7e628e4cfc4da7994e8c1cd7d4e77a.jpeg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-          {
-            id: 2,
-            img: 'https://storage.googleapis.com/www-cw-com-tw/article/201809/article-5b8ccde368b1a.jpg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-
-          },
-          {
-            id: 3,
-            img: 'https://tw.bring-you.info/imgs/2018/11/mukshidonna-4-900x600.jpg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-          {
-            id: 4,
-            img: 'http://img6.16fan.com/attachments/wenzhang/20172/15/148713753043200ge.jpeg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
-          },
-
+          // {
+          //   id: 1,
+          //   img: 'http://5b0988e595225.cdn.sohucs.com/images/20190116/bc7e628e4cfc4da7994e8c1cd7d4e77a.jpeg',
+          //   title: '某条食品资讯',
+          //   summary: '该咨询的摘要...'
+          // },
         ]
       }
     },

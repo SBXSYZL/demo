@@ -27,8 +27,9 @@
                 <div style="padding: 14px;">
                   <span>{{item.title}}</span>
                   <div>
-                    {{item.summary}}
-                    <el-button style="margin-top: 5px" type="text" class="button" @click="itemClick(item.id)">了解详情
+                    <p class="line-limit-length">{{item.summary}}</p>
+
+                    <el-button type="text" class="button" @click="itemClick(item.id)">了解详情
                     </el-button>
                   </div>
                 </div>
@@ -195,10 +196,18 @@
     height: 250px;
     width: 250px;
   }
+
   .el-select .el-input {
     width: 130px;
   }
+
   .input-with-select .el-input-group__prepend {
     background-color: #fff;
+  }
+
+  .line-limit-length {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>

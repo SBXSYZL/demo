@@ -1,7 +1,13 @@
 <template>
   <div>
-    <div class="container">
-      <h3>食品图鉴</h3>
+    <div class="container" style="display: flex">
+      <div style="width: 90%">
+        <h3>食品图鉴</h3>
+      </div>
+      <div>
+        <el-button type="primary" icon="el-icon-edit" @click="writeIllustratedBook">添加图鉴</el-button>
+      </div>
+
     </div>
     <div class="container">
       <!--标签-->
@@ -17,7 +23,8 @@
                   <span>{{item.title}}</span>
                   <div>
                     {{item.summary}}
-                    <el-button style="margin-top: 5px" type="text" class="button" @click="itemClick(item.id)">了解详情</el-button>
+                    <el-button style="margin-top: 5px" type="text" class="button" @click="itemClick(item.id)">了解详情
+                    </el-button>
                   </div>
                 </div>
               </el-card>
@@ -118,11 +125,6 @@
           },
           {
             id: 19,
-            label: '调味品、油脂',
-            name: '调味品、油脂'
-          },
-          {
-            id: 20,
             label: '其他',
             name: '其他'
           }
@@ -144,6 +146,9 @@
       },
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
+      },
+      writeIllustratedBook () {
+        this.$router.push('/write')
       }
     }
   }

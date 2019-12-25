@@ -6,35 +6,36 @@
     <div class="container">
       <!--标签-->
       <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-          <el-tab-pane v-for="label in labels" :key="label.id" :label="label.label" :name="label.label"></el-tab-pane>
-          <div class="container">
-            <!--列表-->
-            <el-row>
-              <el-col :span="5" v-for="item in items" :key="item.id" :offset="1">
-                <el-card :body-style="{ padding: '0px' ,margin:'10px'}">
-                  <img :src="item.img" class="image card-img">
-                  <div style="padding: 14px;">
-                    <span>{{item.title}}</span>
-                    <div class="bottom clearfix">
-                      {{item.summary}}
-                      <el-button type="text" class="button" @click="itemClick(item.id)">了解详情</el-button>
-                    </div>
+        <el-tab-pane v-for="label in labels" :key="label.id" :label="label.label" :name="label.label"></el-tab-pane>
+        <div class="container">
+          <!--列表-->
+          <el-row>
+            <el-col :span="5" v-for="item in items" :key="item.id" :offset="1">
+              <el-card :body-style="{ padding: '0px' ,margin:'10px'}">
+                <img :src="item.img" class="image card-img">
+                <div style="padding: 14px;">
+                  <span>{{item.title}}</span>
+                  <div>
+                    {{item.summary}}
+                    <el-button style="margin-top: 5px" type="text" class="button" @click="itemClick(item.id)">了解详情</el-button>
                   </div>
-                </el-card>
-              </el-col>
-            </el-row>
-          </div>
-          <div class="block">
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage4"
-              :page-sizes="[100, 200, 300, 400]"
-              :page-size="100"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="400">
-            </el-pagination>
-          </div>
+                </div>
+              </el-card>
+            </el-col>
+          </el-row>
+        </div>
+        <!--分页-->
+        <div class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage4"
+            :page-sizes="[100, 200, 300, 400]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="400">
+          </el-pagination>
+        </div>
       </el-tabs>
 
     </div>
@@ -49,28 +50,28 @@
         items: [
           {
             id: 'a',
-            img: 'http://5b0988e595225.cdn.sohucs.com/images/20190116/bc7e628e4cfc4da7994e8c1cd7d4e77a.jpeg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
+            img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
+            title: '枸杞',
+            summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
           },
           {
             id: 'b',
-            img: 'https://storage.googleapis.com/www-cw-com-tw/article/201809/article-5b8ccde368b1a.jpg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
+            img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
+            title: '枸杞',
+            summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
 
           },
           {
             id: 'c',
-            img: 'https://tw.bring-you.info/imgs/2018/11/mukshidonna-4-900x600.jpg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
+            img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
+            title: '枸杞',
+            summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
           },
           {
             id: 'd',
-            img: 'http://img6.16fan.com/attachments/wenzhang/20172/15/148713753043200ge.jpeg',
-            title: '某条食品资讯',
-            summary: '该咨询的摘要...'
+            img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
+            title: '枸杞',
+            summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
           },
 
         ],

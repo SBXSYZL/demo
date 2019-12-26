@@ -2,10 +2,10 @@
   <div>
     <div class="container" style="display: flex">
       <div style="width: 90%">
-        <h3>食谱</h3>
+        <h3>食品图鉴</h3>
       </div>
       <div>
-        <el-button type="primary" icon="el-icon-edit" @click="writerecipeBook">添加食谱</el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="writerecipeBook">添加图鉴</el-button>
       </div>
 
     </div>
@@ -30,9 +30,6 @@
                     <p class="line-limit-length">{{item.summary}}</p>
 
                     <el-button type="text" class="button" @click="itemClick(item.id)">了解详情
-                    </el-button>
-                    <br>
-                    <el-button type="text" class="button" @click="itemunClick(item.id)">删除食谱
                     </el-button>
                   </div>
                 </div>
@@ -60,34 +57,34 @@
 
 <script>
 export default {
-  name: 'Recipe',
+  name: 'Foodrecipebook',
   data () {
     return {
       items: [
         {
           id: 'a',
-          img: 'http://site.meishij.net/r/208/102/1025708/s1025708_149663916013140.jpg',
-          title: '汉堡包',
-          summary: '汉堡是德国三大州级市（柏林，汉堡，不来梅）之一...'
+          img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
+          title: '枸杞',
+          summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
         },
         {
           id: 'b',
-          img: 'http://site.meishij.net/r/208/102/1025708/s1025708_149663916013140.jpg',
-          title: '汉堡包',
-          summary: '汉堡是德国三大州级市（柏林，汉堡，不来梅）之一...'
+          img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
+          title: '枸杞',
+          summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
 
         },
         {
           id: 'c',
-          img: 'http://site.meishij.net/r/208/102/1025708/s1025708_149663916013140.jpg',
-          title: '汉堡包',
-          summary: '汉堡是德国三大州级市（柏林，汉堡，不来梅）之一...'
+          img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
+          title: '枸杞',
+          summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
         },
         {
           id: 'd',
-          img: 'http://site.meishij.net/r/208/102/1025708/s1025708_149663916013140.jpg',
-          title: '汉堡包',
-          summary: '汉堡是德国三大州级市（柏林，汉堡，不来梅）之一...'
+          img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
+          title: '枸杞',
+          summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
         }
 
       ],
@@ -147,9 +144,6 @@ export default {
   methods: {
     itemClick (key) {
       this.$router.push('/Foodrecipedetails')
-    },
-    itemunClick (key) {
-      alert("删除食谱")
     },
     handleClick (tab, event) {
       console.log(tab, event)

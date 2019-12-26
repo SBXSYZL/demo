@@ -16,12 +16,24 @@ const routes = [
         component: resolve => require(['../views/FoodNews.vue'], resolve)
       },
       {
+        path: '/writeRecipe',
+        component: resolve => require(['../views/WriteRecipe.vue'], resolve)
+      },
+      {
         path: '/recipe',
         component: resolve => require(['../views/Recipe.vue'], resolve)
       },
       {
         path: '/foodIllustratedBook',
         component: resolve => require(['../views/FoodIllustratedBook.vue'], resolve)
+      },
+      {
+        path: '/foodrecipebook',
+        component: resolve => require(['../views/Foodrecipebook'], resolve)
+      },
+      {
+        path: '/foodrecipedetails',
+        component: resolve => require(['../views/Foodrecipedetails.vue'], resolve)
       },
       {
         path: '/foodIllustratedBookDetail',

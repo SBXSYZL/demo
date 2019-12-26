@@ -27,10 +27,7 @@ const routes = [
         path: '/foodIllustratedBook',
         component: resolve => require(['../views/FoodIllustratedBook.vue'], resolve)
       },
-      {
-        path: '/foodrecipebook',
-        component: resolve => require(['../views/FoodrecipeBook'], resolve)
-      },
+
       {
         path: '/foodrecipedetails',
         component: resolve => require(['../views/FoodrecipeDetails.vue'], resolve)

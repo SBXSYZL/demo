@@ -29,11 +29,11 @@ const routes = [
       },
       {
         path: '/foodrecipebook',
-        component: resolve => require(['../views/Foodrecipebook'], resolve)
+        component: resolve => require(['../views/FoodrecipeBook'], resolve)
       },
       {
         path: '/foodrecipedetails',
-        component: resolve => require(['../views/Foodrecipedetails.vue'], resolve)
+        component: resolve => require(['../views/FoodrecipeDetails.vue'], resolve)
       },
       {
         path: '/foodIllustratedBookDetail',

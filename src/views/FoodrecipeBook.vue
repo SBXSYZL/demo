@@ -143,7 +143,7 @@ export default {
   },
   methods: {
     itemClick (key) {
-      this.$router.push('/Foodrecipedetails')
+      this.$router.push('/FoodrecipeDetails')
     },
     handleClick (tab, event) {
       console.log(tab, event)

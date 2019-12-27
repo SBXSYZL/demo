@@ -49,6 +49,10 @@ const routes = [
         component: resolve => require(['../views/Forum.vue'], resolve)
       },
       {
+        path: '/ForumDetial',
+        component: resolve => require(['../views/ForumDetial.vue'], resolve)
+      },
+      {
         path: '/',
         redirect: '/foodNews'
       }

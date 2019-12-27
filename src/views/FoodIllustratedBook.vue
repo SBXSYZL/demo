@@ -5,7 +5,7 @@
         <h3>食品图鉴</h3>
       </div>
       <div>
-		
+
         <el-button type="primary" icon="el-icon-edit" @click="writeIllustratedBook">添加图鉴</el-button>
       </div>
 

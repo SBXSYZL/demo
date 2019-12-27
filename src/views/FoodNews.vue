@@ -1,11 +1,13 @@
 <template>
   <div>
-     <div class="container" style="...">
-      <div style="float: left;width: 10%">
+    <div class="container" style="display: flex">
+      <div style="width: 90%">
         <h3>食品资讯</h3>
+
       </div>
-      <div >
-        <el-button type="primary" icon="el-icon-edit" style="float: right"   @click="writeIllustratedBook">添加资讯</el-button>
+      <div>
+        <el-button type="primary" icon="el-icon-edit" style="float: right" @click="writeIllustratedBook">添加资讯
+        </el-button>
       </div>
     </div>
 
@@ -21,16 +23,21 @@
           <!--列表-->
           <el-row>
             <el-col :span="30" v-for="item in items" :key="item.id" :offset="1">
-             <div style="float: left;width: 10%">
-               <img :src="item.img" class="image card-img">
-             </div>
-                <div style="padding: 14px;float: right" >
-                  <h3> <span style="color: orangered">{{item.title}}</span></h3>
+              <div>
+                <div style="float: left;width: 10%">
+                  <img :src="item.img" class="image card-img">
+                </div>
+                <div style="padding: 14px;float: right">
+                  <h3><span style="color: orangered">{{item.title}}</span></h3>
                   <div style="float: left">
                     <p class="line-limit-length">{{item.summary}}</p>
-                    <div style="float: right"><el-button type="text" class="button" @click="itemClick(item.id)">了解详情</el-button></div>
+                    <div style="float: right">
+                      <el-button type="text" class="button" @click="itemClick(item.id)">了解详情</el-button>
+                    </div>
                   </div>
                 </div>
+              </div>
+
             </el-col>
           </el-row>
 
@@ -56,7 +63,7 @@
 <script>
   export default {
     name: 'FoodNews',
-    data() {
+    data () {
       return {
         items: [
           {
@@ -87,84 +94,87 @@
         ],
       }
     },
-     methods: {
-          itemClick (key) {
-            this.$router.push('/newsDetails')
-          },
-          handleSizeChange (val) {
-         console.log(`每页 ${val} 条`)
-          },
-       handleCurrentChange (val) {
-         console.log(`当前页: ${val}`)
-          },
-       writeIllustratedBook () {
-         this.$router.push('/write')
-       }
-        }
+    methods: {
+      itemClick (key) {
+        this.$router.push('/newsDetails')
+      },
+      handleSizeChange (val) {
+        console.log(`每页 ${val} 条`)
+      },
+      handleCurrentChange (val) {
+        console.log(`当前页: ${val}`)
+      },
+      writeIllustratedBook () {
+        this.$router.push('/write')
+      }
     }
+  }
 
 </script>
 
 <style scoped>
-.el-row{
-  margin-bottom: 30px;
-  height: 5%;
-}
-  .el-col{
+  .el-row {
+    margin-bottom: 30px;
+    height: 5%;
+  }
+
+  .el-col {
     border-radius: 14px;
   }
-  .card-img{
+
+  .card-img {
     width: 200px;
     height: 200px;
   }
- . image{
-   width: auto;
-   height: 50px;
- }
-/*.image {*/
-/*  width: 25%;*/
-/*  height:18%;*/
-/*  display: block;*/
-/*}*/
-.time {
-  font-size: 13px;
-  color: #999;
-}
 
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-}
+  . image {
+    width: auto;
+    height: 50px;
+  }
 
-.button {
-  padding: 0;
-  float: right;
-}
+  /*.image {*/
+  /*  width: 25%;*/
+  /*  height:18%;*/
+  /*  display: block;*/
+  /*}*/
+  .time {
+    font-size: 13px;
+    color: #999;
+  }
+
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .button {
+    padding: 0;
+    float: right;
+  }
 
 
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
 
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
+  .clearfix:after {
+    clear: both
+  }
 
-.clearfix:after {
-  clear: both
-}
+  .el-select .el-input {
+    width: 130px;
+  }
 
-.el-select .el-input {
-  width: 130px;
-}
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
 
-.input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
-
-.line-limit-length {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+  .line-limit-length {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
 </style>

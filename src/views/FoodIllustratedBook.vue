@@ -23,6 +23,7 @@
           <el-row>
             <el-col :span="5" v-for="item in items" :key="item.id" :offset="1">
               <el-card :body-style="{ padding: '0px' ,margin:'10px'}">
+
                 <img :src="item.img" class="image card-img">
                 <div style="padding: 14px;">
                   <span>{{item.title}}</span>

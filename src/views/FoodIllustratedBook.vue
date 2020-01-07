@@ -60,7 +60,7 @@
 <script>
   export default {
     name: 'FoodIllustratedBook',
-    data () {
+    data() {
       return {
         items: [
           {
@@ -87,7 +87,7 @@
             img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
             title: '枸杞',
             summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
-          },
+          }
 
         ],
         labels: [
@@ -144,19 +144,19 @@
       }
     },
     methods: {
-      itemClick (key) {
+      itemClick(key) {
         this.$router.push('/foodIllustratedBookDetail')
       },
-      handleClick (tab, event) {
+      handleClick(tab, event) {
         console.log(tab, event)
       },
-      handleSizeChange (val) {
+      handleSizeChange(val) {
         console.log(`每页 ${val} 条`)
       },
-      handleCurrentChange (val) {
+      handleCurrentChange(val) {
         console.log(`当前页: ${val}`)
       },
-      writeIllustratedBook () {
+      writeIllustratedBook() {
         this.$router.push('/write')
       }
     }

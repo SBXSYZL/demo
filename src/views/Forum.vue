@@ -1,12 +1,9 @@
 <template>
-  <div>
-    <div class="container" style="display: flex">
-      <div style="width: 90%">
-        <h3>论坛</h3>
-      </div>
-    </div>
-    <div class="container" style="display: flex">
-      <div style="width: 90%">
+    <div class="container" style="display: flex;height: 100%">
+      <div style="width:100%">
+        <div style="display:flex;justify-content:flex-end;margin-bottom: 10px">
+          <el-button type="danger">发布帖子</el-button>
+        </div>
         <el-tabs type="border-card">
           <el-tab-pane label="审核通过">
             <div style="margin-bottom: 15px;">
@@ -16,25 +13,26 @@
               <el-table
                 :data="tableData"
                 style="width: 100%"
-                :default-sort = "{prop: 'date', order: 'descending'}"
+                :default-sort = "{prop: 'date', order:  'descending'}"
               >
                 <el-table-column
                   prop="date"
                   label="日期"
                   sortable
                   width="180">
-                </el-table-column>
+<!--                      <div class="rightcontent">-->
+<!--                        <h1>{{item.title}}</h1>-->
+<!--                        <p>{{item.summary}}</p>-->
+<!--                        <p class="p1">{{item.pingfen}}</p>-->
+<!--                        <p class="p1">{{item.people}}</p>-->
+<!--                      </div>-->
 
-                <el-table-column
-                  prop="name"
-                  label="作者"
-                  width="180">
-                </el-table-column>
-
-                <el-table-column
-                  prop="title"
-                  label="标题"
-                  :formatter="formatter">
+<!--                    <el-main>-->
+<!--                      <el-button type="text" class="button" @click="itemClick(item.id)">了解详情-->
+<!--                      </el-button>-->
+<!--                      <el-button type="text" class="button" @click="itemshanchuClick(item.id)">删除食谱-->
+<!--                      </el-button>-->
+<!--                    </el-main>-->
                 </el-table-column>
 
                 <el-table-column label="操作">
@@ -51,6 +49,8 @@
               </el-table>
             </div>
           </el-tab-pane>
+
+
           <el-tab-pane label="未审核">
             <div style="margin-bottom: 15px;">
               <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
@@ -83,8 +83,47 @@
                 <el-table-column label="操作">
                   <template slot-scope="scope">
                     <el-button type="info"
-                      size="mini"
-                      @click="handleEdit(scope.$index, scope.row)">进入审核</el-button>
+                               size="mini"
+                               @click="handleEdit(scope.$index, scope.row)">进入审核</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="驳回">
+            <div style="margin-bottom: 15px;">
+              <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
+                <el-button slot="append" icon="el-icon-search"></el-button>
+              </el-input>
+              <el-table
+                :data="tableData"
+                style="width: 100%"
+                :default-sort = "{prop: 'date', order: 'descending'}"
+              >
+                <el-table-column
+                  prop="date"
+                  label="日期"
+                  sortable
+                  width="180">
+                </el-table-column>
+
+                <el-table-column
+                  prop="name"
+                  label="作者"
+                  width="180">
+                </el-table-column>
+
+                <el-table-column
+                  prop="title"
+                  label="标题"
+                  :formatter="formatter">
+                </el-table-column>
+
+                <el-table-column label="操作">
+                  <template slot-scope="scope">
+                    <el-button type="info"
+                               size="mini"
+                               @click="handleEdit(scope.$index, scope.row)">进入审核</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -98,32 +137,22 @@
         </el-tabs>
       </div>
     </div>
-
-  </div>
 </template>
 <script>
   export default {
     name:'list',
     data () {
         return {
-          tableData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            title: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            title: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            title: '上海市普陀区金沙江路 1519 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            title: '上海市普陀区金沙江路 1516 弄'
-          }]
-        }
+        // items: [{
+        //     id: 'a',
+        //     img: 'http://site.meishij.net/r/208/102/1025708/s1025708_149663916013140.jpg',
+        //     title: '玉米山药炖排骨',
+        //     summary: '豆瓣酱、醋、生抽、蚝油、白沙糖、料',
+        //     pingfen: '综合评分 7.8  （七天内 43 人做过）',
+        //     people: '爱厨房的燕尾蝶'
+        //   }
+        // ],
+          }
       },
       methods: {
         checkDetial (key) {

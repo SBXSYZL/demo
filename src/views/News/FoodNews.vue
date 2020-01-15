@@ -3,11 +3,9 @@
     <div class="container" style="display: flex">
       <div style="width: 90%">
         <h3>食品资讯</h3>
-
       </div>
       <div>
-        <el-button type="primary" icon="el-icon-edit" style="float: right" @click="writeIllustratedBook">添加资讯
-        </el-button>
+        <el-button type="primary" icon="el-icon-edit" style="float: right" @click="writeIllustratedBook">添加资讯</el-button>
       </div>
     </div>
 
@@ -19,22 +17,29 @@
       </div>
       <!--标签-->
       <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-        <div class="container">
+        <div class="container1">
           <!--列表-->
           <el-row>
-            <el-col :span="30" v-for="item in items" :key="item.id" :offset="1">
+            <el-col :span="24" v-for="item in items" :key="item.id">
               <div>
-                <div style="float: left;width: 10%">
+                <div style=" float: left">
                   <img :src="item.img" class="image card-img">
                 </div>
-                <div style="padding: 14px;float: right">
-                  <h3><span style="color: orangered">{{item.title}}</span></h3>
-                  <div style="float: left">
+                <!--中间-->
+                <div style="padding-left: 5px">
+                  <h3><span style="color: orangered" @click="itemClick(item.id)">{{item.title}}</span></h3>
+                  <div style="float: left;text-align: center">
                     <p class="line-limit-length">{{item.summary}}</p>
-                    <div style="float: right">
-                      <el-button type="text" class="button" @click="itemClick(item.id)">了解详情</el-button>
-                    </div>
                   </div>
+                </div>
+                <!--  右边-->
+                <div style="float: right">
+                  <el-button
+                    @click.native.prevent="deleteRow(scope.$index, tableData4)"
+                    type="danger"
+                    size="mini">
+                    删除
+                  </el-button>
                 </div>
               </div>
 
@@ -131,12 +136,6 @@
     width: auto;
     height: 50px;
   }
-
-  /*.image {*/
-  /*  width: 25%;*/
-  /*  height:18%;*/
-  /*  display: block;*/
-  /*}*/
   .time {
     font-size: 13px;
     color: #999;

@@ -19,9 +19,9 @@
 
 <script>
   // @ is an alias to /src
-  import bus from '../assets/js/bus.js'
-  import Sidebar from '../components/Sidebar'
-  import Header from '../components/Header'
+  import bus from '../../assets/js/bus.js'
+  import Sidebar from '../../components/Sidebar'
+  import Header from '../../components/Header'
 
   export default {
     name: 'home',

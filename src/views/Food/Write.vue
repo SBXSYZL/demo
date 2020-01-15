@@ -14,10 +14,10 @@
 </template>
 
 <script>
-  import TinymceEditor from '../components/Tinymce-editor'
+  import TinymceEditor from '../../components/Tinymce-editor'
 
   export default {
-    name: 'WriteRecipe',
+    name: 'Write',
     components: { TinymceEditor },
     data () {
       return {

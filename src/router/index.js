@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from '../views/Login'
+import Home from '../views/Base/Home.vue'
+import Login from '../views/Base/Login'
 
 Vue.use(VueRouter)
 
@@ -13,48 +13,48 @@ const routes = [
     children: [
       {
         path: '/userManage',
-        component: resolve => require(['../views/FoodNews.vue'], resolve)
+        component: resolve => require(['../views/News/FoodNews.vue'], resolve)
       },
       {
         path: '/foodNews',
-        component: resolve => require(['../views/FoodNews.vue'], resolve)
+        component: resolve => require(['../views/News/FoodNews.vue'], resolve)
       },
       {
         path: '/writeRecipe',
-        component: resolve => require(['../views/WriteRecipe.vue'], resolve)
+        component: resolve => require(['../views/Recipe/WriteRecipe.vue'], resolve)
       },
       {
         path: '/recipe',
-        component: resolve => require(['../views/Recipe.vue'], resolve)
+        component: resolve => require(['../views/Recipe/Recipe.vue'], resolve)
       },
       {
         path: '/foodIllustratedBook',
-        component: resolve => require(['../views/FoodIllustratedBook.vue'], resolve)
+        component: resolve => require(['../views/Food/FoodIllustratedBook.vue'], resolve)
       },
 
       {
         path: '/foodrecipedetails',
-        component: resolve => require(['../views/FoodrecipeDetails.vue'], resolve)
+        component: resolve => require(['../views/Recipe/FoodrecipeDetails.vue'], resolve)
       },
       {
         path: '/foodIllustratedBookDetail',
-        component: resolve => require(['../views/FoodIllustratedBookDetail'], resolve)
+        component: resolve => require(['../views/Food/FoodIllustratedBookDetail'], resolve)
       },
       {
         path: '/newsDetails',
-        component: resolve => require(['../views/NewsDetails.vue'], resolve)
+        component: resolve => require(['../views/News/NewsDetails.vue'], resolve)
       },
       {
         path: '/write',
-        component: resolve => require(['../views/Write.vue'], resolve)
+        component: resolve => require(['../views/Food/Write.vue'], resolve)
       },
       {
         path: '/forum',
-        component: resolve => require(['../views/Forum.vue'], resolve)
+        component: resolve => require(['../views/Forum/Forum.vue'], resolve)
       },
       {
         path: '/ForumDetial',
-        component: resolve => require(['../views/ForumDetial.vue'], resolve)
+        component: resolve => require(['../views/Forum/ForumDetial.vue'], resolve)
       },
       {
         path: '/',

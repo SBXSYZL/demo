@@ -7,7 +7,8 @@
       <el-form-item label="发布时间" required>
         <el-col :span="11">
           <el-form-item prop="date1">
-            <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
+            <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1"
+                            style="width: 100%;"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -28,16 +29,16 @@
 <script>
   export default {
     name: "punlishnews",
-    data(){
-      return{
-        form:{
+    data() {
+      return {
+        form: {
           title: '',
           date1: '',
         }
 
       }
     },
-    methods:{
+    methods: {
       onSubmit() {
         console.log('submit!');
       }

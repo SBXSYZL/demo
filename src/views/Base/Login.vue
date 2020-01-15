@@ -52,7 +52,7 @@
 
 <style scoped>
   .bg-img {
-    background-image: url("../assets/test1.png");
+    background-image: url("../../assets/test1.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
   }

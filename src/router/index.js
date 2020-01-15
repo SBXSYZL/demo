@@ -12,6 +12,10 @@ const routes = [
     component: Home,
     children: [
       {
+        path: '/userManage',
+        component: resolve => require(['../views/FoodNews.vue'], resolve)
+      },
+      {
         path: '/foodNews',
         component: resolve => require(['../views/FoodNews.vue'], resolve)
       },

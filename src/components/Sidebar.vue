@@ -57,17 +57,17 @@
         collapse: false,
         items: [
           {
-            icon: 'el-icon-service',
+            icon: 'el-icon-info',
+            index: 'foodNews',
+            title: '资讯'
+          },
+          {
+            icon: 'el-icon-copy-document',
             index: 'forum',
             title: '论坛'
           },
           {
-            icon: 'el-icon-info',
-            index: 'foodNews',
-            title: '食品资讯'
-          },
-          {
-            icon: 'el-icon-phone',
+            icon: 'el-icon-notebook-1',
             index: 'recipe',
             title: '食谱'
           },
@@ -75,6 +75,11 @@
             icon: 'el-icon-tickets',
             index: 'foodIllustratedBook',
             title: '食品图鉴'
+          },
+          {
+            icon: 'el-icon-user-solid',
+            index: 'userManage',
+            title: '用户管理'
           }
         ]
       }

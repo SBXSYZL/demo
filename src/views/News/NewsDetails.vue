@@ -1,22 +1,51 @@
 <template>
-  <div class="container" v-html="news">
+  <div class="container">
+    <div style="float: left">
+      <button  @click="go" style="width: 80px;height:40px;background:red">返回</button>
+    </div>
+    <div style="float: right">
+      <button style="float: right;width: 80px;height:40px;background:red" @click="delect">删除</button>
+      <button  style="float: right;width: 80px;height:40px;background:red" @click="writeIllustratedBook">修改</button>
+    </div>
+    <div class="container" v-html="news">
+    </div>
   </div>
-
 </template>
-
 <script>
   export default {
     name: 'NewsDetails',
-    data() {
+    data () {
       return {
-        news: "<p><strong>asdaddsdfdsfa</strong></p> <p>dsjaknfjdshbfkjnksdhfshfkjncvkjs<img src=\"http://39.98.110.191:8088/20200114/20200114231819111.jpg\" alt=\"\" width=\"557\" height=\"185\" /></p> <p><img src=\"http://39.98.110.191:8088/20200114/20200114231819073.jpg\" alt=\"\" width=\"1061\" height=\"726\" /></p> <p>sdndjfhsdkjhsjkdfjks</p> <p>&nbsp;</p>"
+        news: '<div style="display: flex;justify-content: center;align-content: center">' +
+          '<div style="width: 80%;">' +
+          '<h1>台湾防黑心蛋危害食安 元旦起“破壳蛋”禁做液蛋</h1>' +
+          '<p align="center">时间：2019-12-26 15:21:16 来源：中国新闻网 作者</p>' +
+          '<img src="https://img7.21food.cn/img/newsimg/2019/12/18/1576636317135.jpg" style="width: 60%; height: 30%;align-content: center" >'+
+          '<p>&nbsp;&nbsp;&nbsp;&nbsp;中新网12月26日电 据台湾“中央社”报道，近年黑心液蛋事件频传，台当局“食药署”祭出' +
+          '食品安全新制，明订蛋壳破裂且蛋液流出的“破壳蛋”，将不可作为液蛋原料，并订定杀菌、未' +
+          '杀菌液蛋的卫生标准，违者可重罚新台币300万元，2020年元旦实施。</p>' +
+          '<p>&nbsp;&nbsp;&nbsp;&nbsp;2017年苌记泰安遭检调查获以逾期蛋、破壳蛋混制成液蛋产品卖给烘焙、餐饮业者，来年又爆出' +
+          '元山蛋品使用过期破壳、长蛆蛋混制蛋液，引爆食安危机，也让液蛋原料规定不明问题浮出台面。</p>' +
+          '<p>&nbsp;&nbsp;&nbsp;&nbsp;为订定液蛋原料标准，“食品药物管理署”邀集产、官、学界共同讨论，决议未来只有2种蛋可作为液蛋原料，' +
+          '一是蛋壳完整无裂痕的蛋，二是“裂壳蛋”，即蛋壳破裂但蛋壳膜完整、无外在污垢黏附且内容物无泄漏的蛋品。</p>'+
+          '<p>此外，相关草案中也明订，凡是蛋壳破裂且蛋液流出的“破壳蛋”，将不可作为液蛋原料。</p>'+
+          '<p>除了避免黑心液蛋危害食安，“食药署”也一并针对杀菌、未杀菌的液蛋订定相关卫生规范，用来制作' +
+          '提拉米苏、美乃滋等含生蛋的食品须选用杀菌液蛋，且不得检出沙门氏菌。</p>'+
+          '<p>至于需要高温烘焙的蛋糕等产品，则可选择发泡性较好的未杀菌液蛋作为原料，但未杀菌液蛋的生' +
+          '菌数不仅须符合一定限量，外包装也要标示“本产品须使用于生产经充分加热或其他足以达到有效杀菌之' +
+          '食品”警语。</p>'+
+          '<p>蛋品食安新制将于2020年元旦起上路，届时全台液蛋业者都须符合上述规定，“食药署”及地方卫生单位' +
+          '将针对液蛋业者进行突击检查，违者将依法开罚新台币3万至300万元.</p>' +
+          '<h3>相关搜索：<a href="#">鸡蛋生鲜</a></h3>'+'</div>'+'</div>'
       }
     },
     methods:{
-      
-    },
-    created() {
-
+      go(){
+        this.$router.push('/foodNews')
+      },
+      writeIllustratedBook () {
+        this.$router.push('/write')
+      }
     }
   }
 </script>

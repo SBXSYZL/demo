@@ -1,49 +1,45 @@
 <template>
   <div>
-    <div class="container" style="display: flex">
-      <div style="width: 90%">
-        <h3>食谱</h3>
+    <div class="container" style="display: flex;background-color: red;border-radius: 50px;height: 30px;">
+      <div style="width: 90%;">
+        <h1 style="color: white;">食谱</h1>
       </div>
       <div>
-        <el-button type="primary" icon="el-icon-edit" @click="writerecipeBook">添加食谱</el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="writerecipeBook" style="background-color: white;color: #000000;border-radius: 70px; border-color: white;">添加食谱</el-button>
       </div>
 
     </div>
-    <div class="container">
+    <div class="container" style="">
       <div style="margin-bottom: 15px;">
         <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
       <!--标签-->
-      <div class="all">
+      <div>
+
         <el-container :span="5" v-for="item in items" :key="item.id" :offset="1">
+          <el-aside width="200px">
+            <img :src="item.img" style="width: 150px;height: 150px;margin-top: 20px;margin-left: 50px;"/>
+          </el-aside>
+          <el-main>
+            <div class="rightcontent" style="width: 700px;height: 150px;margin-top: 0px;" >
+              <div>
+                <h1 @click="itemClick(item.id)" style="padding: 5px;margin-left: 8px;">{{item.title}}</h1>
+              <p @click="itemClick(item.id)" style="margin-left: 8px;padding: 5px;">{{item.summary}}</p>
 
-            <el-aside width="200px">
-              <img :src="item.img" class="image" />
-            </el-aside>
-            <el-container>
-              <el-header>
-                <div class="rightcontent">
-                  <h1>{{item.title}}</h1>
-                  <p>{{item.summary}}</p>
-                  <p class="p1">{{item.pingfen}}</p>
-                  <p class="p1">{{item.people}}</p>
-                </div>
+              <p class="p1" @click="itemClick(item.id)" style="margin-left: 8px;padding: 5px;">{{item.pingfen}}</p>
+              <p class="p1" @click="itemClick(item.id)" style="margin-left: 8px;">{{item.people}}</p>
+              </div>
+              <div style="height: 10px;line-height: 10px;">
+                <el-button type="text" class="button" @click="itemshanchuClick(item.id)">删除食谱</el-button>
+              </div>
 
-              </el-header>
-
-            <el-main>
-              <el-button type="text" class="button" @click="itemClick(item.id)">了解详情
-              </el-button>
-              <el-button type="text" class="button" @click="itemshanchuClick(item.id)">删除食谱
-              </el-button>
-            </el-main>
-          </el-container>
-
+            </div>
+          </el-main>
         </el-container>
-      </div>
 
+      </div>
     </div>
   </div>
 </template>
@@ -166,12 +162,12 @@ export default {
 </script>
 
 <style scoped>
+  .main{
+    background-color: #00D1B2;
+  }
   .time {
     font-size: 13px;
     color: #999;
-  }
-  .all{
-    margin-left: 300px;
   }
   .bottom {
     margin-top: 13px;
@@ -180,11 +176,16 @@ export default {
 
   .button {
     padding: 0;
-    margin-top: 20px;
+    margin-left: 600px;
+    background: orangered;
+    width: 65PX;
+    height: 25px;
+    margin-bottom: 20px;
+    color: white;
+
   }
   .rightcontent{
-    margin-top: 10px;
-
+    background-color: #F2F2F2;
   }
   .image {
     width: 100%;
@@ -194,6 +195,7 @@ export default {
   .p1{
     font-size: 14px;
     color: #666666;
+    padding: 2px;
   }
   .clearfix:before,
   .clearfix:after {

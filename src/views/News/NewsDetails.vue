@@ -1,26 +1,80 @@
 <template>
-  <div class="container" v-html="news">
+  <div class="container">
+    <div style="float: top">
+    <div style="float: left">
+      <button  @click="go" style="width: 80px;height:40px;background:lightskyblue">返回</button>
+    </div>
+    <div style="float: right">
+      <button style="float: right;width: 80px;height:40px;background:lightskyblue" @click="Delect">删除</button>
+      <button  style="float: right;width: 80px;height:40px;background:lightskyblue" @click="writeIllustratedBook">修改</button>
+    </div>
+    </div>
+    <div class="container" style="float: bottom" >
+     <div class="top">
+       <h2 style="text-align: center"/>{{news.title}}
+     </div>
+      <div >
+        <p style="text-align: center">{{news.releaseDate}}</p>
+      </div>
+      <div style="float: bottom">
+        <p>{{news.content}}</p>
+      </div>
+    </div>
   </div>
-
 </template>
-
 <script>
-  export default {
-    name: 'NewsDetails',
-    data() {
-      return {
-        news: "<p><strong>asdaddsdfdsfa</strong></p> <p>dsjaknfjdshbfkjnksdhfshfkjncvkjs<img src=\"http://39.98.110.191:8088/20200114/20200114231819111.jpg\" alt=\"\" width=\"557\" height=\"185\" /></p> <p><img src=\"http://39.98.110.191:8088/20200114/20200114231819073.jpg\" alt=\"\" width=\"1061\" height=\"726\" /></p> <p>sdndjfhsdkjhsjkdfjks</p> <p>&nbsp;</p>"
+export default {
+  name: 'NewsDetails',
+  data () {
+    return {
+      news: {
+        newsId: '',
+        releaseDate: '',
+        viewCnt: '',
+        title: '',
+        newsDesc: '',
+        content: ''
       }
-    },
-    methods:{
-      
-    },
-    created() {
-
     }
+  },
+  methods: {
+    go () {
+      let id = this.$route.query.id
+      this.$router.push('/foodNews')
+    },
+    writeIllustratedBook () {
+      this.$router.push('/write')
+    },
+    Delect () {},
+    getNewsDetail () {
+      this.$axios.get('/api/user/getNewsDetail', {
+        params: {
+          newsId: 1
+        }
+      }).then(res => {
+        let obj = res.data.data
+        this.news.newsId = obj.newsId
+        this.news.releaseDate = obj.releaseDate
+        this.news.viewCnt = obj.viewCnt
+        this.news.title = obj.title
+        this.news.newsDesc = obj.newsDesc
+        this.news.content = obj.content
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+
+  },
+  created () {
+    this.getNewsDetail()
   }
+}
 </script>
 
 <style scoped>
-
+.top{
+  text-align: center;
+  height: auto;
+  width: auto;
+}
 </style>

@@ -3,38 +3,48 @@
     <div class="container" style="display: flex">
       <div style="width: 90%">
         <h3>食品资讯</h3>
-
       </div>
       <div>
-        <el-button type="primary" icon="el-icon-edit" style="float: right" @click="writeIllustratedBook">添加资讯
-        </el-button>
+        <el-button type="primary" icon="el-icon-edit" style="float: right" @click="writeIllustratedBook">添加资讯</el-button>
       </div>
     </div>
 
     <div class="container">
       <div style="margin-bottom: 15px;">
-        <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入内容" v-model="input" class="input-with-select">{{input.searchKey}}
+          <el-button slot="append" icon="el-icon-search" onclick="search"></el-button>
         </el-input>
       </div>
       <!--标签-->
       <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-        <div class="container">
+        <div class="container1">
           <!--列表-->
           <el-row>
-            <el-col :span="30" v-for="item in items" :key="item.id" :offset="1">
+            <el-col :span="24" v-for="item in items" :key="item.id">
               <div>
-                <div style="float: left;width: 10%">
-                  <img :src="item.img" class="image card-img">
-                </div>
-                <div style="padding: 14px;float: right">
-                  <h3><span style="color: orangered">{{item.title}}</span></h3>
-                  <div style="float: left">
-                    <p class="line-limit-length">{{item.summary}}</p>
-                    <div style="float: right">
-                      <el-button type="text" class="button" @click="itemClick(item.id)">了解详情</el-button>
-                    </div>
+<!--                <div style=" float: left">-->
+<!--                  <img :src="item.img" class="image card-img">-->
+<!--                </div>-->
+                <!--中间-->
+                <div style="float: left" >
+                  <h3><span @click="itemClick(item.id)">{{item.title}}</span></h3>
+                  <div style="float:left;text-align: center">
+                    <p class="line-limit-length">{{item.newsDesc}}</p>
                   </div>
+                  <div style="padding-top: 30px">
+                    <p style="align-content: center">{{item.releaseDate}}</p>
+                  </div>
+                </div>
+
+                <!--  右边-->
+                <div style="float: right">
+                  <el-button
+                    @click.native.prevent="deleteRow(scope.$index, tableData4)"
+                    type="danger"
+                    size="mini"
+                  style="color: dodgerblue">
+                    删除
+                  </el-button>
                 </div>
               </div>
 
@@ -65,49 +75,81 @@
     name: 'FoodNews',
     data () {
       return {
-        items: [
-          {
-            id: 1,
-            img: 'https://img7.21food.cn/img/newsimg/2019/12/18/1576636317135.jpg',
-            title: '台湾防黑心蛋危害食安 元旦起“破壳蛋”禁做液蛋  2019-12-26',
-            summary: '中新网12月26日电据台湾“中央社”报道，近年黑心液蛋事件频传，台当局“食药 ...'
-          },
-          {
-            id: 2,
-            img: 'https://img7.21food.cn/img/newsimg/2019/12/25/1577241153470.jpg',
-            title: '白酒抽检怎让“甜蜜素”成了主角？ 业内：知名酒企躺枪或因管理仍有瑕疵 2019-12-26',
-            summary: ' 经济日报-中国经济网北京12月26日讯近来沸沸扬扬的酒鬼酒甜蜜素事件迎来新的 ...'
-          },
-          {
-            id: 3,
-            img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
-            title: '酒鬼酒陷甜蜜素“罗生门” 业内专家：含量甚微 对健康无影响 2019-12-26',
-            summary: ' 经济日报-中国经济网12月26日讯岁末将至，正值白酒销售旺季，但白酒板块却遭 ...'
-          },
-          {
-            id: 4,
-            img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
-            title: '国家市场监管总局征求“食品抽检意见” “甜蜜素”被列为白酒抽检重点项目 2019-12-26',
-            summary: ' 中国网财经12月25日讯25日，国家市场监管总局发布《关于公开征求2020年 ...'
-          },
-
-        ],
+        items: [],
+        activeName2:'',
+        currentPage4:1,
+        pageNo:1,
+        pageSize:10,
+        input:{
+          pageNo:1,
+          pageSize:10,
+          searchKey:1
+       }
       }
     },
     methods: {
-      itemClick (key) {
-        this.$router.push('/newsDetails')
+      itemClick(key) {
+        this.$router.push({
+          path: '/newsDetails',
+          query: {
+            id: key
+          }
+        })
       },
-      handleSizeChange (val) {
+      handleSizeChange(val) {
         console.log(`每页 ${val} 条`)
       },
-      handleCurrentChange (val) {
+      handleCurrentChange(val) {
         console.log(`当前页: ${val}`)
       },
-      writeIllustratedBook () {
+      writeIllustratedBook() {
         this.$router.push('/write')
-      }
-    }
+      },
+      detail() {
+        this.$router.push('/newsdetails')
+
+      },
+      search(){
+        this.$router.push('')
+      },
+      handleClick() {
+      },
+      deleteRow(val, data) {
+      },
+
+      getNewsList() {
+        this.$axios.get('/api/user/getNewsList', {
+          params: {
+            pageNo: 1,
+            pageSize: 10
+          }
+        }).then(res => {
+          console.log(res)
+          this.items = res.data.data.list;
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      getSearchNews() {
+        this.$axios.get('/api/user/searchNews', {
+          params: {
+            pageNo: 1,
+            pageSize: 10,
+            searchKey: 1
+          }
+        }).then(res => {
+          console.log(res)
+          this.input = res.data.data.list;
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+    },
+    created() {
+      this.getNewsList();
+      this.getSearchNews();
+    },
+
   }
 
 </script>
@@ -131,12 +173,6 @@
     width: auto;
     height: 50px;
   }
-
-  /*.image {*/
-  /*  width: 25%;*/
-  /*  height:18%;*/
-  /*  display: block;*/
-  /*}*/
   .time {
     font-size: 13px;
     color: #999;

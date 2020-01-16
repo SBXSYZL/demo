@@ -11,79 +11,91 @@ export default {
   data () {
     return {
       historyMsg:
+          '<style>' +
+            'p{display: inline;}' +
+          '</style>' +
+          '<div class="hole" style="display:flex;">' +
+            '<div class="img">' +
+            '<img src="https://s1.st.meishij.net/r/208/102/1025708/s1025708_152645059891511.jpg" width="300px" height="400px" />' +
+            '</div>' +
+            '<div class="main" style="flex-direction:row;">' +
+              '<div class="info-1" style="display: flex;">' +
+              '<p class="title" style="max-width: 288px;height: 44px;padding: 38px 0px;line-height: 44px; margin-top: 45px;"><a style="margin-left: 30px;padding: 0;border: 0;font-size: 30px;vertical-align: baseline;background: transparent;">蔓越莓排骨</a></p>' +
+              '<span style="margin-top: 60px;margin-left: 200px;font-size: 20px;background-color: antiquewhite;text-align: center;width: 130px;height: 40px;vertical-align: middle;background-color: #ff4400;"><p style="padding:2px;font-size: 20px;color:white;font-weight: bold;">收藏（1001）</p></span>' +
+              '<span style="margin-top: 60px;font-size: 20px; background-color: silver;width: 180px;height: 40px;vertical-align: middle;"><p style="margin-left: 20px;padding:2px;font-size: 20px;color:#999;font-weight: bold;">分享到：</p></span>' +
+              '</div>' +
+              '<div class="info-2" style="flex-direction:column;">' +
+              '<ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;">' +
+                '<li style="float: left;background-color: #4CAF50;margin-left: 20px;width: 65px;height: 40px;border-color: 1px black"><a style="display: block;color: #666;text-align: center;padding: 14px 16px;text-decoration: none;font-size: 15px;font-weight: bold;color: white;" class="active" href="#home">主页</a></li>' +
+                '<li style="float: left;background-color: #4CAF50;margin-left: 20px;width: 65px;height: 40px;border-color: 1px black"><a style="display: block;color: #666;text-align: center;padding: 14px 16px;text-decoration: none;font-size: 15px;font-weight: bold;color: white;" href="#news">新闻</a></li>' +
+                '<li style="float: left;background-color: #4CAF50;margin-left: 20px;width: 65px;height: 40px;border-color: 1px black"><a style="display: block;color: #666;text-align: center;padding: 14px 16px;text-decoration: none;font-size: 15px;font-weight: bold;color: white;" href="#contact">联系</a></li>' +
+                '<li style="float: left;background-color: #4CAF50;margin-left: 20px;width: 65px;height: 40px;border-color: 1px black"><a style="display: block;color: #666;text-align: center;padding: 14px 16px;text-decoration: none;font-size: 15px;font-weight: bold;color: white;" href="#about">关于</a></li>' +
+                '<li style="float: left;background-color: #4CAF50;margin-left: 20px;width: 65px;height: 40px;border-color: 1px black"><a style="display: block;color: #666;text-align: center;padding: 14px 16px;text-decoration: none;font-size: 15px;font-weight: bold;color: white;" href="#contact">联系</a></li>' +
+                '<li style="float: left;background-color: #4CAF50;margin-left: 20px;width: 65px;height: 40px;border-color: 1px black"><a style="display: block;color: #666;text-align: center;padding: 14px 16px;text-decoration: none;font-size: 15px;font-weight: bold;color: white;" href="#about">关于</a></li>' +
+              '</ul>' +
+              '</div>' +
+              '<div class="info3" style="    border-bottom: 1px solid #eee;overflow: hidden;">' +
+              	'<ul class="clearfix">' +
+              		'<li style="float: left;height: 58px;border-right: 1px solid #eee;padding: 18px 0px 18px 20px;border-bottom: 1px solid #eee;"><strong style="font-size: 12px;color: #999;line-height: 18px;display: block;height: 18px;">工艺</strong><a id="tongji_gy" href="javascript:;" class="big" style="text-decoration: none;display: block;font-size: 34px;color: #ff3232;font-family: Microsoft Yahei;line-height: 70px;width: 100px;" >蒸</a></li>' +
+              		'<li style="float: left;height: 58px;border-right: 1px solid #eee;padding: 18px 0px 18px 20px;border-bottom: 1px solid #eee;"><strong style="font-size: 12px;color: #999;line-height: 18px;display: block;height: 18px;">工艺</strong><a id="tongji_gy" href="javascript:;" class="big" style="text-decoration: none;display: block;font-size: 24px;color: #ff3232;font-family: Microsoft Yahei;line-height: 70px;width: 300px;" >蒸</a></li>' +
+              		'<li style="float: left;height: 58px;border-right: 1px solid #eee;padding: 18px 0px 18px 20px;border-bottom: 1px solid #eee;"><strong style="font-size: 12px;color: #999;line-height: 18px;display: block;height: 18px;">工艺</strong><a id="tongji_gy" href="javascript:;" class="big" style="text-decoration: none;display: block;font-size: 24px;color: #ff3232;font-family: Microsoft Yahei;line-height: 70px;width: 300px;" >蒸</a></li>' +
 
-          '<div>' +
-          '<div style="width: 20%;text-align: right"><img  style="width: 400px;height: 300px;float:left"' +
-          'src="http://site.meishij.net/r/208/102/1025708/s1025708_149663916013140.jpg">' +
-          '</div>' +
-          '<br>' +
-          '&nbsp;&nbsp;&nbsp;&nbsp;很喜欢这道菜，简单的几种食材，因为有了排骨的加入，汤汁清甜滋润，口感超好呢，我喜欢在里面添加些颜色丰富的食材，这样五颜六色的一大锅，看着就有食欲。' +
-          '<br>' +
-          '<h1>用料</h1>' +
-          '<h3>主要用料</h3>' +
-          '<br>' +
-          '胡萝卜' +
-          '&nbsp;&nbsp;&nbsp;&nbsp;' +
-          '一个' +
-          '<br>' +
-          '玉米一个' +
-          '<br>' +
-          '土豆两个' +
-          '<br>' +
-          '山药半根' +
-          '<br>' +
-          '<br>' +
-          '<br>' +
-          '<br>' +
-          '<br>' +
-          '</h3>' +
-          '</div>' +
-          '<div style="display: flex">' +
-          '<div style="width: 80%;float:left">' +
-          '<h1>土豆炖排骨</h1><hr/>' +
-          '<div style="padding: 10px">' +
-          '<div>' +
-          '<h4>1.排骨切成小段，冷水下锅汆烫，捞出备用</h4>' +
-          '<br>' +
-          '<div style="width: 20%;text-align: right"><img style="width: 400px;height: 400px"' +
-          'src="https://s1.st.meishij.net/rs/208/102/1025708/n1025708_149663931049182.jpg">' +
-          '</div>' +
-          '<div>' +
-          '<h4>2.所有的食材都切成同样大小的块状</h4>' +
-          '<br>' +
+              	'</ul>' +
+              	'<ul class="clearfix">' +
+              		'<li style="float: left;height: 58px;border-right: 1px solid #eee;padding: 18px 0px 18px 20px;border-bottom: 1px solid #eee;"><strong style="font-size: 12px;color: #999;line-height: 18px;display: block;height: 18px;">工艺</strong><a id="tongji_gy" href="javascript:;" class="big" style="text-decoration: none;display: block;font-size: 34px;color: #ff3232;font-family: Microsoft Yahei;line-height: 70px;width: 100px;" >蒸</a></li>' +
+              		'<li style="float: left;height: 58px;border-right: 1px solid #eee;padding: 18px 0px 18px 20px;border-bottom: 1px solid #eee;"><strong style="font-size: 12px;color: #999;line-height: 18px;display: block;height: 18px;">工艺</strong><a id="tongji_gy" href="javascript:;" class="big" style="text-decoration: none;display: block;font-size: 24px;color: #ff3232;font-family: Microsoft Yahei;line-height: 70px;width: 300px;" >蒸</a></li>' +
+              		'<li style="float: left;height: 58px;border-right: 1px solid #eee;padding: 18px 0px 18px 20px;border-bottom: 1px solid #eee;"><strong style="font-size: 12px;color: #999;line-height: 18px;display: block;height: 18px;">工艺</strong><a id="tongji_gy" href="javascript:;" class="big" style="text-decoration: none;display: block;font-size: 24px;color: #ff3232;font-family: Microsoft Yahei;line-height: 70px;width: 300px;" >蒸</a></li>		' +
+              	'</ul>' +
 
-          '<div style="width: 20%;text-align: right"><img style="width: 400px;height: 400px"' +
-          'src="https://s1.st.meishij.net/rs/208/102/1025708/n1025708_149663931385949.jpg">' +
-          '</div>' +
-          '<h4>3.排骨倒入高压锅，加入清水</h4>' +
-          '<br>' +
-          '<div style="width: 20%;text-align: right"><img style="width: 400px;height: 400px"' +
-          'src="https://s1.st.meishij.net/rs/208/102/1025708/n1025708_149663931501397.jpg">' +
-          '</div>' +
-          '<h4>4.将排骨、玉米、山药、土豆都倒入高压锅，盖上盖子，煮熟</h4>' +
-          '<br>' +
-          '<div style="width: 20%;text-align: right"><img style="width: 400px;height: 400px"' +
-          'src="https://s1.st.meishij.net/rs/208/102/1025708/n1025708_149663931624768.jpg">' +
-          '</div>' +
-          '<h4>5.加入盐，拌匀</h4>' +
-          '<br>' +
-          '<div style="width: 20%;text-align: right"><img style="width: 400px;height: 400px"' +
-          'src="https://s1.st.meishij.net/rs/208/102/1025708/n1025708_149663931642655.jpg">' +
-          '</div>' +
-          '<h4>6.出锅装盘即可</h4>' +
-          '<br>' +
-          '<div style="width: 20%;text-align: right"><img style="width: 400px;height: 400px"' +
-          'src="https://s1.st.meishij.net/rs/208/102/1025708/n1025708_149663931777973.jpg">' +
-          '</div>' +
-           '<h2>玉米山药炖排骨成品图</h2>' +
+              '</div>' +
 
-          '<div style="width: 20%;text-align: right"><img style="width: 400px;height: 400px"' +
-          'src="https://s1.st.meishij.net/rs/208/102/1025708/n1025708_149664042920782.jpg">' +
+            '</div>' +
           '</div>' +
-          '</div>' +
-          '</div>'
+          '<div class="content2" style="width: 800px;height: 1000px;background-color: antiquewhite; border: 1 black solid;margin-top: 0.625rem;">' +
+          	'<h1 >recipe.title</h1>' +
+          	'<hr />' +
+            '<div>' +
+          	'<p style="color: red;display : inline;font-size: 40px;">1.</p>' +
+          	'<p>核桃入微波炉高火1分钟，或烤箱150度烤5-8分钟，放入袋子里用木棒敲成碎末</p>' +
+          	'<img style="width: 300px;height: 300px;" src="https://s1.st.meishij.net/rs/156/194/5111156/n5111156_146268786480610.jpg" />' +
+            '</div>' +
+            '<div>' +
+            '<p style="color: red;display : inline;font-size: 40px;">2.</p>' +
+            '<p>烤好出炉，散发着核桃和咖啡的清香</p>' +
+            '<br>' +
+            '<img style="width: 300px;height: 300px;" src="https://s1.st.meishij.net/rs/156/194/5111156/n5111156_146268831439076.jpg" />' +
 
+            '</div>' +
+          '</div>',
+      recipe: {
+        recipeId: '',
+        releaseDate: '',
+        viewCnt: '',
+        recipeDate: ''
+      }
     }
+  },
+
+  methods: {
+    getRecipeDetail () {
+      this.$axios.get('/api/user/getRecipeDetail', {
+        params: {
+          recipeId: 1
+        }
+      }).then(res => {
+        let obj = res.data.data
+        this.recipe.recipeId = obj.recipeId
+        this.recipe.recipeDesc = obj.recipeDesc
+        this.recipe.title = obj.title
+        this.recipe.recipeDate = obj.recipeDate
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+
+  },
+  created () {
+    this.getRecipeDetail()
   }
 
 }

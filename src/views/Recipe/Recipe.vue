@@ -1,49 +1,53 @@
 <template>
   <div>
-    <div class="container" style="display: flex">
-      <div style="width: 90%">
-        <h3>食谱</h3>
+    <div class="container" style="display: flex;background-color: red;border-radius: 50px;height: 30px;">
+      <div style="width: 90%;">
+        <h1 style="color: white;">食谱</h1>
       </div>
       <div>
-        <el-button type="primary" icon="el-icon-edit" @click="writerecipeBook">添加食谱</el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="writerecipeBook" style="background-color: white;color: #000000;border-radius: 70px; border-color: white;">添加食谱</el-button>
       </div>
 
     </div>
-    <div class="container">
+    <div class="container" style="">
       <div style="margin-bottom: 15px;">
         <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
       <!--标签-->
-      <div class="all">
-        <el-container :span="5" v-for="item in items" :key="item.id" :offset="1">
+      <div>
+    <el-table
+      :data="items"
+      style="width: 100%">
+      <el-table-column style="width: 80%;position: absolute;">
+        <template slot-scope="scope" >
+          <div style="height: 200px; margin: 15px;">
+            <div style="width: 100%; ">
+              <h1 style="align-items: left;">{{scope.row.title}}</h1>
+              <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
+              <div style="position: absolute;bottom: 0;" >
+                 <p>{{scope.row.recipeDate}} </p>
+              </div>
 
-            <el-aside width="200px">
-              <img :src="item.img" class="image" />
-            </el-aside>
-            <el-container>
-              <el-header>
-                <div class="rightcontent">
-                  <h1>{{item.title}}</h1>
-                  <p>{{item.summary}}</p>
-                  <p class="p1">{{item.pingfen}}</p>
-                  <p class="p1">{{item.people}}</p>
-                </div>
 
-              </el-header>
-
-            <el-main>
-              <el-button type="text" class="button" @click="itemClick(item.id)">了解详情
-              </el-button>
-              <el-button type="text" class="button" @click="itemshanchuClick(item.id)">删除食谱
-              </el-button>
-            </el-main>
-          </el-container>
-
-        </el-container>
+            </div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column style="width: 180px" width="180px">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+  </el-table>
       </div>
-
     </div>
   </div>
 </template>
@@ -53,98 +57,22 @@ export default {
   name: 'Recipe',
   data () {
     return {
-      items: [
-        {
-          id: 'a',
-          img: 'http://site.meishij.net/r/208/102/1025708/s1025708_149663916013140.jpg',
-          title: '玉米山药炖排骨',
-          summary: '豆瓣酱、醋、生抽、蚝油、白沙糖、料',
-          pingfen: '综合评分 7.8  （七天内 43 人做过）',
-          people: '爱厨房的燕尾蝶'
-        },
-        {
-          id: 'b',
-          img: 'http://site.meishij.net/r/208/102/1025708/s1025708_149663916013140.jpg',
-          title: '玉米山药炖排骨',
-          summary: '豆瓣酱、醋、生抽、蚝油、白沙糖、料豆瓣酱、醋、生抽、蚝油、白沙糖、料',
-          pingfen: '综合评分 7.8  （七天内 43 人做过）',
-          people: '爱厨房的燕尾蝶'
-
-        },
-        {
-          id: 'c',
-          img: 'http://site.meishij.net/r/208/102/1025708/s1025708_149663916013140.jpg',
-          title: '玉米山药炖排骨',
-          summary: '豆瓣酱、醋、生抽、蚝油、白沙糖、料',
-          pingfen: '综合评分 7.8  （七天内 43 人做过）',
-          people: '爱厨房的燕尾蝶'
-        },
-        {
-          id: 'd',
-          img: 'http://site.meishij.net/r/208/102/1025708/s1025708_149663916013140.jpg',
-          title: '玉米山药炖排骨',
-          summary: '豆瓣酱、醋、生抽、蚝油、白沙糖、料',
-          pingfen: '综合评分 7.8  （七天内 43 人做过）',
-          people: '爱厨房的燕尾蝶'
-        }
-
-      ],
-      labels: [
-        {
-          id: 11,
-          label: '肉禽蛋类',
-          name: '肉禽蛋类'
-        },
-        {
-          id: 12,
-          label: '水产类',
-          name: '水产类'
-        },
-        {
-          id: 13,
-          label: '蔬菜类',
-          name: '蔬菜类'
-        },
-        {
-          id: 14,
-          label: '豆类、豆制品',
-          name: '豆类、豆制品'
-        },
-        {
-          id: 15,
-          label: '五谷杂粮、面类',
-          name: '五谷杂粮、面类'
-        },
-        {
-          id: 16,
-          label: '果品类',
-          name: '果品类'
-        },
-        {
-          id: 17,
-          label: '药食两用类',
-          name: '药食两用类'
-        },
-        {
-          id: 18,
-          label: '调味品、油脂',
-          name: '调味品、油脂'
-        },
-        {
-          id: 19,
-          label: '其他',
-          name: '其他'
-        }
-
-      ],
-      activeName2: '肉禽蛋类',
-      currentPage4: 1,
-      input5: ''
+      items: [],
+      input5: '',
+      pageNo: 1,
+      pageSize: 10
     }
   },
   methods: {
     itemClick (key) {
-      this.$router.push('/Foodrecipedetails')
+      console.log(key)
+      // this.$router.push('/Foodrecipedetails')
+      this.$router.push({
+        path: '/Foodrecipedetails',
+        query: {
+          id: key
+        }
+      })
     },
     itemshanchuClick (key) {
       alert('删除食谱')
@@ -160,18 +88,34 @@ export default {
     },
     writerecipeBook () {
       this.$router.push('/WriteRecipe')
+    },
+    getRecipeList () {
+      this.$axios.get('/api/user/getRecipeList', {
+        params: {
+          pageNo: 1,
+          pageSize: 10
+        }
+      }).then(res => {
+        console.log(res)
+        this.items = res.data.data.list
+      }).catch(err => {
+        console.log(err)
+      })
     }
+  },
+  created () {
+    this.getRecipeList()
   }
 }
 </script>
 
 <style scoped>
+  .main{
+    background-color: #00D1B2;
+  }
   .time {
     font-size: 13px;
     color: #999;
-  }
-  .all{
-    margin-left: 300px;
   }
   .bottom {
     margin-top: 13px;
@@ -179,12 +123,11 @@ export default {
   }
 
   .button {
-    padding: 0;
-    margin-top: 20px;
+    display: flex;
+    margin:50px
   }
   .rightcontent{
-    margin-top: 10px;
-
+    background-color: #F2F2F2;
   }
   .image {
     width: 100%;
@@ -194,6 +137,7 @@ export default {
   .p1{
     font-size: 14px;
     color: #666666;
+    padding: 2px;
   }
   .clearfix:before,
   .clearfix:after {

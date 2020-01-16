@@ -27,7 +27,7 @@
                 </div>
                 <!--中间-->
                 <div style="padding-left: 5px">
-                  <h3><span style="color: orangered" @click="itemClick(item.id)">{{item.title}}</span></h3>
+                  <h3><span @click="itemClick(item.id)">{{item.title}}</span></h3>
                   <div style="float: left;text-align: center">
                     <p class="line-limit-length">{{item.summary}}</p>
                   </div>
@@ -37,7 +37,8 @@
                   <el-button
                     @click.native.prevent="deleteRow(scope.$index, tableData4)"
                     type="danger"
-                    size="mini">
+                    size="mini"
+                  style="color: dodgerblue">
                     删除
                   </el-button>
                 </div>
@@ -111,7 +112,12 @@
       },
       writeIllustratedBook () {
         this.$router.push('/write')
+      },
+      detail(){
+        this.$router.push('/newsdetails')
+
       }
+
     }
   }
 

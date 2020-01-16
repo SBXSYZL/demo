@@ -99,15 +99,15 @@
           )
         },
         handleEdit(index, row) {
-          console.log(index, row);
+          // console.log(index, row);
         },
         handleDelete(index, row) {
-          console.log(index, row);
+          // console.log(index, row);
         },
         getArticleList(){
           this.$axios
             .get("/api/user/getArticleList?" + "pageNo=" + this.pageNo + "&pageSize=" + this.pageSize).then(res => {
-              console.log(res)
+              // console.log(res)
               this.items=res.data.data.list
           }).catch(err => {
             console.log(err);

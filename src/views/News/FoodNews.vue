@@ -11,8 +11,8 @@
 
     <div class="container">
       <div style="margin-bottom: 15px;">
-        <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入内容" v-model="input" class="input-with-select">{{input.searchKey}}
+          <el-button slot="append" icon="el-icon-search" onclick="search"></el-button>
         </el-input>
       </div>
       <!--标签-->
@@ -71,60 +71,86 @@
 </template>
 
 <script>
-export default {
-  name: 'FoodNews',
-  data () {
-    return {
-      items: [],
-      input5: '',
-      activeName2: '',
-      currentPage4: 1,
-      pageNo: 1,
-      pageSize: 10
-    }
-  },
-  methods: {
-    itemClick (key) {
-      this.$router.push({
-        path: '/newsDetails',
-        query: {
-          id: key
-        }
-      })
+  export default {
+    name: 'FoodNews',
+    data () {
+      return {
+        items: [],
+        activeName2:'',
+        currentPage4:1,
+        pageNo:1,
+        pageSize:10,
+        input:{
+          pageNo:1,
+          pageSize:10,
+          searchKey:1
+       }
+      }
     },
-    handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
-    },
-    handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
-    },
-    writeIllustratedBook () {
-      this.$router.push('/write')
-    },
-    detail () {
-      this.$router.push('/newsdetails')
-    },
-    handleClick () {},
-    deleteRow (val, data) {},
+    methods: {
+      itemClick(key) {
+        this.$router.push({
+          path: '/newsDetails',
+          query: {
+            id: key
+          }
+        })
+      },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`)
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`)
+      },
+      writeIllustratedBook() {
+        this.$router.push('/write')
+      },
+      detail() {
+        this.$router.push('/newsdetails')
 
-    getNewsList () {
-      this.$axios.get('/api/user/getNewsList', {
-        params: {
-          pageNo: 1,
-          pageSize: 10
-        }
-      }).then(res => {
-        console.log(res)
-        this.items = res.data.data.list
-      }).catch(err => {
-        console.log(err)
-      })
-    }
-  },
-  created () {
-    this.getNewsList()
+      },
+      search(){
+        this.$router.push('')
+      },
+      handleClick() {
+      },
+      deleteRow(val, data) {
+      },
+
+      getNewsList() {
+        this.$axios.get('/api/user/getNewsList', {
+          params: {
+            pageNo: 1,
+            pageSize: 10
+          }
+        }).then(res => {
+          console.log(res)
+          this.items = res.data.data.list;
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      getSearchNews() {
+        this.$axios.get('/api/user/searchNews', {
+          params: {
+            pageNo: 1,
+            pageSize: 10,
+            searchKey: 1
+          }
+        }).then(res => {
+          console.log(res)
+          this.input = res.data.data.list;
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+    },
+    created() {
+      this.getNewsList();
+      this.getSearchNews();
+    },
+
   }
-}
 
 </script>
 
@@ -161,6 +187,7 @@ export default {
     padding: 0;
     float: right;
   }
+
 
   .clearfix:before,
   .clearfix:after {

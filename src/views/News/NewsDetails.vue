@@ -23,52 +23,52 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'NewsDetails',
-    data () {
-      return {
-        news:{
-          newsId:'',
-          releaseDate:'',
-          viewCnt:'',
-          title:'',
-          newsDesc:'',
-          content:''
-        }
+export default {
+  name: 'NewsDetails',
+  data () {
+    return {
+      news: {
+        newsId: '',
+        releaseDate: '',
+        viewCnt: '',
+        title: '',
+        newsDesc: '',
+        content: ''
       }
-    },
-    methods:{
-      go(){
-        let id=this.$route.query.id;
-        this.$router.push('/foodNews')
-      },
-      writeIllustratedBook () {
-        this.$router.push('/write')
-      },
-     Delect(){},
-      getNewsDetail(){
-        this.$axios.get('/api/user/getNewsDetail',{
-          params:{
-            newsId:1
-          }
-        }).then(res=>{
-          let obj=res.data.data;
-          this.news.newsId=obj.newsId;
-          this.news.releaseDate=obj.releaseDate;
-          this.news.viewCnt=obj.viewCnt;
-          this.news.title=obj.title;
-          this.news.newsDesc=obj.newsDesc;
-          this.news.content=obj.content;
-        }).catch(err=>{
-          console.log(err)
-        })
-      },
-
-    },
-    created() {
-      this.getNewsDetail();
     }
+  },
+  methods: {
+    go () {
+      let id = this.$route.query.id
+      this.$router.push('/foodNews')
+    },
+    writeIllustratedBook () {
+      this.$router.push('/write')
+    },
+    Delect () {},
+    getNewsDetail () {
+      this.$axios.get('/api/user/getNewsDetail', {
+        params: {
+          newsId: 1
+        }
+      }).then(res => {
+        let obj = res.data.data
+        this.news.newsId = obj.newsId
+        this.news.releaseDate = obj.releaseDate
+        this.news.viewCnt = obj.viewCnt
+        this.news.title = obj.title
+        this.news.newsDesc = obj.newsDesc
+        this.news.content = obj.content
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+
+  },
+  created () {
+    this.getNewsDetail()
   }
+}
 </script>
 
 <style scoped>

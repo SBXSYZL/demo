@@ -71,61 +71,60 @@
 </template>
 
 <script>
-  export default {
-    name: 'FoodNews',
-    data () {
-      return {
-        items: [],
-        input5:'',
-        activeName2:'',
-        currentPage4:1,
-        pageNo:1,
-        pageSize:10
-      }
-    },
-    methods: {
-      itemClick (key) {
-        this.$router.push({
-          path:'/newsDetails',
-          query:{
-            id:key
-          }
-        })
-      },
-      handleSizeChange (val) {
-        console.log(`每页 ${val} 条`)
-      },
-      handleCurrentChange (val) {
-        console.log(`当前页: ${val}`)
-      },
-      writeIllustratedBook () {
-        this.$router.push('/write')
-      },
-      detail(){
-        this.$router.push('/newsdetails')
-
-      },
-      handleClick(){},
-      deleteRow(val,data){},
-
-      getNewsList(){
-        this.$axios.get('/api/user/getNewsList',{
-          params:{
-            pageNo:1,
-            pageSize:10
-          }
-        }).then(res=>{
-          console.log(res)
-          this.items=res.data.data.list;
-        }).catch(err=>{
-          console.log(err)
-        })
-      }
-    },
-    created() {
-      this.getNewsList();
+export default {
+  name: 'FoodNews',
+  data () {
+    return {
+      items: [],
+      input5: '',
+      activeName2: '',
+      currentPage4: 1,
+      pageNo: 1,
+      pageSize: 10
     }
+  },
+  methods: {
+    itemClick (key) {
+      this.$router.push({
+        path: '/newsDetails',
+        query: {
+          id: key
+        }
+      })
+    },
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
+    },
+    writeIllustratedBook () {
+      this.$router.push('/write')
+    },
+    detail () {
+      this.$router.push('/newsdetails')
+    },
+    handleClick () {},
+    deleteRow (val, data) {},
+
+    getNewsList () {
+      this.$axios.get('/api/user/getNewsList', {
+        params: {
+          pageNo: 1,
+          pageSize: 10
+        }
+      }).then(res => {
+        console.log(res)
+        this.items = res.data.data.list
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+  },
+  created () {
+    this.getNewsList()
   }
+}
 
 </script>
 
@@ -162,7 +161,6 @@
     padding: 0;
     float: right;
   }
-
 
   .clearfix:before,
   .clearfix:after {

@@ -82,10 +82,11 @@
     methods: {
       itemClick(key) {
         console.log(key)
+        // this.$router.push('/Foodrecipedetails')
         this.$router.push({
           path: '/NewsDetails',
           query: {
-            id: key
+            id:key
           }
         })
       },

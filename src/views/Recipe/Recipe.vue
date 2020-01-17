@@ -11,20 +11,20 @@
     </div>
     <div class="container" style="">
       <div style="margin-bottom: 15px;">
-        <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入内容" v-model="searchKey" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="getsearchRecipe"></el-button>
         </el-input>
       </div>
       <!--标签-->
       <div>
     <el-table
       :data="items"
-      style="width: 100%">
-      <el-table-column style="width: 80%;position: absolute;">
+      style="width: 100%" @row-click="itemClick">
+      <el-table-column style="width: 80%;position: absolute;" >
         <template slot-scope="scope" >
           <div style="height: 200px; margin: 15px;">
             <div style="width: 100%; ">
-              <h1 @click="itemClick(scope.row.title)">{{scope.row.title}}</h1>
+              <h1>{{scope.row.title}}</h1>
               <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
               <div style="position: absolute;bottom: 0;" >
                  <p>{{scope.row.recipeDate}} </p>
@@ -58,19 +58,19 @@ export default {
   data () {
     return {
       items: [],
-      input5: '',
+      searchKey: '',
       pageNo: 1,
       pageSize: 10
     }
   },
   methods: {
-    itemClick (key) {
-      console.log(key)
+    itemClick (obj) {
+      console.log(obj)
       // this.$router.push('/Foodrecipedetails')
       this.$router.push({
         path: '/Foodrecipedetails',
         query: {
-          id: key
+          id: obj.recipeId
         }
       })
     },
@@ -90,10 +90,10 @@ export default {
       this.$router.push('/WriteRecipe')
     },
     getRecipeList () {
-      this.$axios.get('/api/user/getRecipeList', {
+      this.$axios.get('/api/admin/getRecipeList', {
         params: {
-          pageNo: 1,
-          pageSize: 10
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
         }
       }).then(res => {
         console.log(res)
@@ -103,15 +103,17 @@ export default {
       })
     },
     getsearchRecipe() {
-      this.$axios.get('/api/user/searchRecipe', {
+      this.pageNo=1;
+      this.$axios.get('/api/admin/searchRecipe', {
         params: {
-          pageNo: 1,
-          pageSize: 10,
-          searchKey: 1
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+          searchKey: this.searchKey
         }
       }).then(res => {
+        console.log("res:")
         console.log(res)
-        this.input = res.data.data.list;
+        this.items = res.data.data.list;
       }).catch(err => {
         console.log(err)
       })
@@ -119,7 +121,6 @@ export default {
   },
   created () {
     this.getRecipeList()
-    this.getsearchRecipe()
   }
 }
 </script>

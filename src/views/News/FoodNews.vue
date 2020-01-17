@@ -16,60 +16,52 @@
         </el-input>
       </div>
       <!--标签-->
-      <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-        <div class="container1">
-          <!--列表-->
-          <el-row>
-            <el-col :span="24" v-for="item in items" :key="item.id">
-              <div>
-<!--                <div style=" float: left">-->
-<!--                  <img :src="item.img" class="image card-img">-->
-<!--                </div>-->
-                <!--中间-->
-                <div style="float: left" >
-                  <h3><span @click="itemClick(item.id)">{{item.title}}</span></h3>
-                  <div style="float:left;text-align: center">
-                    <p class="line-limit-length">{{item.newsDesc}}</p>
+      <div>
+        <el-table
+          :data="items"
+          style="width: 100%"
+        >
+          <el-table-column style="width: 80%;position: absolute;">
+            <template slot-scope="scope" >
+              <div style="height: 100px; margin: 15px;">
+                <div style="width: 100%; ">
+                  <h2 onclick="itemClick(scope.row.newsId)">{{scope.row.title}}</h2>
+                  <div style="margin-top:10px;">{{scope.row.newsDesc}}</div>
+                  <div style="position: absolute;bottom: 0;" >
+                    <p>{{scope.row.releaseDate}} </p>
                   </div>
-                  <div style="padding-top: 30px">
-                    <p style="align-content: center">{{item.releaseDate}}</p>
-                  </div>
-                </div>
 
-                <!--  右边-->
-                <div style="float: right">
-                  <el-button
-                    @click.native.prevent="deleteRow(scope.$index, tableData4)"
-                    type="danger"
-                    size="mini"
-                  style="color: dodgerblue">
-                    删除
-                  </el-button>
+
                 </div>
               </div>
-
-            </el-col>
-          </el-row>
-
-        </div>
-        <!--分页-->
-        <div class="block">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
-          </el-pagination>
-        </div>
-      </el-tabs>
-
+            </template>
+          </el-table-column>
+          <el-table-column style="width: 180px" width="180px">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="danger"
+                @click="deleterow(scope.item)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
+<!--    分页-->
+    <div class="block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage4"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400">
+      </el-pagination>
+    </div>
+
   </div>
 </template>
-
 <script>
   export default {
     name: 'FoodNews',
@@ -90,9 +82,9 @@
     methods: {
       itemClick(key) {
         this.$router.push({
-          path: '/newsDetails',
+          path: '/NewsDetails',
           query: {
-            id: key
+            newsId: key
           }
         })
       },
@@ -114,7 +106,10 @@
       },
       handleClick() {
       },
-      deleteRow(val, data) {
+      deleteRow(items) {
+        if(window.confirm("是否确定删除？")) {
+          this.items.splice(items, 1)
+        }
       },
 
       getNewsList() {
@@ -144,10 +139,21 @@
           console.log(err)
         })
       },
+      getDeleteNews(){
+        this.$axios.get('/api/user/deleteNews',{
+          params:{
+            newsId:1
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+
     },
     created() {
       this.getNewsList();
       this.getSearchNews();
+      this.getDeleteNews();
     },
 
   }

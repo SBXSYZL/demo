@@ -16,60 +16,52 @@
         </el-input>
       </div>
       <!--标签-->
-      <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-        <div class="container1">
-          <!--列表-->
-          <el-row>
-            <el-col :span="24" v-for="item in items" :key="item.id">
-              <div>
-<!--                <div style=" float: left">-->
-<!--                  <img :src="item.img" class="image card-img">-->
-<!--                </div>-->
-                <!--中间-->
-                <div style="float: left" >
-                  <h3><span @click="itemClick(item.id)">{{item.title}}</span></h3>
-                  <div style="float:left;text-align: center">
-                    <p class="line-limit-length">{{item.newsDesc}}</p>
+      <div>
+        <el-table
+          :data="items"
+          style="width: 100%"
+        >
+          <el-table-column style="width: 80%;position: absolute;">
+            <template slot-scope="scope" >
+              <div style="height: 100px; margin: 15px;">
+                <div style="width: 100%; ">
+                  <h2 @click="itemClick(scope.row.title)">{{scope.row.title}}</h2>
+                  <div style="margin-top:10px;">{{scope.row.newsDesc}}</div>
+                  <div style="position: absolute;bottom: 0;" >
+                    <p>{{scope.row.releaseDate}} </p>
                   </div>
-                  <div style="padding-top: 30px">
-                    <p style="align-content: center">{{item.releaseDate}}</p>
-                  </div>
-                </div>
 
-                <!--  右边-->
-                <div style="float: right">
-                  <el-button
-                    @click.native.prevent="deleteRow(scope.$index, tableData4)"
-                    type="danger"
-                    size="mini"
-                  style="color: dodgerblue">
-                    删除
-                  </el-button>
+
                 </div>
               </div>
-
-            </el-col>
-          </el-row>
-
-        </div>
-        <!--分页-->
-        <div class="block">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
-          </el-pagination>
-        </div>
-      </el-tabs>
-
+            </template>
+          </el-table-column>
+          <el-table-column style="width: 180px" width="180px">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="danger"
+                @click="deletenew(scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
+<!--    分页-->
+    <div class="block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage4"
+        :page-sizes="[100, 200, 300, 400]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="400">
+      </el-pagination>
+    </div>
+
   </div>
 </template>
-
 <script>
   export default {
     name: 'FoodNews',
@@ -89,10 +81,12 @@
     },
     methods: {
       itemClick(key) {
+        console.log(key)
+        // this.$router.push('/Foodrecipedetails')
         this.$router.push({
-          path: '/newsDetails',
+          path: '/NewsDetails',
           query: {
-            id: key
+            id:key
           }
         })
       },
@@ -105,23 +99,22 @@
       writeIllustratedBook() {
         this.$router.push('/write')
       },
-      detail() {
-        this.$router.push('/newsdetails')
-
-      },
       search(){
         this.$router.push('')
       },
       handleClick() {
       },
-      deleteRow(val, data) {
+      deletenew(row) {
+        if(window.confirm("是否确定删除？")) {
+          this.items.splice(row, 1)
+        }
       },
 
       getNewsList() {
         this.$axios.get('/api/user/getNewsList', {
-          params: {
-            pageNo: 1,
-            pageSize: 10
+          "params": {
+            "pageNo": 1,
+            "pageSize": 10
           }
         }).then(res => {
           console.log(res)
@@ -132,10 +125,10 @@
       },
       getSearchNews() {
         this.$axios.get('/api/user/searchNews', {
-          params: {
-            pageNo: 1,
-            pageSize: 10,
-            searchKey: 1
+          "params": {
+            "pageNo": 1,
+            "pageSize": 10,
+            "searchKey": 1
           }
         }).then(res => {
           console.log(res)
@@ -144,10 +137,35 @@
           console.log(err)
         })
       },
+      getDeleteNews(){
+        this.$axios.get('/api/user/deleteNews',{
+          "params":{
+            "newsId":1
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      getWriteNews(){
+        this.$axios.get('/api/user/WriteNews',{
+          params:{
+            content:adadad,
+            newsDesc:ada,
+            title:a,
+          }
+        }).then(res => {
+          console.log(res)
+          this.items = res.data.data.list;
+        }).catch(err => {
+          console.log(err)
+        })
+      }
     },
     created() {
       this.getNewsList();
       this.getSearchNews();
+      this.getDeleteNews();
+      this.getWriteNews();
     },
 
   }

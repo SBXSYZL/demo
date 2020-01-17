@@ -24,7 +24,7 @@
         <template slot-scope="scope" >
           <div style="height: 200px; margin: 15px;">
             <div style="width: 100%; ">
-              <h1 style="align-items: left;">{{scope.row.title}}</h1>
+              <h1 @click="itemClick(scope.row.title)">{{scope.row.title}}</h1>
               <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
               <div style="position: absolute;bottom: 0;" >
                  <p>{{scope.row.recipeDate}} </p>
@@ -101,10 +101,25 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    getsearchRecipe() {
+      this.$axios.get('/api/user/searchRecipe', {
+        params: {
+          pageNo: 1,
+          pageSize: 10,
+          searchKey: 1
+        }
+      }).then(res => {
+        console.log(res)
+        this.input = res.data.data.list;
+      }).catch(err => {
+        console.log(err)
+      })
     }
   },
   created () {
     this.getRecipeList()
+    this.getsearchRecipe()
   }
 }
 </script>

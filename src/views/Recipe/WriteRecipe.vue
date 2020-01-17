@@ -117,7 +117,7 @@
                 this.$message({
                   type: 'success',
                   message: '上传成功!'
-                });shangchuan
+                });
                 this.$router.push('/Recipe')
               } else {
                 this.$message.error(res.data.data.errMsg);

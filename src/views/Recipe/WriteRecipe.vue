@@ -3,20 +3,20 @@
     <div>
       <div style="margin: 10px;">
         <p style="margin-bottom: 5px;">标题：</p>
-        <el-input v-model="inputTitle" placeholder="请输入标题"></el-input>
+        <el-input v-model="inputTitle" placeholder="请输入标题"/>
       </div>
 
       <div style="margin: 10px">
         <p style="margin-bottom: 5px;">摘要：</p>
-        <el-input type="textarea" :rows="4" v-model="inputDesc" placeholder="请输入摘要"></el-input>
+        <el-input type="textarea" :rows="4" v-model="inputDesc" placeholder="请输入摘要"/>
       </div>
-
 
     </div>
     <el-tag type="warning">编辑框支持伸缩哦，出现问题请刷新再尝试！</el-tag>
     <TinymceEditor ref="editor"
                    v-model="content"
-                   :disabled="disabled">
+                   :disabled="disabled"
+                    style="height: 500px">
     </TinymceEditor>
     <div style="text-align: center;margin-top: 20px">
       <el-button @click="refresh">刷新</el-button>
@@ -106,7 +106,7 @@
             params.append("title", this.inputTitle);
             params.append("recipeDesc", this.inputDesc);
             params.append("recipeTypeId", this.typeId);
-            params.append("content", this.content)
+            params.append("content", this.content);
             this.$axios({
               method: 'post',
               url: '/api/admin/writeRecipe',
@@ -117,7 +117,7 @@
                 this.$message({
                   type: 'success',
                   message: '上传成功!'
-                });
+                });shangchuan
                 this.$router.push('/Recipe')
               } else {
                 this.$message.error(res.data.data.errMsg);

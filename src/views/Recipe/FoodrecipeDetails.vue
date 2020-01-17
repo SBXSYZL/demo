@@ -17,6 +17,7 @@
       <div>{{recipedetail.viewCnt}}</div>
 
     </div>
+    <br/>
     <div style="float: right;margin:20px;">
       <el-button type="danger" @click="evalRecipe(1)">喜欢</el-button>
       <el-button type="danger" @click="evalRecipe(0)">不喜欢</el-button>

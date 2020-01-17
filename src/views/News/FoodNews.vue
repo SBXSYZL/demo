@@ -25,7 +25,7 @@
             <template slot-scope="scope" >
               <div style="height: 100px; margin: 15px;">
                 <div style="width: 100%; ">
-                  <h2 onclick="itemClick(scope.row.newsId)">{{scope.row.title}}</h2>
+                  <h2 @click="itemClick(scope.row.title)">{{scope.row.title}}</h2>
                   <div style="margin-top:10px;">{{scope.row.newsDesc}}</div>
                   <div style="position: absolute;bottom: 0;" >
                     <p>{{scope.row.releaseDate}} </p>
@@ -41,7 +41,7 @@
               <el-button
                 size="mini"
                 type="danger"
-                @click="deleterow(scope.item)">删除</el-button>
+                @click="deletenew(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -81,10 +81,11 @@
     },
     methods: {
       itemClick(key) {
+        console.log(key)
         this.$router.push({
           path: '/NewsDetails',
           query: {
-            newsId: key
+            id: key
           }
         })
       },
@@ -97,26 +98,22 @@
       writeIllustratedBook() {
         this.$router.push('/write')
       },
-      detail() {
-        this.$router.push('/newsdetails')
-
-      },
       search(){
         this.$router.push('')
       },
       handleClick() {
       },
-      deleteRow(items) {
+      deletenew(row) {
         if(window.confirm("是否确定删除？")) {
-          this.items.splice(items, 1)
+          this.items.splice(row, 1)
         }
       },
 
       getNewsList() {
         this.$axios.get('/api/user/getNewsList', {
-          params: {
-            pageNo: 1,
-            pageSize: 10
+          "params": {
+            "pageNo": 1,
+            "pageSize": 10
           }
         }).then(res => {
           console.log(res)
@@ -127,10 +124,10 @@
       },
       getSearchNews() {
         this.$axios.get('/api/user/searchNews', {
-          params: {
-            pageNo: 1,
-            pageSize: 10,
-            searchKey: 1
+          "params": {
+            "pageNo": 1,
+            "pageSize": 10,
+            "searchKey": 1
           }
         }).then(res => {
           console.log(res)
@@ -141,19 +138,33 @@
       },
       getDeleteNews(){
         this.$axios.get('/api/user/deleteNews',{
-          params:{
-            newsId:1
+          "params":{
+            "newsId":1
           }
         }).catch(err => {
           console.log(err)
         })
       },
-
+      getWriteNews(){
+        this.$axios.get('/api/user/WriteNews',{
+          params:{
+            content:adadad,
+            newsDesc:ada,
+            title:a,
+          }
+        }).then(res => {
+          console.log(res)
+          this.items = res.data.data.list;
+        }).catch(err => {
+          console.log(err)
+        })
+      }
     },
     created() {
       this.getNewsList();
       this.getSearchNews();
       this.getDeleteNews();
+      this.getWriteNews();
     },
 
   }

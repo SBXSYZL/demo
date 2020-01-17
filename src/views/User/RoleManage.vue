@@ -19,7 +19,7 @@
         </el-table-column>
         <el-table-column prop="credibility" label="信誉度" width="180" sortable>
         </el-table-column>
-        <el-table-column prop="status" label="状态" :filters="[{ text: '正常', value: '正常' }, { text: '封号', value: '封号' }]" 
+        <el-table-column prop="status" label="状态" :filters="[{ text: '正常', value: '正常' }, { text: '封号', value: '封号' }]"
         :filter-method="filterTag" filter-placement="bottom-end">
         </el-table-column>
         <el-table-column prop="status" label="操作" >
@@ -29,8 +29,7 @@
               :type="scope.row.tag === '封禁' ? 'danger' : 'success'"
               @click="handleDelete(scope.$index, scope.row)"
               disable-transitions
-              >{{ scope.row.tag }}</el-button
-            >
+              >{{ scope.row.tag }}</el-button>
           </template>
         </el-table-column>
       </el-table>

@@ -25,6 +25,7 @@
     </div>
 
 
+    <!--类型弹窗-->
     <el-dialog
       title="请选择菜谱类型"
       :visible.sync="dialogVisible"
@@ -111,12 +112,12 @@
               url: '/api/admin/writeRecipe',
               data: params
             }).then(res => {
-              console.log(res)
+              console.log(res);
               if (res.data.status === 'success' && res.data.data === 'success') {
                 this.$message({
                   type: 'success',
                   message: '上传成功!'
-                })
+                });
                 this.$router.push('/Recipe')
               } else {
                 this.$message.error(res.data.data.errMsg);

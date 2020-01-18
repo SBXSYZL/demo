@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <div style="float: top">
-    <div style="float: left">
-      <button  @click="go" style="width: 80px;height:40px;background:lightskyblue">返回</button>
-    </div>
-    <div style="float: right">
-      <button style="float: right;width: 80px;height:40px;background:lightskyblue" @click="Delect">删除</button>
-      <button  style="float: right;width: 80px;height:40px;background:lightskyblue" @click="writeIllustratedBook">修改</button>
-    </div>
+      <div style="float: left">
+        <button  @click="go" style="width: 80px;height:40px;background:lightskyblue">返回</button>
+      </div>
+      <div style="float: right">
+        <button style="float: right;width: 80px;height:40px;background:lightskyblue" @click="Delect">删除</button>
+        <button  style="float: right;width: 80px;height:40px;background:lightskyblue" @click="writeIllustratedBook">修改</button>
+      </div>
     </div>
     <div class="container" style="float: bottom" >
      <div class="top">

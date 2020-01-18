@@ -2,7 +2,7 @@
     <div class="container" style="display: flex;height: 100%">
       <div style="width:100%">
         <div style="display:flex;justify-content:flex-end;margin-bottom: 10px">
-          <el-button type="danger">发布帖子</el-button>
+          <el-button type="danger" @click="postForum()">发布帖子</el-button>
         </div>
         <el-tabs >
           <el-tab-pane label="审核通过">
@@ -89,7 +89,8 @@
 
       },
       methods: {
-        checkDetial (key) {
+        checkDetial (key)
+        {
           this.$router.push({
               path: '/ForumDetial',
               query: {
@@ -97,6 +98,9 @@
                   }
             }
           )
+        },
+        postForum(){
+          this.$router.push('/WriteForum')
         },
         handleEdit(index, row) {
           // console.log(index, row);

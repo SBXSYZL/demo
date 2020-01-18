@@ -15,7 +15,7 @@
       <!--标题-数据-->
       <div style="display: flex;justify-content: center">
         <div style="display: flex;">
-          <h>{{title}}</h>
+          <p>{{title}}</p>
         </div>
 
       </div>

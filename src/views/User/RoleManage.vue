@@ -9,7 +9,6 @@
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
-      <br /><br />
       <el-table :data="tableData" :height="height" border style="width: 100%">
         <el-table-column prop="id" label="用户ID" width="180"></el-table-column>
         <el-table-column prop="name" label="昵称" width="180">
@@ -42,7 +41,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <br /><br />
+      <br />
       <el-pagination
         background
         layout="total,->,prev, pager, next, jumper"
@@ -58,7 +57,7 @@ export default {
   data () {
     return {
       turn: true,
-      height: document.body.clientHeight - 450 <= 100 ? 100 : document.body.clientHeight - 450,
+      height: document.body.clientHeight - 400 <= 100 ? 100 : document.body.clientHeight - 400,
       tableData: [{
         id: '1',
         name: '王小虎',
@@ -153,8 +152,8 @@ export default {
   mounted () {
     window.onresize = () => {
       return (() => {
-        if (document.body.scrollHeight - 450 >= 100) {
-          this.height = document.body.scrollHeight - 450;
+        if (document.body.scrollHeight - 400 >= 100) {
+          this.height = document.body.scrollHeight - 400;
         }
         else {
           this.height = 100;

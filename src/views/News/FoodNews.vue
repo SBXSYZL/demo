@@ -12,7 +12,7 @@
     <div class="container">
       <div style="margin-bottom: 15px;">
         <el-input placeholder="请输入内容" v-model="input" class="input-with-select">{{input.searchKey}}
-          <el-button slot="append" icon="el-icon-search" onclick="search"></el-button>
+          <el-button slot="append" icon="el-icon-search" @click="searchNews"/>
         </el-input>
       </div>
       <!--标签-->
@@ -20,12 +20,13 @@
         <el-table
           :data="items"
           style="width: 100%"
+          @row-click="itemClick"
         >
           <el-table-column style="width: 80%;position: absolute;">
             <template slot-scope="scope" >
               <div style="height: 100px; margin: 15px;">
                 <div style="width: 100%; ">
-                  <h2 @click="itemClick(scope.row.title)">{{scope.row.title}}</h2>
+                  <h2 >{{scope.row.title}}</h2>
                   <div style="margin-top:10px;">{{scope.row.newsDesc}}</div>
                   <div style="position: absolute;bottom: 0;" >
                     <p>{{scope.row.releaseDate}} </p>
@@ -52,9 +53,9 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page="pageNo"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="400">
       </el-pagination>
@@ -68,25 +69,19 @@
     data () {
       return {
         items: [],
-        activeName2:'',
-        currentPage4:1,
         pageNo:1,
         pageSize:10,
-        input:{
-          pageNo:1,
-          pageSize:10,
-          searchKey:1
-       }
+        input:''
+
       }
     },
     methods: {
-      itemClick(key) {
-        console.log(key)
+      itemClick(obj) {
         // this.$router.push('/Foodrecipedetails')
         this.$router.push({
           path: '/NewsDetails',
           query: {
-            id:key
+            id:obj.newsId
           }
         })
       },
@@ -97,9 +92,9 @@
         console.log(`当前页: ${val}`)
       },
       writeIllustratedBook() {
-        this.$router.push('/write')
+        this.$router.push('/WriteNews')
       },
-      search(){
+      searchNews(){
         this.$router.push('')
       },
       handleClick() {
@@ -111,10 +106,11 @@
       },
 
       getNewsList() {
+
         this.$axios.get('/api/user/getNewsList', {
-          "params": {
-            "pageNo": 1,
-            "pageSize": 10
+          params: {
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
           }
         }).then(res => {
           console.log(res)
@@ -125,10 +121,10 @@
       },
       getSearchNews() {
         this.$axios.get('/api/user/searchNews', {
-          "params": {
-            "pageNo": 1,
-            "pageSize": 10,
-            "searchKey": 1
+          params: {
+            pageNo: this.pageNo,
+            pageSize: this.pageSize,
+            searchKey: this.input
           }
         }).then(res => {
           console.log(res)
@@ -149,8 +145,8 @@
       getWriteNews(){
         this.$axios.get('/api/user/WriteNews',{
           params:{
-            content:adadad,
-            newsDesc:ada,
+            content:'adadad',
+            newsDesc:'ada',
             title:a,
           }
         }).then(res => {
@@ -162,10 +158,8 @@
       }
     },
     created() {
+      // this.$router.go(0);
       this.getNewsList();
-      this.getSearchNews();
-      this.getDeleteNews();
-      this.getWriteNews();
     },
 
   }

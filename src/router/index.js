@@ -24,6 +24,10 @@ const routes = [
         component: resolve => require(['../views/News/FoodNews.vue'], resolve)
       },
       {
+        path:'/WriteNews',
+        component:resolve => require(['../views/News/WriteNews'],resolve)
+      },
+      {
         path: '/writeRecipe',
         component: resolve => require(['../views/Recipe/WriteRecipe.vue'], resolve)
       },

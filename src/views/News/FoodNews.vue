@@ -20,12 +20,12 @@
         <el-table
           :data="items"
           style="width: 100%"
-          @row-click.stop="itemClick"
+          @row-click="itemClick"
         >
           <el-table-column style="width: 80%;position: absolute;">
             <template slot-scope="scope" >
               <div style="height: 100px; margin: 15px;">
-                <div style="width: 100%; ">
+                <div style="width: 100%; " >
                   <h2>{{scope.row.title}}</h2>
                   <div style="margin-top:10px;">{{scope.row.newsDesc}}</div>
                   <div style="position: absolute;bottom: 0;" >
@@ -42,7 +42,7 @@
               <el-button
                 size="mini"
                 type="danger"
-                @click="deleteNews(scope.row)">删除</el-button>
+                @click.stop="deleteNews">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -54,7 +54,7 @@
           :before-close="handleClose">
               <span slot="footer" class="dialog-footer" v-model="title">
               <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+              <el-button type="primary" @click="delectNewsConfirm(items.row)">确 定</el-button>
                </span>
         </el-dialog>
 
@@ -76,6 +76,7 @@
   </div>
 </template>
 <script>
+  import { dialog } from 'element-ui'
   export default {
     name: 'FoodNews',
     data () {
@@ -116,9 +117,11 @@
       },
       deleteNews(row) {
         this.dialogVisible = true;
-        this.items.splice(row, 1)
+        // this.items.splice(row, 1)
       },
-
+      delectNewsConfirm(row){
+           this.items.splice(row,1)
+      },
       getNewsList() {
         this.$axios.get('/api/user/getNewsList', {
           params: {

@@ -3,8 +3,8 @@
     <div class="container">
       <!--按钮-->
       <div style="width: 100%;display: flex;">
-        <div style="display: flex;justify-content: flex-start;width: 90%">
-          <el-button type="danger" round>回退</el-button>
+        <div style="float: left;width: 90%">
+          <el-page-header @back="goBack"/>
         </div>
         <div style="display: flex;justify-content: space-between;min-width:10%;">
           <el-button type="danger" round>删除</el-button>
@@ -13,11 +13,10 @@
         </div>
       </div >
       <!--标题-数据-->
-      <div style="display: flex;justify-content: center">
+      <div style="display: flex;justify-content: center;margin-top: 15px">
         <div style="display: flex;">
-          <p>{{title}}</p>
+          <h2>{{title}}</h2>
         </div>
-
       </div>
 
     </div>
@@ -37,7 +36,6 @@
         historyMsg: '',
         title:"",
         articleId:-1
-
       }
     },
     methods:{
@@ -57,7 +55,10 @@
         }).catch(err=>{
           console.log(err)
         })
-      }
+      },
+      goBack () {
+        this.$router.push('/Forum');
+      },
     },
     created () {
       this.getArticleDetail()

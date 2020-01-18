@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Base/Home.vue'
 import Login from '../views/Base/Login'
+import ArticleDetail from '../views/User/ArticleDetail.vue'
+import LikeDetail from '../views/User/LikeDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -18,6 +20,22 @@ const routes = [
       {
         path: '/roleManage',
         component: resolve => require(['../views/User/RoleManage.vue'], resolve)
+      },
+      {
+        path: '/userInfo',
+        component: resolve => require(['../views/User/UserInfo.vue'], resolve),
+        children: [
+          {
+            path: '/likeDetail',
+            name: 'like',
+            component: LikeDetail,
+          },
+          {
+            path: '/articleDetail',
+            name: 'article',
+            component: ArticleDetail,
+          },
+        ]
       },
       {
         path: '/foodNews',

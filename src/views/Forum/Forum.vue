@@ -92,18 +92,15 @@
           pageSize: 10,
           searchKey: '',
           }
-
       },
       methods: {
-        checkDetial (key)
-        {
+        checkDetial (key) {
           this.$router.push({
               path: '/ForumDetial',
               query: {
                       id:key
                   }
-            }
-          )
+            })
         },
         getSearchArticle(){
           this.pageNo = 1;
@@ -129,9 +126,6 @@
         },
         postForum(){
           this.$router.push('/WriteForum')
-        },
-        handleEdit(index, row) {
-          // console.log(index, row);
         },
         handleDelete(index, row) {
           // console.log(index, row);

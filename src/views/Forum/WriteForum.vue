@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div>
-      <div>
+      <div style="float: left;width: 100%">
+        <el-page-header @back="goBack"/>
+      </div>
+      <div style="padding-top: 50px">
         <p style="margin-bottom: 5px;">标题：</p>
         <el-input v-model="inputTitle" placeholder="请输入标题" style="width:50%"/>
       </div>
@@ -72,7 +75,8 @@
         disabled: false,
         articleTypeId: '',
         articleTypes: [],
-        dialogVisible: false
+        dialogVisible: false,
+        articleTypeName:''
       };
     },
     methods: {
@@ -111,7 +115,9 @@
             message: '已取消清除'
           })
         })
-
+      },
+      goBack () {
+        this.$router.push('/Forum');
       },
       release() {
         this.dialogVisible = true;

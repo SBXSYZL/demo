@@ -2,7 +2,6 @@
   <div class="container" style="height: 100%;position: absolute">
     <div>
       <el-button type="danger" @click="collectRecipe()">收藏</el-button>
-
     </div>
     <div style="height: auto">
       <p>食谱详情getRecipeDetail</p>

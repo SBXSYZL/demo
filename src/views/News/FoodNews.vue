@@ -5,69 +5,56 @@
         <h3>食品资讯</h3>
       </div>
       <div>
-        <el-button
-          type="primary"
-          icon="el-icon-edit"
-          style="float: right"
-          @click="writeIllustratedBook">添加资讯
-        </el-button>
+        <el-button type="primary" icon="el-icon-edit" style="float: right" @click="writeIllustratedBook">添加资讯</el-button>
       </div>
     </div>
 
     <div class="container">
       <div style="margin-bottom: 15px;">
-        <el-input
-          placeholder="请输入内容"
-          v-model="searchKey"
-          class="input-with-select"
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="getSearchNews"
-          />
-        </el-input>
+        <el-input placeholder="请输入内容" v-model="searchKey" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="getSearchNews"/></el-input>
       </div>
       <!--标签-->
       <div>
-        <el-table :data="items" style="width: 100%" @row-click.stop="itemClick">
+        <el-table
+          :data="items"
+          style="width: 100%"
+          @row-click="itemClick"
+        >
           <el-table-column style="width: 80%;position: absolute;">
             <template slot-scope="scope">
               <div style="height: 100px; margin: 15px;">
-                <div style="width: 100%; ">
-                  <h2>{{ scope.row.title }}</h2>
-                  <div style="margin-top:10px;">{{ scope.row.newsDesc }}</div>
-                  <div style="position: absolute;bottom: 0;">
-                    <p>{{ scope.row.releaseDate }}</p>
+
+                <div style="width: 100%; " >
+                  <h2>{{scope.row.title}}</h2>
+                  <div style="margin-top:10px;">{{scope.row.newsDesc}}</div>
+                  <div style="position: absolute;bottom: 0;" >
+                    <p>{{scope.row.releaseDate}} </p>
                   </div>
                 </div>
               </div>
             </template>
           </el-table-column>
+
           <el-table-column style="width: 180px" width="180px">
             <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="danger"
-                @click="deleteNews(scope.row)"
-              >删除
-              </el-button
-              >
+                @click.stop="deleteNews">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
+
         <!--         删除的弹框-->
         <el-dialog
           title="是否确定删除"
           :visible.sync="dialogVisible"
           width="30%"
-          :before-close="handleClose"
-        >
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false"
-            >确 定</el-button
-            >
+          :before-close="handleClose">
+          <span slot="footer" class="dialog-footer" v-model="title">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="delectNewsConfirm(items.row)">确 定</el-button>
           </span>
         </el-dialog>
       </div>
@@ -88,120 +75,55 @@
   </div>
 </template>
 <script>
+  import { dialog } from 'element-ui'
   export default {
     name: 'FoodNews',
-    data() {
+    data () {
       return {
         items: [],
         pageNo: 1,
         pageSize: 10,
         searchKey: '',
         dialogVisible: false,
+        title:''
       }
     },
     methods: {
-      itemClick(key) {
+      itemClick (obj) {
+        // this.$router.push('/Foodrecipedetails')
         this.$router.push({
-          path: '/newsDetails',
+          path: '/NewsDetails',
           query: {
-            id: key
+            id: obj.newsId
           }
         })
       },
-      handleSizeChange(val) {
+      handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      methods: {
-        itemClick(obj) {
-          // this.$router.push('/Foodrecipedetails')
-          this.$router.push({
-            path: '/NewsDetails',
-            query: {
-              id: obj.newsId
-            }
-          })
-        },
-        handleSizeChange(val) {
-          console.log(`每页 ${val} 条`)
-        },
-        handleCurrentChange(val) {
-          console.log(`当前页: ${val}`)
-        },
-        writeIllustratedBook() {
-          this.$router.push('/WriteNews')
-        },
-        searchNews() {
-          this.$router.push('')
-        },
-        handleClick() {
-        },
-        handleClose() {
-          this.dialogVisible = false;
-        },
-        deleteNews(row) {
-          this.dialogVisible = true;
-          this.items.splice(row, 1)
-        },
-
-        getNewsList() {
-          this.$axios.get('/api/user/getNewsList', {
-            params: {
-              pageNo: this.pageNo,
-              pageSize: this.pageSize
-            }
-          }).then(res => {
-            console.log(res)
-            this.items = res.data.data.list;
-          }).catch(err => {
-            console.log(err)
-          })
-        },
-        getSearchNews() {
-          this.pageNo = 1;
-          this.$axios.get('/api/admin/searchNews', {
-            params: {
-              pageNo: this.pageNo,
-              pageSize: this.pageSize,
-              searchKey: this.searchKey
-            }
-          }).then(res => {
-            console.log("res:")
-            console.log(res)
-            this.items = res.data.data.list;
-          }).catch(err => {
-            console.log(err)
-          })
-        },
-        handleSizeChange(val) {
-          this.pageSize = val;
-          this.getNewsList();
-        },
-        handleCurrentChange(val) {
-          this.pageNo = val;
-          this.getNewsList();
-        },
+      handleCurrentChange (val) {
+        console.log(`当前页: ${val}`)
       },
-      created() {
-        // this.$router.go(0);
-        this.getNewsList();
+      writeIllustratedBook () {
+        this.$router.push('/WriteNews')
       },
-      detail() {
-        this.$router.push('/newsdetails')
-
+      handleClick () {
       },
-      search() {
-        this.$router.push('')
+      handleClose () {
+        this.dialogVisible = false;
       },
-      handleClick() {
+      deleteNews (row) {
+        this.dialogVisible = true;
+        // this.items.splice(row, 1)
       },
-      deleteRow(val, data) {
+      delectNewsConfirm(row){
+        this.items.splice(row,1)
       },
-
-      getNewsList() {
+      getNewsList () {
         this.$axios.get('/api/user/getNewsList', {
           params: {
-            pageNo: 1,
-            pageSize: 10
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
           }
         }).then(res => {
           console.log(res)
@@ -211,25 +133,34 @@
         })
       },
       getSearchNews() {
-        this.$axios.get('/api/user/searchNews', {
+        this.pageNo = 1;
+        this.$axios.get('/api/admin/SearchNews', {
           params: {
-            pageNo: 1,
-            pageSize: 10,
-            searchKey: 1
+            pageNo: this.pageNo,
+            pageSize: this.pageSize,
+            searchKey: this.searchKey
           }
         }).then(res => {
+          console.log("res:")
           console.log(res)
-          this.input = res.data.data.list;
+          this.items = res.data.data.list;
         }).catch(err => {
           console.log(err)
         })
       },
-    },
-    created() {
-      this.getNewsList();
-      this.getSearchNews();
+      handleSizeChange (val) {
+        this.pageSize = val;
+        this.getNewsList();
+      },
+      handleCurrentChange (val) {
+        this.pageNo = val;
+        this.getNewsList();
+      },
     },
 
+    created () {
+      this.getNewsList();
+    },
   }
 
 </script>
@@ -253,7 +184,6 @@
     width: auto;
     height: 50px;
   }
-
   .time {
     font-size: 13px;
     color: #999;

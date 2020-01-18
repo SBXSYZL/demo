@@ -21,10 +21,10 @@
       <div>
         <el-table
           :data="items"
-          style="width: 100%">
+          style="width: 100%" @row-click="itemClick">
           <el-table-column style="width: 80%;position: absolute;">
             <template slot-scope="scope">
-              <div style="height: 200px; margin: 15px;" @click="itemClick">
+              <div style="height: 200px; margin: 15px;">
                 <div style="width: 100%; ">
                   <h1 >{{scope.row.title}}</h1>
                   <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
@@ -51,13 +51,14 @@
           title="是否确定删除"
           :visible.sync="dialogVisible"
           width="30%"
-          :before-close="handleClose">
-              <span slot="footer" class="dialog-footer" v-model="title">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-               </span>
+          :before-close="handleClose"
+        >
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定
+            </el-button>
+          </span>
         </el-dialog>
-
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"

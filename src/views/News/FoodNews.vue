@@ -26,7 +26,7 @@
             <template slot-scope="scope" >
               <div style="height: 100px; margin: 15px;">
                 <div style="width: 100%; ">
-                  <h2 >{{scope.row.title}}</h2>
+                  <h2>{{scope.row.title}}</h2>
                   <div style="margin-top:10px;">{{scope.row.newsDesc}}</div>
                   <div style="position: absolute;bottom: 0;" >
                     <p>{{scope.row.releaseDate}} </p>
@@ -42,10 +42,22 @@
               <el-button
                 size="mini"
                 type="danger"
-                @click="deletenew(scope.row)">删除</el-button>
+                @click="deleteNews(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
+<!--         删除的弹框-->
+        <el-dialog
+          title="是否确定删除"
+          :visible.sync="dialogVisible"
+          width="30%"
+          :before-close="handleClose">
+              <span slot="footer" class="dialog-footer" v-model="title">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="deleteNewsConfirm">确 定</el-button>
+               </span>
+        </el-dialog>
+
       </div>
     </div>
 <!--    分页-->
@@ -99,11 +111,56 @@
       },
       handleClick() {
       },
-      deletenew(row) {
+      handleClose() {
+        this.dialogVisible = false;
+      },
+      deleteNews(row) {
+        this.dialogVisible = true;
         if(window.confirm("是否确定删除？")) {
           this.items.splice(row, 1)
         }
       },
+      deleteNewsConfirm() {
+        console.log(123)
+        if (this.title != null ) {
+          this.$confirm('确定上删除当前内容？', '验证', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'info'
+          }).then(() => {
+            let params = new URLSearchParams();
+            params.append("title", this.inputTitle);
+            params.append("newsDesc", this.inputDesc);
+            params.append("content", this.content)
+            this.$axios({
+              method: 'post',
+              url: '/api/admin/FoodNews',
+              data: params
+            }).then(res => {
+              console.log(res);
+              if (res.data.status === 'success' && res.data.data === 'success') {
+                this.$message({
+                  type: 'success',
+                  message: '上传成功!'
+                });
+                this.$router.push('/FoodNews')
+              } else {
+                this.$message.error(res.data.data.errMsg);
+              }
+            }).catch(err => {
+              this.$message.error('不知道啥原因上传失败...');
+            })
+
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消上传'
+            })
+          });
+          this.dialogVisible = false;
+        }
+      },
+
 
       getNewsList() {
 

@@ -23,7 +23,16 @@
       <el-button type="danger" @click="clear">清空</el-button>
       <el-button type="primary" @click="release">发布</el-button>
     </div>
-
+    <el-dialog
+      title="是否发布"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <span slot="footer" class="dialog-footer" v-model="title">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="releaseConfirm">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -39,17 +48,11 @@
         inputDesc: '',
         content: '',
         disabled: false,
-        typeId: '',
+        title: '',
         dialogVisible: false
       }
     },
     methods: {
-      // 鼠标单击的事件
-      // onClick (e, editor) {
-      //   console.log('Element clicked')
-      //   console.log(e)
-      //   console.log(editor)
-      // },
       //刷新
       refresh() {
         this.$router.go(0)
@@ -80,7 +83,7 @@
       },
       releaseConfirm() {
         console.log(123)
-        if (this.typeId != null && this.typeId !== '') {
+        if (this.title != null ) {
           this.$confirm('确定上传当前内容？', '验证', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -128,7 +131,7 @@
       writeNews() {
         this.$axios.get('/api/admin/writeNews', {
           params: {
-            recipeId: this.recipedetail.recipeId
+            newsId: this.NewsDetail.newsId
           }
         }).then(res => {
           let obj = res.data.data
@@ -141,9 +144,9 @@
         this.dialogVisible = false;
       }
     },
-    // created() {
-    //   this.getRecipeTypes();
-    // }
+    created() {
+     this.writeNews();
+    }
   }
 </script>
 <style scoped>

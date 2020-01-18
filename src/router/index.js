@@ -42,6 +42,10 @@ const routes = [
         component: resolve => require(['../views/News/FoodNews.vue'], resolve)
       },
       {
+        path:'/WriteNews',
+        component:resolve => require(['../views/News/WriteNews'],resolve)
+      },
+      {
         path: '/writeRecipe',
         component: resolve => require(['../views/Recipe/WriteRecipe.vue'], resolve)
       },
@@ -77,6 +81,10 @@ const routes = [
       {
         path: '/ForumDetial',
         component: resolve => require(['../views/Forum/ForumDetial.vue'], resolve)
+      },
+      {
+        path: '/WriteForum',
+        component: resolve => require(['../views/Forum/WriteForum.vue'], resolve)
       },
       {
         path: '/',

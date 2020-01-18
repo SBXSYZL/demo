@@ -6,6 +6,8 @@ module.exports = {
     hot: true, //热加载
     host: 'localhost', //ip地址
     port: 8888, //端口
+    https: false,
+    hotOnly: false,
     proxy: {
       '/api': {
         target: 'http://39.98.110.191:8088', // 域名 这会告诉开发服务器将任何未知请求 (没有匹配到静态文件的请求) 代理到http://localhost:8080

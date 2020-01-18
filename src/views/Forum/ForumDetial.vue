@@ -1,17 +1,25 @@
 <template>
   <div>
-<!--标题-数据-->
     <div class="container">
-      <div style="width: 100%">
-        <!--按钮-->
-        <div style="display: flex;justify-content: flex-start">
-          <el-button type="danger"></el-button>
+      <!--按钮-->
+      <div style="width: 100%;display: flex;">
+        <div style="display: flex;justify-content: flex-start;width: 90%">
+          <el-button type="danger" round>回退</el-button>
         </div>
-        <div style="display: flex;justify-content: flex-end">
-          <el-button type="danger"></el-button>
+        <div style="display: flex;justify-content: space-between;min-width:10%;">
+          <el-button type="danger" round>删除</el-button>
+          <el-button type="danger" round>修改</el-button>
+          <el-button type="danger" round>重新审核</el-button>
         </div>
+      </div >
+      <!--标题-数据-->
+      <div style="display: flex;justify-content: center">
+        <div style="display: flex;">
+          <h>{{title}}</h>
+        </div>
+
       </div>
-      <h>{{title}}</h>
+
     </div>
 <!--正文-->
     <div class="container" v-html="historyMsg"/>

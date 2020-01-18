@@ -1,24 +1,27 @@
 <template>
   <div class="container">
     <div>
-      <div style="margin: 10px;">
+      <div>
         <p style="margin-bottom: 5px;">标题：</p>
-        <el-input v-model="inputTitle" placeholder="请输入标题"></el-input>
+        <el-input v-model="inputTitle" placeholder="请输入标题" style="width:50%"/>
       </div>
-
-      <div style="margin: 10px">
-        <p style="margin-bottom: 5px;">摘要：</p>
-        <el-input type="textarea" :rows="4" v-model="inputDesc" placeholder="请输入摘要"></el-input>
+      <div style="margin-top: 10px">
+        <p style="margin-bottom: 5px;">事件所在地区：</p>
+        <el-cascader
+          :options="options2"
+          @active-item-change="handleItemChange"
+          :props="props"
+          v-model="getArea"
+        />
       </div>
-
 
     </div>
-    <el-tag type="warning">编辑框支持伸缩哦，出现问题请刷新再尝试！</el-tag>
+    <el-tag type="warning" style="margin-top: 10px">编辑框支持伸缩哦，出现问题请刷新再尝试！</el-tag>
     <TinymceEditor ref="editor"
-                   v-model="content"
+                   v-model="article"
                    :disabled="disabled">
     </TinymceEditor>
-    <div style="text-align: center;margin-top: 20px">
+    <div style="text-align: center;margin-top: 20px;">
       <el-button @click="refresh">刷新</el-button>
       <el-button type="danger" @click="clear">清空</el-button>
       <el-button type="primary" @click="release">发布</el-button>
@@ -27,12 +30,12 @@
 
     <!--类型弹窗-->
     <el-dialog
-      title="请选择菜谱类型"
+      title="请选择帖子类型"
       :visible.sync="dialogVisible"
       width="30%"
       :before-close="handleClose">
-      <el-radio-group v-model="typeId" v-for="typeItem in recipeTypes" :key="typeItem.recipeTypeId">
-        <el-radio-button :label="typeItem.recipeTypeId">{{typeItem.recipeTypeName}}</el-radio-button>
+      <el-radio-group v-model="articleTypeId" v-for="typeItem in articleTypes" :key="typeItem.articleTypeId">
+        <el-radio-button :label="typeItem.articleTypeId">{{typeItem.articleTypeName}}</el-radio-button>
       </el-radio-group>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
@@ -48,26 +51,45 @@
   import QS from 'qs'
 
   export default {
-    name: 'WriteRecipe',
+    name: 'WriteForum',
     components: {TinymceEditor},
     data() {
       return {
+        options2: [{
+          label: '江苏',
+          cities: []
+        }, {
+          label: '浙江',
+          cities: []
+        }],
+        props: {
+          value: 'label',
+          children: 'cities'
+        },
         inputTitle: '',
-        inputDesc: '',
-        content: '',
+        article: '',
+        getArea:'',
         disabled: false,
-        typeId: '',
-        recipeTypes: [],
+        articleTypeId: '',
+        articleTypes: [],
         dialogVisible: false
-      }
+      };
     },
     methods: {
-      // 鼠标单击的事件
-      // onClick (e, editor) {
-      //   console.log('Element clicked')
-      //   console.log(e)
-      //   console.log(editor)
-      // },
+      handleItemChange(val) {
+        console.log('active item:', val);
+        setTimeout(_ => {
+          if (val.indexOf('江苏') > -1 && !this.options2[0].cities.length) {
+            this.options2[0].cities = [{
+              label: '南京'
+            }];
+          } else if (val.indexOf('浙江') > -1 && !this.options2[1].cities.length) {
+            this.options2[1].cities = [{
+              label: '杭州'
+            }];
+          }
+        }, 300);
+      },
       refresh() {
         this.$router.go(0)
       },
@@ -96,7 +118,7 @@
       },
       releaseConfirm() {
         console.log(123)
-        if (this.typeId != null && this.typeId !== '') {
+        if (this.articleTypeId != null && this.articleTypeId !== '') {
           this.$confirm('确定上传当前内容？', '验证', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -104,12 +126,12 @@
           }).then(() => {
             let params = new URLSearchParams();
             params.append("title", this.inputTitle);
-            params.append("recipeDesc", this.inputDesc);
-            params.append("recipeTypeId", this.typeId);
-            params.append("content", this.content)
+            params.append("postArea", this.getArea);
+            params.append("articleTypeId", this.articleTypeId);
+            params.append("article", this.article)
             this.$axios({
               method: 'post',
-              url: '/api/admin/writeRecipe',
+              url: '/api/admin/writeArticle',
               data: params
             }).then(res => {
               console.log(res);
@@ -118,12 +140,12 @@
                   type: 'success',
                   message: '上传成功!'
                 });
-                this.$router.push('/Recipe')
+                this.$router.push('/Forum')
               } else {
                 this.$message.error(res.data.data.errMsg);
               }
             }).catch(err => {
-              this.$message.error('不知道啥原因上传失败...');
+              this.$message.error('上传失败');
             })
 
           }).catch(() => {
@@ -135,31 +157,32 @@
           this.dialogVisible = false;
         }
       },
-      getRecipeTypes() {
-        this.$axios.get('/api/admin/getRecipeTypes')
+      getArticleType() {
+        this.$axios.get('/api/admin/getArticleType')
           .then(res => {
             console.log(res);
-            this.recipeTypes = res.data.data;
+            this.articleTypes = res.data.data;
           })
       },
-      writeRecipe() {
-        this.$axios.get('/api/admin/writeRecipe', {
-          params: {
-            recipeId: this.recipedetail.recipeId
-          }
-        }).then(res => {
-          let obj = res.data.data
-
-        }).catch(err => {
-          console.log(err)
-        })
-      },
+      // writeArticle() {
+      //   this.$axios.get('/api/admin/writeArticle', {
+      //     params: {
+      //       recipeId: this.recipedetail.recipeId
+      //     }
+      //   }).then(res => {
+      //     let obj = res.data.data
+      //
+      //   }).catch(err => {
+      //     console.log(err)
+      //   })
+      // },
       handleClose() {
         this.dialogVisible = false;
       }
     },
     created() {
-      this.getRecipeTypes();
+      this.getArticleType();
+      // this.writeArticle();
     }
   }
 </script>

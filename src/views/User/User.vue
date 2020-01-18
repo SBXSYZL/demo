@@ -13,7 +13,13 @@
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
-      <el-table :data="tableData" :height="height" border style="width: 100%">
+      <el-table
+        :data="tableData"
+        :height="height"
+        border
+        style="width: 100%"
+        @row-click="infoClick"
+      >
         <el-table-column prop="id" label="用户ID" width="180">
         </el-table-column>
         <el-table-column prop="name" label="昵称" width="180">
@@ -36,12 +42,11 @@
   </div>
 </template>
 <script>
-
 export default {
   data () {
     return {
       turn: true,
-      height: document.body.scrollHeight - 450,
+      height: document.body.clientHeight - 450 <= 100 ? 100 : document.body.clientHeight - 450,
       tableData: [{
         id: '1',
         name: '王小虎',
@@ -125,14 +130,35 @@ export default {
   mounted () {
     window.onresize = () => {
       return (() => {
-        this.height = document.body.scrollHeight - 450;
-        console.log(this.height);
+        if (document.body.scrollHeight - 450 >= 100) {
+          this.height = document.body.scrollHeight - 450;
+
+        }
+        else {
+          this.height = 100;
+        }
       })()
+    }
+  },
+  watch: {
+    height (val) {
+      if (!this.timer) {
+        this.height = val
+        this.timer = true
+        let that = this
+        setTimeout(function () {
+          that.timer = false
+        }, 400)
+      }
     }
   },
   methods: {
     roleClick () {
+      this.$destroy();
       this.$router.push('/roleManage');
+    },
+    infoClick (row, event, column) {
+      this.$router.push('/userInfo');
     },
   }
 }

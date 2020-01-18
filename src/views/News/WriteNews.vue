@@ -23,32 +23,24 @@
       <el-button type="danger" @click="clear">清空</el-button>
       <el-button type="primary" @click="release">发布</el-button>
     </div>
-
-
-    <!--类型弹窗-->
     <el-dialog
-      title="请选择菜谱类型"
+      title="是否发布"
       :visible.sync="dialogVisible"
       width="30%"
       :before-close="handleClose">
-      <el-radio-group v-model="typeId" v-for="typeItem in recipeTypes" :key="typeItem.recipeTypeId">
-        <el-radio-button :label="typeItem.recipeTypeId">{{typeItem.recipeTypeName}}</el-radio-button>
-      </el-radio-group>
-      <span slot="footer" class="dialog-footer">
+      <span slot="footer" class="dialog-footer" v-model="title">
     <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="releaseConfirm">确 定</el-button>
   </span>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
   import TinymceEditor from '../../components/Tinymce-editor'
-  import QS from 'qs'
 
   export default {
-    name: 'WriteRecipe',
+        name: "WriteNews",
     components: {TinymceEditor},
     data() {
       return {
@@ -56,18 +48,12 @@
         inputDesc: '',
         content: '',
         disabled: false,
-        typeId: '',
-        recipeTypes: [],
+        title: '',
         dialogVisible: false
       }
     },
     methods: {
-      // 鼠标单击的事件
-      // onClick (e, editor) {
-      //   console.log('Element clicked')
-      //   console.log(e)
-      //   console.log(editor)
-      // },
+      //刷新
       refresh() {
         this.$router.go(0)
       },
@@ -91,12 +77,13 @@
         })
 
       },
+      //发布
       release() {
         this.dialogVisible = true;
       },
       releaseConfirm() {
         console.log(123)
-        if (this.typeId != null && this.typeId !== '') {
+        if (this.title != null ) {
           this.$confirm('确定上传当前内容？', '验证', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -104,12 +91,11 @@
           }).then(() => {
             let params = new URLSearchParams();
             params.append("title", this.inputTitle);
-            params.append("recipeDesc", this.inputDesc);
-            params.append("recipeTypeId", this.typeId);
+            params.append("newsDesc", this.inputDesc);
             params.append("content", this.content)
             this.$axios({
               method: 'post',
-              url: '/api/admin/writeRecipe',
+              url: '/api/admin/writeNews',
               data: params
             }).then(res => {
               console.log(res);
@@ -118,7 +104,7 @@
                   type: 'success',
                   message: '上传成功!'
                 });
-                this.$router.push('/Recipe')
+                this.$router.push('/FoodNews')
               } else {
                 this.$message.error(res.data.data.errMsg);
               }
@@ -135,17 +121,17 @@
           this.dialogVisible = false;
         }
       },
-      getRecipeTypes() {
-        this.$axios.get('/api/admin/getRecipeTypes')
-          .then(res => {
-            console.log(res);
-            this.recipeTypes = res.data.data;
-          })
-      },
-      writeRecipe() {
-        this.$axios.get('/api/admin/writeRecipe', {
+      // getRecipeTypes() {
+      //   this.$axios.get('/api/admin/getRecipeTypes')
+      //     .then(res => {
+      //       console.log(res);
+      //       this.recipeTypes = res.data.data;
+      //     })
+      // },
+      writeNews() {
+        this.$axios.get('/api/admin/writeNews', {
           params: {
-            recipeId: this.recipedetail.recipeId
+            newsId: this.NewsDetail.newsId
           }
         }).then(res => {
           let obj = res.data.data
@@ -159,11 +145,10 @@
       }
     },
     created() {
-      this.getRecipeTypes();
+     this.writeNews();
     }
   }
 </script>
-
 <style scoped>
 
 </style>

@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <div style="float: top">
-    <div style="float: left">
-      <button  @click="go" style="width: 80px;height:40px;background:lightskyblue">返回</button>
-    </div>
-    <div style="float: right">
-      <button style="float: right;width: 80px;height:40px;background:lightskyblue" @click="Delect">删除</button>
-      <button  style="float: right;width: 80px;height:40px;background:lightskyblue" @click="writeIllustratedBook">修改</button>
-    </div>
+      <div style="float: left">
+        <button  @click="go" style="width: 80px;height:40px;background:lightskyblue">返回</button>
+      </div>
+      <div style="float: right">
+        <button style="float: right;width: 80px;height:40px;background:lightskyblue" @click="Delect">删除</button>
+        <button  style="float: right;width: 80px;height:40px;background:lightskyblue" @click="writeIllustratedBook">修改</button>
+      </div>
     </div>
     <div class="container" style="float: bottom" >
      <div class="top">
@@ -39,7 +39,6 @@ export default {
   },
   methods: {
     go () {
-      let id = this.$route.query.id
       this.$router.push('/foodNews')
     },
     writeIllustratedBook () {
@@ -47,18 +46,23 @@ export default {
     },
     Delect () {},
     getNewsDetail () {
+      let id=this.$route.query.id;
       this.$axios.get('/api/user/getNewsDetail', {
         params: {
-          newsId: 1
+          newsId: id
         }
       }).then(res => {
-        let obj = res.data.data
-        this.news.newsId = obj.newsId
-        this.news.releaseDate = obj.releaseDate
-        this.news.viewCnt = obj.viewCnt
-        this.news.title = obj.title
-        this.news.newsDesc = obj.newsDesc
-        this.news.content = obj.content
+        console.log(res);
+        if(res.data.status==='success'){
+          let obj = res.data.data;
+          this.news.newsId = obj.newsId;
+          this.news.releaseDate = obj.releaseDate;
+          this.news.viewCnt = obj.viewCnt;
+          this.news.title = obj.title;
+          this.news.newsDesc = obj.newsDesc;
+          this.news.content = obj.content;
+        }
+
       }).catch(err => {
         console.log(err)
       })
@@ -68,7 +72,8 @@ export default {
   created () {
     this.getNewsDetail()
 
-  }
+  },
+
 }
 </script>
 

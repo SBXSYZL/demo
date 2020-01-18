@@ -1,15 +1,23 @@
 <template>
-  <div class="container" style="height: 100%">
+  <div class="container" style="height: 100%;position: absolute">
     <div>
       <el-button type="danger" @click="collectRecipe()">收藏</el-button>
 
     </div>
     <div style="height: auto">
       <p>食谱详情getRecipeDetail</p>
-      {{recipedetail.recipeId}}
-      <div>{{recipedetail.postUserId}}</div>
-      <div>{{recipedetail.recipeDesc}}</div>
-      <div>{{recipedetail.recipeDate}}</div>
+      <div class="recipeId">
+        <p class="p1">recipeId:{{recipedetail.recipeId}}</p>
+        <p class="p2">{{recipedetail.recipeDate}}</p>
+      </div>
+
+      <div class="postuserid">
+        <p class="p1">postUserId:{{recipedetail.postUserId}}</p>
+
+      </div>
+      <div>
+        <p class="p1">recipeDesc:{{recipedetail.recipeDesc}}</p>
+      </div>
       <div>{{recipedetail.recipeTypeId}}</div>
       <div>{{recipedetail.title}}</div>
       <div v-html="recipedetail.recipeContent"></div>
@@ -17,7 +25,7 @@
       <div>{{recipedetail.viewCnt}}</div>
 
     </div>
-    <div style="float: right;margin:20px;">
+    <div style="float: right;margin:20px;bottom: 0">
       <el-button type="danger" @click="evalRecipe(1)">喜欢</el-button>
       <el-button type="danger" @click="evalRecipe(0)">不喜欢</el-button>
     </div>
@@ -115,5 +123,20 @@
 </script>
 
 <style scoped>
+  .recipeId{
+    display: flex;
 
+  }
+  .p1{
+       size: 40px;
+       color: #1a1a1a;
+       font-weight: bold;
+
+     }
+  .p2{
+    size: 40px;
+    color: #1a1a1a;
+    font-weight: bold;
+    margin-left: 1000px;
+  }
 </style>

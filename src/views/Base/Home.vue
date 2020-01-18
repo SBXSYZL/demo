@@ -8,9 +8,9 @@
       <div class="content">
         <transition name="move"
                     mode="out-in">
-          <keep-alive>
-            <router-view></router-view>
-          </keep-alive>
+
+          <router-view></router-view>
+ 
         </transition>
       </div>
     </div>
@@ -25,18 +25,17 @@
 
   export default {
     name: 'home',
-    components: { Header, Sidebar },
-    data () {
+    components: {Header, Sidebar},
+    data() {
       return {
         collapse: false,
         role: '',
         admin: sessionStorage.getItem('admin')
       }
     },
-    methods:{
-    },
+    methods: {},
 
-    created () {
+    created() {
       bus.$on('collapse', msg => {
         this.collapse = msg
       })

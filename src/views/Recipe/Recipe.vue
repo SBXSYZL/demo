@@ -5,118 +5,161 @@
         <h1 style="color: white;">食谱</h1>
       </div>
       <div>
-        <el-button type="primary" icon="el-icon-edit" @click="writerecipeBook" style="background-color: white;color: #000000;border-radius: 70px; border-color: white;">添加食谱</el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="writerecipeBook"
+                   style="background-color: white;color: #000000;border-radius: 70px; border-color: white;">添加食谱
+        </el-button>
       </div>
 
     </div>
     <div class="container" style="">
       <div style="margin-bottom: 15px;">
-        <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入内容" v-model="searchKey" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="getsearchRecipe"></el-button>
         </el-input>
       </div>
       <!--标签-->
       <div>
-    <el-table
-      :data="items"
-      style="width: 100%">
-      <el-table-column style="width: 80%;position: absolute;">
-        <template slot-scope="scope" >
-          <div style="height: 200px; margin: 15px;">
-            <div style="width: 100%; ">
-              <h1 style="align-items: left;">{{scope.row.title}}</h1>
-              <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
-              <div style="position: absolute;bottom: 0;" >
-                 <p>{{scope.row.recipeDate}} </p>
+        <el-table
+          :data="items"
+          style="width: 100%" @row-click="itemClick">
+          <el-table-column style="width: 80%;position: absolute;">
+            <template slot-scope="scope">
+              <div style="height: 200px; margin: 15px;">
+                <div style="width: 100%; ">
+                  <h1>{{scope.row.title}}</h1>
+                  <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
+                  <div style="position: absolute;bottom: 0;">
+                    <p>{{scope.row.recipeDate}} </p>
+                  </div>
+
+
+                </div>
               </div>
-
-
-            </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column style="width: 180px" width="180px">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
-  </el-table>
+            </template>
+          </el-table-column>
+          <el-table-column style="width: 180px" width="180px">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="handleEdit(scope.$index, scope.row)">编辑
+              </el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)">删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pageNo"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
       </div>
     </div>
+
+
   </div>
 </template>
 
 <script>
-export default {
-  name: 'Recipe',
-  data () {
-    return {
-      items: [],
-      input5: '',
-      pageNo: 1,
-      pageSize: 10
+  export default {
+    name: 'Recipe',
+    data() {
+      return {
+        items: [],
+        searchKey: '',
+        pageNo: 1,
+        pageSize: 10,
+        total: 0
+      }
+    },
+    methods: {
+      itemClick(obj) {
+        console.log(obj)
+        // this.$router.push('/Foodrecipedetails')
+        this.$router.push({
+          path: '/Foodrecipedetails',
+          query: {
+            id: obj.recipeId
+          }
+        })
+      },
+      itemshanchuClick(key) {
+        alert('删除食谱')
+      },
+      handleClick(tab, event) {
+        console.log(tab, event)
+      },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`)
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`)
+      },
+      writerecipeBook() {
+        this.$router.push('/WriteRecipe')
+      },
+      getRecipeList() {
+        this.$axios.get('/api/admin/getRecipeList', {
+          params: {
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
+          }
+        }).then(res => {
+          console.log(res)
+          this.items = res.data.data.list;
+          this.total = res.data.data.pageRows
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      getsearchRecipe() {
+        this.pageNo = 1;
+        this.$axios.get('/api/admin/searchRecipe', {
+          params: {
+            pageNo: this.pageNo,
+            pageSize: this.pageSize,
+            searchKey: this.searchKey
+          }
+        }).then(res => {
+          console.log("res:")
+          console.log(res)
+          this.items = res.data.data.list;
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      handleSizeChange(val) {
+        this.pageSize = val;
+        this.getRecipeList();
+      },
+      handleCurrentChange(val) {
+        this.pageNo=val;
+        this.getRecipeList();
+      }
+    },
+    created() {
+      this.getRecipeList()
     }
-  },
-  methods: {
-    itemClick (key) {
-      console.log(key)
-      // this.$router.push('/Foodrecipedetails')
-      this.$router.push({
-        path: '/Foodrecipedetails',
-        query: {
-          id: key
-        }
-      })
-    },
-    itemshanchuClick (key) {
-      alert('删除食谱')
-    },
-    handleClick (tab, event) {
-      console.log(tab, event)
-    },
-    handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
-    },
-    handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
-    },
-    writerecipeBook () {
-      this.$router.push('/WriteRecipe')
-    },
-    getRecipeList () {
-      this.$axios.get('/api/user/getRecipeList', {
-        params: {
-          pageNo: 1,
-          pageSize: 10
-        }
-      }).then(res => {
-        console.log(res)
-        this.items = res.data.data.list
-      }).catch(err => {
-        console.log(err)
-      })
-    }
-  },
-  created () {
-    this.getRecipeList()
   }
-}
 </script>
 
 <style scoped>
-  .main{
+  .main {
     background-color: #00D1B2;
   }
+
   .time {
     font-size: 13px;
     color: #999;
   }
+
   .bottom {
     margin-top: 13px;
     line-height: 12px;
@@ -124,21 +167,25 @@ export default {
 
   .button {
     display: flex;
-    margin:50px
+    margin: 50px
   }
-  .rightcontent{
+
+  .rightcontent {
     background-color: #F2F2F2;
   }
+
   .image {
     width: 100%;
     height: 60%;
 
   }
-  .p1{
+
+  .p1 {
     font-size: 14px;
     color: #666666;
     padding: 2px;
   }
+
   .clearfix:before,
   .clearfix:after {
     display: table;

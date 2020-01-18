@@ -24,22 +24,6 @@
       <el-button type="primary" @click="release">发布</el-button>
     </div>
 
-
-    <!--类型弹窗-->
-<!--    <el-dialog-->
-<!--      title="请选择菜谱类型"-->
-<!--      :visible.sync="dialogVisible"-->
-<!--      width="30%"-->
-<!--      :before-close="handleClose">-->
-<!--      <el-radio-group v-model="typeId" v-for="typeItem in recipeTypes" :key="typeItem.recipeTypeId">-->
-<!--        <el-radio-button :label="typeItem.recipeTypeId">{{typeItem.recipeTypeName}}</el-radio-button>-->
-<!--      </el-radio-group>-->
-<!--      <span slot="footer" class="dialog-footer">-->
-<!--    <el-button @click="dialogVisible = false">取 消</el-button>-->77
-<!--    <el-button type="primary" @click="releaseConfirm">确 定</el-button>-->
-<!--  </span>-->
-<!--    </el-dialog>-->
-
   </div>
 </template>
 
@@ -56,7 +40,6 @@
         content: '',
         disabled: false,
         typeId: '',
-        recipeTypes: [],
         dialogVisible: false
       }
     },
@@ -67,6 +50,7 @@
       //   console.log(e)
       //   console.log(editor)
       // },
+      //刷新
       refresh() {
         this.$router.go(0)
       },
@@ -90,6 +74,7 @@
         })
 
       },
+      //发布
       release() {
         this.dialogVisible = true;
       },
@@ -103,12 +88,11 @@
           }).then(() => {
             let params = new URLSearchParams();
             params.append("title", this.inputTitle);
-            params.append("recipeDesc", this.inputDesc);
-            params.append("recipeTypeId", this.typeId);
+            params.append("newsDesc", this.inputDesc);
             params.append("content", this.content)
             this.$axios({
               method: 'post',
-              url: '/api/admin/writeRecipe',
+              url: '/api/admin/writeNews',
               data: params
             }).then(res => {
               console.log(res);
@@ -117,7 +101,7 @@
                   type: 'success',
                   message: '上传成功!'
                 });
-                this.$router.push('/Recipe')
+                this.$router.push('/FoodNews')
               } else {
                 this.$message.error(res.data.data.errMsg);
               }
@@ -134,15 +118,15 @@
           this.dialogVisible = false;
         }
       },
-      getRecipeTypes() {
-        this.$axios.get('/api/admin/getRecipeTypes')
-          .then(res => {
-            console.log(res);
-            this.recipeTypes = res.data.data;
-          })
-      },
-      writeRecipe() {
-        this.$axios.get('/api/admin/writeRecipe', {
+      // getRecipeTypes() {
+      //   this.$axios.get('/api/admin/getRecipeTypes')
+      //     .then(res => {
+      //       console.log(res);
+      //       this.recipeTypes = res.data.data;
+      //     })
+      // },
+      writeNews() {
+        this.$axios.get('/api/admin/writeNews', {
           params: {
             recipeId: this.recipedetail.recipeId
           }
@@ -157,14 +141,11 @@
         this.dialogVisible = false;
       }
     },
-    created() {
-      this.getRecipeTypes();
-    }
+    // created() {
+    //   this.getRecipeTypes();
+    // }
   }
 </script>
-    }
-</script>
-
 <style scoped>
 
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div class="container" style="height: 100%;position: absolute">
     <div>
+      <el-page-header @back="goBack"/>
       <el-button type="danger" @click="collectRecipe()">收藏</el-button>
     </div>
     <div style="height: auto">
@@ -51,6 +52,9 @@
     },
 
     methods: {
+      goBack () {
+        this.$router.push('/Recipe');
+      },
       getRecipeDetail() {
         let id = this.$route.query.id;
         console.log(id)

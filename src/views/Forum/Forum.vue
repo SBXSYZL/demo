@@ -15,7 +15,7 @@
                   <div class="body">
                     <div class="body-l">
                      <h2>{{item.title}}</h2>
-                     <span v-html=item.content style="height: 100px"></span>
+                     <span v-html=item.content style="height: 100px"/>
                     </div>
                     <div class="body-r">
                       <el-button type="danger">重审</el-button>

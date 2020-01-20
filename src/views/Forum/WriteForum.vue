@@ -41,17 +41,16 @@
         <el-radio-button :label="typeItem.articleTypeId">{{typeItem.articleTypeName}}</el-radio-button>
       </el-radio-group>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="releaseConfirm">确 定</el-button>
-  </span>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="releaseConfirm">确 定</el-button>
+      </span>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
   import TinymceEditor from '../../components/Tinymce-editor'
-  import QS from 'qs'
+  import VDistpicker from 'v-distpicker'
 
   export default {
     name: 'WriteForum',

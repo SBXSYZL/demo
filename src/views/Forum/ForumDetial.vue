@@ -6,7 +6,7 @@
         <div style="float: left;width: 90%">
           <el-page-header @back="goBack"/>
         </div>
-        <div style="display: flex;justify-content: space-between;min-width:10%;">
+        <div style="display: flex;justify-content: space-between;min-width:10px;">
           <el-button type="danger" round>删除</el-button>
           <el-button type="danger" round>修改</el-button>
           <el-button type="danger" round>重新审核</el-button>

@@ -4,10 +4,9 @@
       <div style="width: 90%">
         <h3>用户管理</h3>
       </div>
-    </div>
-    <div v-if="turn" class="container">
       <el-button type="primary" round @click="roleClick">权限管理</el-button>
-      <br /><br />
+    </div>
+    <div class="container">
       <div style="margin-bottom: 15px;">
         <el-input placeholder="请输入内容" class="input-with-select">
           <el-button slot="append" icon="el-icon-search"></el-button>
@@ -31,7 +30,7 @@
         </el-table-column>
         <el-table-column prop="credibility" label="信誉度"> </el-table-column>
       </el-table>
-      <br /><br />
+      <br />
       <el-pagination
         background
         layout="total, ->, prev, pager, next, jumper"
@@ -45,8 +44,7 @@
 export default {
   data () {
     return {
-      turn: true,
-      height: document.body.clientHeight - 450 <= 100 ? 100 : document.body.clientHeight - 450,
+      height: document.body.clientHeight - 400 <= 100 ? 100 : document.body.clientHeight - 400,
       tableData: [{
         id: '1',
         name: '王小虎',
@@ -130,8 +128,8 @@ export default {
   mounted () {
     window.onresize = () => {
       return (() => {
-        if (document.body.scrollHeight - 450 >= 100) {
-          this.height = document.body.scrollHeight - 450;
+        if (document.body.scrollHeight - 400 >= 100) {
+          this.height = document.body.scrollHeight - 400;
 
         }
         else {

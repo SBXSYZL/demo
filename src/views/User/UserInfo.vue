@@ -6,7 +6,7 @@
 
     <div class="container nopadding">
       <el-container>
-        <el-aside width="400px">
+        <el-aside width="380px">
           <el-card class="box-card container" shadow="hover">
             <div
               class="el-card__body imglayout"

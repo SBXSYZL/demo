@@ -11,14 +11,15 @@
 
     </div>
     <div class="container">
+      <!--搜索框-->
       <div style="margin-bottom: 15px;">
         <el-input placeholder="请输入内容" v-model="searchKey" class="input-with-select">
           <el-button slot="append" icon="el-icon-search"/>
         </el-input>
       </div>
-
+      <!--选项-->
       <div style="display: flex;margin-left: 85%">
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="selectedItem" placeholder="请选择">
           <el-option
             v-for="item in foodTypes"
             :key="item.foodTypeId"
@@ -26,6 +27,23 @@
             :value="item.foodTypeName">
           </el-option>
         </el-select>
+      </div>
+      <!--卡片-->
+      <div>
+        <el-row>
+          <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
+            <el-card :body-style="{ padding: '0px' }">
+              <img src='' class="image">
+              <div style="padding: 14px;">
+                <span>好吃的汉堡</span>
+                <div class="bottom clearfix">
+                  <time class="time">{{ currentDate }}</time>
+                  <el-button type="text" class="button">操作按钮</el-button>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
       </div>
     </div>
   </div>
@@ -39,7 +57,8 @@
         searchKey: '',
         currentPage4: 1,
         foodTypes: [],
-
+        selectedItem: '',
+        currentDate: new Date()
       }
     },
     methods: {
@@ -58,8 +77,8 @@
       getFoodTypes() {
         this.$axios.get('/api/admin/getFoodTypes')
           .then(res => {
-            console.log(res)
-            this.foodTypes = res.data.data
+            this.foodTypes = res.data.data;
+            this.selectedItem = this.foodTypes[0].foodTypeName;
           }).catch(err => {
           console.log(err)
         })

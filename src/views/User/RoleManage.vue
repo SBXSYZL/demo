@@ -80,7 +80,7 @@ export default {
     }
   },
   mounted () {
-    this.$axios.get('/api/admin/getUserList', {
+    this.$axios.get('http://localhost:8088/admin/getUserList', {
       params: {
         "pageNo": this.pageNo,
         "pageSize": this.pageSize

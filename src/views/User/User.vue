@@ -69,9 +69,9 @@
 
           let list = res.data.data.list
           for (let i in list) {
-            if (list[i].gender == '1') {
+            if (list[i].gender === '1') {
               list[i].gender = '男';
-            } else if (list[i].gender == '0') {
+            } else if (list[i].gender === '0') {
               list[i].gender = '女';
             }
           }

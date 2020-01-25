@@ -71,8 +71,8 @@ const routes = [
         component: resolve => require(['../views/News/NewsDetails.vue'], resolve)
       },
       {
-        path: '/write',
-        component: resolve => require(['../views/Food/Write.vue'], resolve)
+        path: '/writeFood',
+        component: resolve => require(['../views/Food/WriteFood.vue'], resolve)
       },
       {
         path: '/forum',

@@ -32,7 +32,7 @@
           </el-table-column>
           <el-table-column prop="credibility" label="信誉度"></el-table-column>
         </el-table>
-        <br/>
+        <br />
         <el-pagination
           background
           @current-change="handleCurrentChange"
@@ -46,27 +46,88 @@
   </div>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        rows: 1,
-        pageNo: 1,
-        pageSize: 1,
-        height: document.body.clientHeight - 400 <= 100 ? 100 : document.body.clientHeight - 400,
-        loading: true,
-        tableData: []
+export default {
+  data () {
+    return {
+      rows: 1,
+      pageNo: 1,
+      pageSize: 1,
+      height: document.body.clientHeight - 400 <= 100 ? 100 : document.body.clientHeight - 400,
+      loading: true,
+      tableData: []
+    }
+  },
+  mounted () {
+    this.$axios.get('http://localhost:8088/admin/getUserList', {
+      params: {
+        "pageNo": this.pageNo,
+        "pageSize": this.pageSize
+      },
+    }).then(res => {
+      setTimeout(() => {
+        this.loading = false;
+
+        let list = res.data.data.list
+        for (let i in list) {
+          if (list[i].gender == '1') {
+            list[i].gender = '男';
+          } else if (list[i].gender == '0') {
+            list[i].gender = '女';
+          }
+        }
+
+        this.rows = res.data.data.pageCount;
+        this.tableData = list;
+      }, 500)
+
+    }).catch(err => {
+      setTimeout(() => {
+        this.loading = false;
+      }, 500)
+      //console.log(err);
+    })
+
+    window.onresize = () => {
+      return (() => {
+        if (document.body.scrollHeight - 400 >= 100) {
+          this.height = document.body.scrollHeight - 400;
+        } else {
+          this.height = 100;
+        }
+      })()
+    }
+  },
+  watch: {
+    height (val) {
+      if (!this.timer) {
+        this.height = val
+        this.timer = true
+        let that = this
+        setTimeout(function () {
+          that.timer = false
+        }, 400)
       }
     },
-    mounted() {
-      this.$axios.get('/api/admin/getUserList', {
+  },
+  methods: {
+    roleClick () {
+      this.$destroy();
+      this.$router.push('/roleManage');
+    },
+    infoClick (row, event, column) {
+      //this.$router.push({ name: 'userInfo', params: { userId: row.userId } });
+      this.$router.push('/userInfo/' + row.userId);
+    },
+    handleCurrentChange (val) {
+      this.loading = true;
+      this.$axios.get('http://localhost:8088/admin/getUserList', {
         params: {
-          "pageNo": this.pageNo,
+          "pageNo": val,
           "pageSize": this.pageSize
-        },
+        }
       }).then(res => {
         setTimeout(() => {
           this.loading = false;
-
           let list = res.data.data.list
           for (let i in list) {
             if (list[i].gender === '1') {
@@ -75,76 +136,16 @@
               list[i].gender = '女';
             }
           }
-
-          this.rows = res.data.data.pageCount;
+          this.rows = res.data.data.pageRows;
           this.tableData = list;
-        }, 500)
-
+        }, 200)
       }).catch(err => {
         setTimeout(() => {
           this.loading = false;
-        }, 500)
+        }, 200)
         //console.log(err);
       })
-
-      window.onresize = () => {
-        return (() => {
-          if (document.body.scrollHeight - 400 >= 100) {
-            this.height = document.body.scrollHeight - 400;
-          } else {
-            this.height = 100;
-          }
-        })()
-      }
-    },
-    watch: {
-      height(val) {
-        if (!this.timer) {
-          this.height = val
-          this.timer = true
-          let that = this
-          setTimeout(function () {
-            that.timer = false
-          }, 400)
-        }
-      },
-    },
-    methods: {
-      roleClick() {
-        this.$destroy();
-        this.$router.push('/roleManage');
-      },
-      infoClick(row, event, column) {
-        this.$router.push('/userInfo');
-      },
-      handleCurrentChange(val) {
-        this.loading = true;
-        this.$axios.get('http://localhost:8088/admin/getUserList', {
-          params: {
-            "pageNo": val,
-            "pageSize": this.pageSize
-          },
-        }).then(res => {
-          setTimeout(() => {
-            this.loading = false;
-            let list = res.data.data.list
-            for (let i in list) {
-              if (list[i].gender == '1') {
-                list[i].gender = '男';
-              } else if (list[i].gender == '0') {
-                list[i].gender = '女';
-              }
-            }
-            this.rows = res.data.data.pageRows;
-            this.tableData = list;
-          }, 200)
-        }).catch(err => {
-          setTimeout(() => {
-            this.loading = false;
-          }, 200)
-          //console.log(err);
-        })
-      }
     }
   }
+}
 </script>

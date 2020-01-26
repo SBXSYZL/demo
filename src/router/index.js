@@ -22,7 +22,8 @@ const routes = [
         component: resolve => require(['../views/User/RoleManage.vue'], resolve)
       },
       {
-        path: '/userInfo',
+        path: '/userInfo/:userId',
+        name: 'userInfo',
         component: resolve => require(['../views/User/UserInfo.vue'], resolve),
         children: [
           {
@@ -42,8 +43,8 @@ const routes = [
         component: resolve => require(['../views/News/FoodNews.vue'], resolve)
       },
       {
-        path:'/WriteNews',
-        component:resolve => require(['../views/News/WriteNews'],resolve)
+        path: '/WriteNews',
+        component: resolve => require(['../views/News/WriteNews'], resolve)
       },
       {
         path: '/writeRecipe',
@@ -71,8 +72,8 @@ const routes = [
         component: resolve => require(['../views/News/NewsDetails.vue'], resolve)
       },
       {
-        path: '/write',
-        component: resolve => require(['../views/Food/Write.vue'], resolve)
+        path: '/writeFood',
+        component: resolve => require(['../views/Food/WriteFood.vue'], resolve)
       },
       {
         path: '/forum',
@@ -118,4 +119,8 @@ const router = new VueRouter({
   routes
 })
 
+const routerPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return routerPush.call(this, location).catch(error => error)
+}
 export default router

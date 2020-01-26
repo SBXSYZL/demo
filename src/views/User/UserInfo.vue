@@ -6,7 +6,7 @@
 
     <div class="container nopadding">
       <el-container>
-        <el-aside width="400px">
+        <el-aside width="380px">
           <el-card class="box-card container" shadow="hover">
             <div
               class="el-card__body imglayout"
@@ -14,25 +14,28 @@
               style="cursor:pointer"
             >
               <el-avatar :size="size" :src="circleUrl"></el-avatar><br />
-              <span class="font2">ID:1</span><br />
-              <span class="font1">昵称：xhy</span>
+              <span class="font2">ID:{{ info.userId }}</span
+              ><br />
+              <span class="font1">昵称：{{ info.nickName }}</span>
             </div>
 
             <!-- 个人资料弹窗 -->
             <el-dialog title="个人资料信息" :visible.sync="openInfo">
               <el-row>
-                <h3>基本资料</h3>
+                <el-divider content-position="left"
+                  ><h4>基本资料</h4></el-divider
+                >
               </el-row>
               <el-row>
                 <el-avatar :size="size" :src="circleUrl"></el-avatar
-                ><span class="font2"> ID:1</span>
+                ><span class="font2"> ID:{{ info.userId }}</span>
               </el-row>
 
               <el-row
-                ><span class="font1">昵称：{{ info.nickname }}</span></el-row
+                ><span class="font1">昵称：{{ info.nickName }}</span></el-row
               >
               <el-row
-                ><span class="font1">性别：{{ info.sex }}</span></el-row
+                ><span class="font1">性别：{{ info.gender }}</span></el-row
               >
               <el-row
                 ><span class="font1">国籍：{{ info.country }}</span></el-row
@@ -44,10 +47,14 @@
                 ><span class="font1">电话：{{ info.tel }}</span></el-row
               >
               <el-row
-                ><span class="font1">信誉度：{{ info.cred }}</span></el-row
+                ><span class="font1"
+                  >信誉度：{{ info.credibility }}</span
+                ></el-row
               >
               <el-row
-                ><span class="font1">账号状态：{{ info.status }}</span></el-row
+                ><span class="font1"
+                  >账号状态：{{ info.authority }}</span
+                ></el-row
               >
             </el-dialog>
             <!-- -END- -->
@@ -152,15 +159,7 @@
 export default {
   data () {
     return {
-      info: {
-        nickname: 'xhy',
-        sex: '男',
-        country: '中国',
-        city: '厦门',
-        tel: '12345678910',
-        cred: '100',
-        status: '正常'
-      },
+      info: {},
       openInfo: false,
       turn1: true,
       turn2: false,
@@ -168,15 +167,43 @@ export default {
       size: 70
     }
   },
+  mounted () {
+
+    this.$axios.get('http://localhost:8088/admin/takeUserInfo', {
+      params: {
+        'userId': this.$route.params.userId
+      }
+    }).then(res => {
+      let info = res.data.data;
+      if (info.authority == 1) {
+        info.authority = '正常';
+      } else {
+        info.authority = '封号';
+      }
+      if (info.gender == 1) {
+        info.gender = '男';
+      } else {
+        info.gender = '女';
+      }
+      this.info = info;
+    }).catch(err => {
+      console.log(err);
+    })
+
+    console.log(this.$route);
+  },
+
   methods: {
     goBack () {
       this.$destroy();
       this.$router.push('/userManage');
     },
     goArticle () {
+      //this.$router.push({ name: 'article', params: { userId: info.userId, articleId: 1 } });
       this.$router.push('articleDetail');
     },
     goLike () {
+      //this.$router.push({ name: 'like', params: { userId: info.userId, recipeId: 1 } });
       this.$router.push('likeDetail');
     },
   },
@@ -201,7 +228,6 @@ export default {
   padding-right: 0px;
   background-color: rgba(0, 0, 0, 0);
   border: 0px;
-  min-width: 600px;
 }
 .imglayout {
   text-align: center;

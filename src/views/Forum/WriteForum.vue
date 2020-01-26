@@ -57,25 +57,27 @@
     components: {TinymceEditor},
     data() {
       return {
-        options2: [{
-          label: '江苏',
-          cities: []
-        }, {
-          label: '浙江',
-          cities: []
-        }],
+        options2: [
+          {
+            label: '江苏',
+            cities: []
+          },
+          {
+            label: '浙江',
+            cities: []
+          }],
         props: {
           value: 'label',
           children: 'cities'
         },
         inputTitle: '',
         article: '',
-        getArea:'',
+        getArea: '',
         disabled: false,
         articleTypeId: '',
         articleTypes: [],
         dialogVisible: false,
-        articleTypeName:''
+        articleTypeName: ''
       };
     },
     methods: {
@@ -115,7 +117,7 @@
           })
         })
       },
-      goBack () {
+      goBack() {
         this.$router.push('/Forum');
       },
       release() {
@@ -133,12 +135,14 @@
             params.append("title", this.inputTitle);
             params.append("postArea", this.getArea);
             params.append("articleTypeId", this.articleTypeId);
-            params.append("article", this.article)
-            this.$axios({
-              method: 'post',
-              url: '/api/admin/writeArticle',
-              data: params
-            }).then(res => {
+            params.append("article", this.article);
+            this.$axios(
+              {
+                method: 'post',
+                url: '/api/admin/writeArticle',
+                data: params
+              }
+            ).then(res => {
               console.log(res);
               if (res.data.status === 'success' && res.data.data === 'success') {
                 this.$message({

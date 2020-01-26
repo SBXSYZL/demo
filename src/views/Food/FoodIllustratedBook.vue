@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="container" style="display: flex;">
+  <div :style="getScreenHeight">
+    <div class="container" style="display: flex;min-height: 20%">
       <div style="width: 90%">
         <h3>食品图鉴</h3>
       </div>
@@ -10,7 +10,7 @@
       </div>
 
     </div>
-    <div class="container">
+    <div class="container" style="min-height: 80%">
       <!--搜索框-->
       <div style="margin-bottom: 15px;">
         <el-input placeholder="请输入内容" v-model="searchKey" class="input-with-select">
@@ -65,6 +65,9 @@
     name: 'FoodIllustratedBook',
     data() {
       return {
+        screen: {
+          height: 0
+        },
         searchKey: '',
         currentPage: 1,
         foodTypes: [],
@@ -78,6 +81,10 @@
       }
     },
     methods: {
+      getScreenHeight() {
+        this.screen.height = window.innerHeight - 50 + 'px';
+        console.log(this.screen.height)
+      },
       itemClick(id) {
         console.log(id)
         this.$router.push({
@@ -133,6 +140,7 @@
     },
     created() {
       this.getFoodTypes();
+      this.getScreenHeight();
     }
   }
 </script>

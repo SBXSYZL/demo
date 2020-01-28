@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div style="float: left;width: 100%">
+      <el-page-header @back="goBack"/>
+    </div>
     <div :style="screen">
       <!--标题-->
       <h1>{{food.foodName}}</h1>
@@ -14,7 +17,7 @@
 
       </div>
       <hr style="margin-top: 5px;margin-bottom: 5px">
-      <div style="margin-top: 30px" v-html="food.content"/>
+      <div style="margin-top: 30px" v-loading="load" v-html="food.content"/>
 
 
     </div>
@@ -40,7 +43,8 @@
           postUserName: '',
           postDate: '',
           content: ''
-        }
+        },
+        load: true
       }
     },
     methods: {
@@ -48,10 +52,10 @@
         this.screen.height = window.innerHeight - 100 + 'px'
       },
       getFoodDetail() {
-        let id = this.$route.query.id;
+
         this.$axios.get('/api/admin/getFoodDetail', {
           params: {
-            foodId: id
+            foodId: this.food.foodId
           }
         }).then(res => {
           console.log(res)
@@ -65,9 +69,23 @@
         }).catch(err => {
           console.log(err)
         })
+        this.load = false;
+      },
+
+      goBack() {
+        this.$route.meta.isBack = true;
+        this.$router.back();
+
       }
     },
-    created() {
+
+    activated() {
+      this.food.foodId = this.$route.query.id;
+      this.food.foodTypeName = '';
+      this.food.foodName = '';
+      this.food.postUserName = '';
+      this.food.postDate = '';
+      this.food.content = '';
       this.getFoodDetail();
       this.getScreenHeight();
     }

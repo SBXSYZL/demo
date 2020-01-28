@@ -26,12 +26,6 @@
       }
     },
     methods: {
-      // 鼠标单击的事件
-      // onClick (e, editor) {
-      //   console.log('Element clicked')
-      //   console.log(e)
-      //   console.log(editor)
-      // },
       refresh () {
         this.$router.go(0)
       },

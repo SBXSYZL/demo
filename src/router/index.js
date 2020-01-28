@@ -11,6 +11,7 @@ const routes = [
   {
     path: '/home',
     name: 'home',
+    title: '主页',
     component: Home,
     children: [
       {
@@ -55,17 +56,23 @@ const routes = [
         component: resolve => require(['../views/Recipe/Recipe.vue'], resolve)
       },
       {
-        path: '/foodIllustratedBook',
-        component: resolve => require(['../views/Food/FoodIllustratedBook.vue'], resolve)
-      },
-
-      {
         path: '/foodrecipedetails',
         component: resolve => require(['../views/Recipe/FoodrecipeDetails.vue'], resolve)
       },
       {
+        path: '/foodIllustratedBook',
+        component: resolve => require(['../views/Food/FoodIllustratedBook.vue'], resolve),
+        meta: {
+          keepAlive: true
+        }
+      },
+      {
         path: '/foodIllustratedBookDetail',
-        component: resolve => require(['../views/Food/FoodIllustratedBookDetail'], resolve)
+        component: resolve => require(['../views/Food/FoodIllustratedBookDetail'], resolve),
+        meta: {
+          keepAlive: false,
+          isBack: false
+        }
       },
       {
         path: '/newsDetails',
@@ -91,7 +98,7 @@ const routes = [
         path: '/',
         redirect: '/foodNews'
       }
-    ]
+    ],
   },
   {
     path: '/about',
@@ -103,7 +110,7 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'index',
+    name: 'login',
     component: Login
   },
   {
@@ -120,7 +127,7 @@ const router = new VueRouter({
 })
 
 const routerPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push (location) {
+VueRouter.prototype.push = function push(location) {
   return routerPush.call(this, location).catch(error => error)
 }
 export default router

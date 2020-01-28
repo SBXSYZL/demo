@@ -49,6 +49,7 @@
 export default {
   data () {
     return {
+
       rows: 1,
       pageNo: 1,
       pageSize: 1,
@@ -58,7 +59,7 @@ export default {
     }
   },
   mounted () {
-    this.$axios.get('http://localhost:8088/admin/getUserList', {
+    this.$axios.get('/api/admin/getUserList', {
       params: {
         "pageNo": this.pageNo,
         "pageSize": this.pageSize
@@ -115,12 +116,12 @@ export default {
       this.$router.push('/roleManage');
     },
     infoClick (row, event, column) {
-      //this.$router.push({ name: 'userInfo', params: { userId: row.userId } });
-      this.$router.push('/userInfo/' + row.userId);
+      this.$router.push({ name: 'userInfo', query: { userId: row.userId } });
+      //this.$router.push('/userInfo/' + row.userId);
     },
     handleCurrentChange (val) {
       this.loading = true;
-      this.$axios.get('http://localhost:8088/admin/getUserList', {
+      this.$axios.get('/api/admin/getUserList', {
         params: {
           "pageNo": val,
           "pageSize": this.pageSize

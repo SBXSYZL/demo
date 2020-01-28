@@ -169,9 +169,9 @@ export default {
   },
   mounted () {
 
-    this.$axios.get('http://localhost:8088/admin/takeUserInfo', {
+    this.$axios.get('/api/admin/takeUserInfo', {
       params: {
-        'userId': this.$route.params.userId
+        'userId': this.$route.query.userId
       }
     }).then(res => {
       let info = res.data.data;

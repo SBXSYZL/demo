@@ -22,17 +22,17 @@ const routes = [
         component: resolve => require(['../views/User/RoleManage.vue'], resolve)
       },
       {
-        path: '/userInfo/:userId',
+        path: '/userInfo',
         name: 'userInfo',
         component: resolve => require(['../views/User/UserInfo.vue'], resolve),
         children: [
           {
-            path: '/likeDetail',
+            path: '/likeDetail/:userId',
             name: 'like',
             component: LikeDetail,
           },
           {
-            path: '/articleDetail',
+            path: '/articleDetail/:userId',
             name: 'article',
             component: ArticleDetail,
           },

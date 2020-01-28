@@ -47,13 +47,12 @@
                 :type="scope.row.tag === '封禁' ? 'danger' : 'success'"
                 @click="handleDelete(scope.$index, scope.row)"
                 disable-transitions
-              >{{ scope.row.tag }}
-              </el-button
-              >
+                >{{ scope.row.tag }}
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
-        <br/>
+        <br />
         <el-pagination
           background
           @current-change="handleCurrentChange"
@@ -68,22 +67,133 @@
 </template>
 <script>
 
-  export default {
-    data() {
-      return {
-        loading: true,
-        turn: true,
-        rows: 1,
-        pageNo: 1,
-        pageSize: 1,
-        height: document.body.clientHeight - 400 <= 100 ? 100 : document.body.clientHeight - 400,
-        tableData: []
+export default {
+  data () {
+    return {
+      loading: true,
+      turn: true,
+      rows: 1,
+      pageNo: 1,
+      pageSize: 1,
+      height: document.body.clientHeight - 400 <= 100 ? 100 : document.body.clientHeight - 400,
+      tableData: []
+    }
+  },
+  activated () {
+
+  },
+  mounted () {
+    this.$axios.get('/api/admin/getUserList', {
+      params: {
+        "pageNo": this.pageNo,
+        "pageSize": this.pageSize
+      },
+    }).then(res => {
+      setTimeout(() => {
+        this.loading = false;
+        let list = res.data.data.list
+
+        for (let i in list) {
+          if (list[i].gender == '1') {
+            list[i].gender = '男';
+          } else if (list[i].gender == '0') {
+            list[i].gender = '女';
+          }
+          if (list[i].authority == '1') {
+            list[i].authority = '封号';
+            list[i].tag = '解封';
+          } else if (list[i].authority == '0') {
+            list[i].authority = '正常';
+            list[i].tag = '封禁';
+          }
+        }
+
+        this.rows = res.data.data.pageCount
+        this.tableData = list;
+        console.log(this.tableData);
+      }, 500)
+
+    }).catch(err => {
+      setTimeout(() => {
+        this.loading = false;
+      }, 500)
+      //console.log(err);
+    })
+
+    window.onresize = () => {
+      return (() => {
+
+        if (document.body.scrollHeight - 400 >= 100) {
+          this.height = document.body.scrollHeight - 400;
+        } else {
+          this.height = 100;
+        }
+      })()
+    }
+  },
+  watch: {
+    height (val) {
+      if (!this.timer) {
+        this.height = val
+        this.timer = true
+        let that = this
+        setTimeout(function () {
+          that.timer = false
+        }, 400)
       }
+    }
+  },
+  methods: {
+    goBack () {
+      this.$router.back();
     },
-    mounted() {
+
+    handleDelete (index, row) {
+      this.open();
+      console.log(index, row);
+    },
+
+    filterTag (value, row) {
+      return row.status === value;
+    },
+
+    success () {
+      this.$notify({
+        title: '成功',
+        message: '本次操作xxxx秒后生效',
+        type: 'success'
+      });
+    },
+
+    error () {
+      this.$notify.error({
+        title: '错误',
+        message: '发现未知错误'
+      });
+    },
+
+    open () {
+      this.$confirm('即将对用户进行封禁操作, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.success();
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          offset: 50,
+          type: 'info',
+          message: '已取消'
+        });
+      });
+    },
+
+    handleCurrentChange (val) {
+      this.loading = true;
       this.$axios.get('/api/admin/getUserList', {
         params: {
-          "pageNo": this.pageNo,
+          "pageNo": val,
           "pageSize": this.pageSize
         },
       }).then(res => {
@@ -91,135 +201,29 @@
           this.loading = false;
           let list = res.data.data.list
           for (let i in list) {
-            if (list[i].gender === '1') {
+            if (list[i].gender == '1') {
               list[i].gender = '男';
-            } else if (list[i].gender === '0') {
+            } else if (list[i].gender == '0') {
               list[i].gender = '女';
             }
-            if (list[i].authority === '1') {
+            if (list[i].authority == '1') {
               list[i].authority = '封号';
               list[i].tag = '解封';
-            } else if (list[i].authority === '0') {
+            } else if (list[i].authority == '0') {
               list[i].authority = '正常';
               list[i].tag = '封禁';
             }
           }
-
-          this.rows = res.data.data.pageCount
+          this.rows = res.data.data.pageCount;
           this.tableData = list;
-        }, 500)
-
+        }, 200)
       }).catch(err => {
         setTimeout(() => {
           this.loading = false;
-        }, 500)
+        }, 200)
         //console.log(err);
       })
-
-      window.onresize = () => {
-        return (() => {
-          if (document.body.scrollHeight - 400 >= 100) {
-            this.height = document.body.scrollHeight - 400;
-          } else {
-            this.height = 100;
-          }
-        })()
-      }
-    },
-    watch: {
-      height(val) {
-        if (!this.timer) {
-          this.height = val
-          this.timer = true
-          let that = this
-          setTimeout(function () {
-            that.timer = false
-          }, 400)
-        }
-      }
-    },
-    methods: {
-      goBack() {
-        this.$destroy();
-        this.$router.push('/userManage');
-      },
-
-      handleDelete(index, row) {
-        this.open();
-        console.log(index, row);
-      },
-
-      filterTag(value, row) {
-        return row.status === value;
-      },
-
-      success() {
-        this.$notify({
-          title: '成功',
-          message: '本次操作xxxx秒后生效',
-          type: 'success'
-        });
-      },
-
-      error() {
-        this.$notify.error({
-          title: '错误',
-          message: '发现未知错误'
-        });
-      },
-
-      open() {
-        this.$confirm('即将对用户进行封禁操作, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.success();
-        }).catch(() => {
-          this.$message({
-            showClose: true,
-            offset: 50,
-            type: 'info',
-            message: '已取消'
-          });
-        });
-      },
-
-      handleCurrentChange(val) {
-        this.loading = true;
-        this.$axios.get('/api/admin/getUserList', {
-          params: {
-            "pageNo": val,
-            "pageSize": this.pageSize
-          },
-        }).then(res => {
-          setTimeout(() => {
-            this.loading = false;
-            let list = res.data.data.list
-            for (let i in list) {
-              if (list[i].gender == '1') {
-                list[i].gender = '男';
-              } else if (list[i].gender == '0') {
-                list[i].gender = '女';
-              }
-              if (list[i].authority == '1') {
-                list[i].authority = '封号';
-                list[i].tag = '解封';
-              } else if (list[i].authority == '0') {
-                list[i].authority = '正常';
-                list[i].tag = '封禁';
-              }
-            }
-            this.rows = res.data.data.pageCount;
-            this.tableData = list;
-          }, 200)
-        }).catch(err => {
-          setTimeout(() => {
-            this.loading = false;
-          }, 200)
-          //console.log(err);
-        })
-      }
     }
   }
+}
 </script>

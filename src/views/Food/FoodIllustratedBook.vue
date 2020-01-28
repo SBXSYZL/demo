@@ -32,11 +32,12 @@
       </div>
       <hr style="margin: 5px">
       <!--卡片-->
-      <div v-loading="load" style="margin-top: 10px">
+      <div v-loading="load" style="margin-top: 10px;">
         <el-row>
-          <el-col :span="5" v-for="item in foodList" :key="item.foodId">
-            <el-card :body-style="{ padding: '0px' }" @click.native="itemClick(item.foodId)">
-              <img :src=item.foodPreviewImg class="image">
+          <el-col :span="5" v-for="item in foodList" :key="item.foodId" style="margin: 10px">
+            <el-card :body-style="{ padding: '0px',minHeight:'300px',marginTop:'5px',margin:'5px'}"
+                     @click.native="itemClick(item.foodId)">
+              <img :src=item.foodPreviewImg class="image" style="height: 220px">
               <div style="padding: 14px;">
                 <span>{{item.foodName}}</span>
                 <div class="bottom clearfix">
@@ -46,6 +47,7 @@
             </el-card>
           </el-col>
         </el-row>
+
         <el-pagination
           style="margin-top: 20px"
           @size-change="handleSizeChange"
@@ -124,8 +126,7 @@
             this.foodTypes = res.data.data;
             this.params.foodTypeId = this.foodTypes[0].foodTypeId;
             this.getFoodList();
-          }).catch(err => {
-          console.log(err)
+
         })
       },
       //获取食品图鉴列表
@@ -139,7 +140,7 @@
         }
         this.$axios.get(url, {params: this.params})
           .then(res => {
-            console.log(res);
+            // console.log(res);
             this.foodList = res.data.data.list;
             //去除html标记
             for (let i in this.foodList) {
@@ -155,7 +156,8 @@
       },
       //搜索
       search() {
-        if (this.params.searchKey.length > 0) {
+
+        if (this.searchStatus.searchKey.length>0) {
           this.searchStatus.isSearch = true;
           this.getFoodList();
         } else {

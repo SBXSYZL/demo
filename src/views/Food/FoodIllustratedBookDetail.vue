@@ -34,7 +34,7 @@
     data() {
       return {
         screen: {
-          height: 0
+          minHeight: 0
         },
         food: {
           foodId: -1,
@@ -49,7 +49,7 @@
     },
     methods: {
       getScreenHeight() {
-        this.screen.height = window.innerHeight - 100 + 'px'
+        this.screen.minHeight = window.innerHeight - 100 + 'px'
       },
       getFoodDetail() {
 

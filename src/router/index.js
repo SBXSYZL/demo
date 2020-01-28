@@ -23,7 +23,7 @@ const routes = [
         component: resolve => require(['../views/User/RoleManage.vue'], resolve)
       },
       {
-        path: '/userInfo/:userId',
+        path: '/userInfo',
         name: 'userInfo',
         component: resolve => require(['../views/User/UserInfo.vue'], resolve),
         children: [
@@ -73,6 +73,10 @@ const routes = [
           keepAlive: false,
           isBack: false
         }
+      },
+      {
+        path: '/foodTypeManage',
+        component: resolve => require(['../views/Food/FoodTypeManage'], resolve),
       },
       {
         path: '/newsDetails',

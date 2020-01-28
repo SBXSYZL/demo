@@ -4,8 +4,8 @@
       <div style="width: 90%">
         <h3>食品图鉴</h3>
       </div>
-      <div>
-
+      <div style="display:flex">
+        <el-button type="primary" plain @click="foodTypeManage">食品类型管理</el-button>
         <el-button type="primary" icon="el-icon-edit" @click="writeIllustratedBook">添加图鉴</el-button>
       </div>
 
@@ -124,10 +124,13 @@
         this.$axios.get('/api/admin/getFoodTypes')
           .then(res => {
             this.foodTypes = res.data.data;
-            this.params.foodTypeId = this.foodTypes[0].foodTypeId;
-            this.getFoodList();
-
-        })
+            if (this.foodTypes.length > 0) {
+              this.params.foodTypeId = this.foodTypes[0].foodTypeId;
+              this.getFoodList();
+            }else{
+              this.load=false
+            }
+          })
       },
       //获取食品图鉴列表
       getFoodList() {
@@ -157,7 +160,7 @@
       //搜索
       search() {
 
-        if (this.searchStatus.searchKey.length>0) {
+        if (this.searchStatus.searchKey.length > 0) {
           this.searchStatus.isSearch = true;
           this.getFoodList();
         } else {
@@ -177,6 +180,9 @@
       //刷新页面
       refresh() {
         this.$router.go(0)
+      },
+      foodTypeManage() {
+        this.$router.push('/foodTypeManage')
       }
     },
     created() {

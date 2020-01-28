@@ -1,8 +1,14 @@
 <template>
   <div class="container">
-    <div style="float: left;width: 100%">
-      <el-page-header @back="goBack"/>
+    <div style="display: flex">
+      <div style="float: left;width: 90%">
+        <el-page-header @back="goBack"/>
+      </div>
+      <div style="float: right;width: 10%">
+        <el-button type="danger" @click="deleteFood">删除本文</el-button>
+      </div>
     </div>
+
     <div :style="screen">
       <!--标题-->
       <h1>{{food.foodName}}</h1>
@@ -76,6 +82,17 @@
         this.$route.meta.isBack = true;
         this.$router.back();
 
+      },
+      deleteFood() {
+        // this.axios.get('/api/admin/deleteFood', {
+        //   params: {
+        //     foodId: this.food.foodId
+        //   }
+        // }).then(res => {
+        //   console.log(res)
+        // }).catch(err => {
+        //
+        // })
       }
     },
 

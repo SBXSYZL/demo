@@ -93,10 +93,10 @@
     },
     methods: {
       handleEdit(index, row) {
-        console.log(index, row);
+        // console.log(index, row);
       },
       handleDelete(index, row) {
-        console.log(row)
+        // console.log(row)
         this.dialogVisible = true;
         this.willDeleteId = row.foodTypeId;
       },
@@ -129,7 +129,7 @@
       getFoodTypes() {
         this.$axios.get('/api/admin/getFoodTypes')
           .then(res => {
-            console.log(res)
+            // console.log(res)
             this.foodTypes = res.data.data;
           })
       },

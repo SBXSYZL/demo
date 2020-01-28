@@ -90,8 +90,8 @@
           p.append("foodName", this.params.title);
           p.append("foodTypeId", this.params.foodTypeId);
           p.append("content", this.params.content);
-          console.log(this.params.title)
-          console.log(p)
+          // console.log(this.params.title)
+          // console.log(p)
 
           this.$axios(
             {
@@ -116,7 +116,7 @@
 
             }
           }).catch(err => {
-            console.log(err)
+            // console.log(err)
             this.$message({
               showClose: true,
               message: err.data.data.errMsg,

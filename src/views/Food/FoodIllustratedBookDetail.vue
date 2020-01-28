@@ -107,7 +107,7 @@
             foodId: this.food.foodId
           }
         }).then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.data.status === 'success' && res.data.data === 'success') {
             this.$router.back();
             this.$message({

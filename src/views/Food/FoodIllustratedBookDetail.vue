@@ -31,6 +31,17 @@
       <hr>
       <p style="text-align: center">一不小心滑到底了哦...</p>
     </div>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <span>确定删除本文？</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="handleClose">取 消</el-button>
+    <el-button type="primary" @click="confirmDelete">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -50,7 +61,8 @@
           postDate: '',
           content: ''
         },
-        load: true
+        load: true,
+        dialogVisible: false
       }
     },
     methods: {
@@ -58,41 +70,57 @@
         this.screen.minHeight = window.innerHeight - 100 + 'px'
       },
       getFoodDetail() {
-
         this.$axios.get('/api/admin/getFoodDetail', {
           params: {
             foodId: this.food.foodId
           }
         }).then(res => {
-          console.log(res)
-          let data = res.data.data;
-          this.food.foodId = data.foodId;
-          this.food.foodTypeName = data.foodTypeName;
-          this.food.foodName = data.foodName;
-          this.food.postUserName = data.postUserName;
-          this.food.postDate = data.postDate;
-          this.food.content = data.content;
+          if (res.data.status === 'success') {
+            let data = res.data.data;
+            this.food.foodId = data.foodId;
+            this.food.foodTypeName = data.foodTypeName;
+            this.food.foodName = data.foodName;
+            this.food.postUserName = data.postUserName;
+            this.food.postDate = data.postDate;
+            this.food.content = data.content;
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+
         }).catch(err => {
-          console.log(err)
+          this.$message.error('请求失败...');
         })
         this.load = false;
       },
-
       goBack() {
-        this.$route.meta.isBack = true;
         this.$router.back();
-
+      },
+      handleClose() {
+        this.dialogVisible = false
       },
       deleteFood() {
-        // this.axios.get('/api/admin/deleteFood', {
-        //   params: {
-        //     foodId: this.food.foodId
-        //   }
-        // }).then(res => {
-        //   console.log(res)
-        // }).catch(err => {
-        //
-        // })
+        this.dialogVisible = true;
+      },
+      confirmDelete() {
+        this.$axios.get('/api/admin/deleteFood', {
+          params: {
+            foodId: this.food.foodId
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$router.back();
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(err => {
+          this.$message.error('请求失败...');
+        })
+        this.dialogVisible = false
       }
     },
 

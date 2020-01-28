@@ -89,6 +89,7 @@ export default {
     })
 
     window.onresize = () => {
+
       return (() => {
         if (document.body.scrollHeight - 400 >= 100) {
           this.height = document.body.scrollHeight - 400;
@@ -112,8 +113,8 @@ export default {
   },
   methods: {
     roleClick () {
-      this.$destroy();
-      this.$router.push('/roleManage');
+
+      this.$router.push('roleManage');
     },
     infoClick (row, event, column) {
       this.$router.push({ name: 'userInfo', query: { userId: row.userId } });

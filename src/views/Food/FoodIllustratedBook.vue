@@ -4,8 +4,8 @@
       <div style="width: 90%">
         <h3>食品图鉴</h3>
       </div>
-      <div>
-
+      <div style="display:flex">
+        <el-button type="primary" plain @click="foodTypeManage">食品类型管理</el-button>
         <el-button type="primary" icon="el-icon-edit" @click="writeIllustratedBook">添加图鉴</el-button>
       </div>
 
@@ -13,13 +13,14 @@
     <div class="container" style="min-height: 80%">
       <!--搜索框-->
       <div style="margin-bottom: 15px;">
-        <el-input placeholder="请输入内容" v-model="searchKey" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"/>
+        <el-input placeholder="请输入内容" v-model="searchStatus.searchKey" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="search"/>
         </el-input>
       </div>
       <!--选项-->
       <div style="display: flex;margin-left: 85%">
-        <el-select v-model="selectedItem" placeholder="请选择" @change="selectChange">
+        <el-button style="margin-right:10px " @click="refresh">刷新</el-button>
+        <el-select v-model="params.foodTypeId" placeholder="请选择" @change="selectChange">
           <el-option
             v-for="item in foodTypes"
             :key="item.foodTypeId"
@@ -31,27 +32,29 @@
       </div>
       <hr style="margin: 5px">
       <!--卡片-->
-      <div v-loading="load" style="margin-top: 10px">
+      <div v-loading="load" style="margin-top: 10px;">
         <el-row>
-          <el-col :span="5" v-for="item in foodList" :key="item.foodId">
-            <el-card :body-style="{ padding: '0px' }" @click.native="itemClick(item.foodId)">
-              <img :src=item.foodPreviewImg class="image">
+          <el-col :span="5" v-for="item in foodList" :key="item.foodId" style="margin: 10px">
+            <el-card :body-style="{ padding: '0px',minHeight:'300px',marginTop:'5px',margin:'5px'}"
+                     @click.native="itemClick(item.foodId)">
+              <img :src=item.foodPreviewImg class="image" style="height: 220px">
               <div style="padding: 14px;">
                 <span>{{item.foodName}}</span>
                 <div class="bottom clearfix">
-                  <time class="time">{{item.content}}</time>
+                  <time class="time line-limit-length">{{item.content}}</time>
                 </div>
               </div>
             </el-card>
           </el-col>
         </el-row>
+
         <el-pagination
           style="margin-top: 20px"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage"
+          :current-page="params.pageNo"
           :page-sizes="[10, 20, 30, 40]"
-          :page-size="pageSize"
+          :page-size="params.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
         </el-pagination>
@@ -68,84 +71,135 @@
         screen: {
           height: 0
         },
-        searchKey: '',
-        currentPage: 1,
+        searchStatus: {
+          isSearch: false,
+          searchKey: ''
+        },
         foodTypes: [],
-        selectedItem: '',
-        currentDate: new Date(),
-        pageNo: 1,
-        pageSize: 10,
         total: 0,
         foodList: [],
-        load: true
+        load: true,
+        params: {
+          foodTypeId: -1,
+          pageNo: 1,
+          pageSize: 10,
+          searchKey: ''
+        }
       }
     },
     methods: {
+      //获取屏幕高度
       getScreenHeight() {
         this.screen.height = window.innerHeight - 50 + 'px';
-        console.log(this.screen.height)
       },
+      //卡片点击事件
       itemClick(id) {
-        console.log(id)
         this.$router.push({
           path: '/foodIllustratedBookDetail',
           query: {
             id: id
+          },
+          meta: {
+            keepAlive: false
           }
         })
       },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`)
+      //页面数据量变化事件
+      handleSizeChange(pageSize) {
+        this.params.pageNo = 1;
+        this.params.pageSize = pageSize;
+        this.getFoodList()
       },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`)
+      //页面变化事件
+      handleCurrentChange(pageNo) {
+        this.params.pageNo = pageNo;
+        this.getFoodList()
       },
+      //编写食品图鉴
       writeIllustratedBook() {
         this.$router.push('/writeFood')
       },
+      //获取所有食品类型
       getFoodTypes() {
         this.$axios.get('/api/admin/getFoodTypes')
           .then(res => {
             this.foodTypes = res.data.data;
-            this.selectedItem = this.foodTypes[0].foodTypeId;
-            this.getFoodList();
-          }).catch(err => {
-          console.log(err)
-        })
+            if (this.foodTypes.length > 0) {
+              this.params.foodTypeId = this.foodTypes[0].foodTypeId;
+              this.getFoodList();
+            }else{
+              this.load=false
+            }
+          })
       },
+      //获取食品图鉴列表
       getFoodList() {
-        let that = this;
-        let foodTypeId = null;
-        foodTypeId = that.selectedItem;
-        console.log(that.selectedItem);
-        this.$axios.get('/api/admin/getFoodList', {
-          params: {
-            foodTypeId: foodTypeId,
-            pageNo: this.pageNo,
-            pageSize: this.pageSize
-          }
-        }).then(res => {
-          console.log(res);
-          this.foodList = res.data.data.list;
-          this.total = res.data.data.pageRows;
-          this.load = false;
-        }).catch(err => {
-          this.load = false;
-          this.$message.error('加载失败...');
-        })
+        let url = '';
+        if (!this.searchStatus.isSearch) {
+          url = '/api/admin/getFoodList';
+        } else {
+          url = '/api/admin/searchFoodList'
+          this.params.searchKey = this.searchStatus.searchKey;
+        }
+        this.$axios.get(url, {params: this.params})
+          .then(res => {
+            // console.log(res);
+            this.foodList = res.data.data.list;
+            //去除html标记
+            for (let i in this.foodList) {
+              this.foodList[i].content = this.foodList[i].content.replace(/<\/?.+?\/?>/g, "")
+            }
+            this.total = res.data.data.pageRows;
+            this.load = false;
+          })
+          .catch(err => {
+            this.load = false;
+            this.$message.error('加载失败...');
+          })
       },
+      //搜索
+      search() {
+
+        if (this.searchStatus.searchKey.length > 0) {
+          this.searchStatus.isSearch = true;
+          this.getFoodList();
+        } else {
+          this.$notify({
+            title: '警告',
+            message: '请输入搜索内容',
+            type: 'warning',
+            duration: 1000
+          });
+        }
+
+      },
+      //选项切换
       selectChange() {
         this.getFoodList();
+      },
+      //刷新页面
+      refresh() {
+        this.$router.go(0)
+      },
+      foodTypeManage() {
+        this.$router.push('/foodTypeManage')
       }
     },
     created() {
       this.getFoodTypes();
       this.getScreenHeight();
     }
+
   }
 </script>
 
 <style scoped>
+  .line-limit-length {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .time {
     font-size: 13px;
     color: #999;

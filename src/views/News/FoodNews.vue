@@ -10,7 +10,8 @@
           icon="el-icon-edit"
           style="float: right"
           @click="writeIllustratedBook"
-          >添加资讯</el-button
+        >添加资讯
+        </el-button
         >
       </div>
     </div>
@@ -23,7 +24,8 @@
           class="input-with-select"
         >
           <el-button slot="append" icon="el-icon-search" @click="getSearchNews"
-        /></el-input>
+          />
+        </el-input>
       </div>
       <!--标签-->
       <div>
@@ -45,7 +47,8 @@
           <el-table-column style="width: 180px" width="180px">
             <template>
               <el-button size="mini" type="danger" @click.stop="deleteNews"
-                >删除</el-button
+              >删除
+              </el-button
               >
             </template>
           </el-table-column>
@@ -61,7 +64,7 @@
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="delectNewsConfirm(items.row)"
-              >确 定</el-button
+            >确 定</el-button
             >
           </span>
         </el-dialog>
@@ -83,151 +86,152 @@
   </div>
 </template>
 <script>
-import { dialog } from 'element-ui'
-export default {
-  name: 'FoodNews',
-  data () {
-    return {
-      items: [],
-      pageNo: 1,
-      pageSize: 10,
-      searchKey: '',
-      dialogVisible: false,
-      title: ''
-    }
-  },
-  methods: {
-    itemClick (obj) {
-      // this.$router.push('/Foodrecipedetails')
-      this.$router.push({
-        path: '/NewsDetails',
-        query: {
-          id: obj.newsId
-        }
-      })
-    },
-    handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
-    },
-    handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
-    },
-    writeIllustratedBook () {
-      this.$router.push('/WriteNews')
-    },
-    handleClick () {
-    },
-    handleClose () {
-      this.dialogVisible = false;
-    },
-    deleteNews (row) {
-      this.dialogVisible = true;
-      // this.items.splice(row, 1)
-    },
-    delectNewsConfirm (row) {
-      this.items.splice(row, 1)
-    },
-    getNewsList () {
-      this.$axios.get('/api/user/getNewsList', {
-        params: {
-          pageNo: this.pageNo,
-          pageSize: this.pageSize
-        }
-      }).then(res => {
-        console.log(res)
-        this.items = res.data.data.list;
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    getSearchNews () {
-      this.pageNo = 1;
-      this.$axios.get('/api/admin/SearchNews', {
-        params: {
-          pageNo: this.pageNo,
-          pageSize: this.pageSize,
-          searchKey: this.searchKey
-        }
-      }).then(res => {
-        console.log("res:")
-        console.log(res)
-        this.items = res.data.data.list;
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    handleSizeChange (val) {
-      this.pageSize = val;
-      this.getNewsList();
-    },
-    handleCurrentChange (val) {
-      this.pageNo = val;
-      this.getNewsList();
-    },
-  },
+  import {dialog} from 'element-ui'
 
-  created () {
-    this.getNewsList();
-  },
-}
+  export default {
+    name: 'FoodNews',
+    data() {
+      return {
+        items: [],
+        pageNo: 1,
+        pageSize: 10,
+        searchKey: '',
+        dialogVisible: false,
+        title: ''
+      }
+    },
+    methods: {
+      itemClick(obj) {
+        // this.$router.push('/Foodrecipedetails')
+        this.$router.push({
+          path: '/NewsDetails',
+          query: {
+            id: obj.newsId
+          }
+        })
+      },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`)
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`)
+      },
+      writeIllustratedBook() {
+        this.$router.push('/WriteNews')
+      },
+      handleClick() {
+      },
+      handleClose() {
+        this.dialogVisible = false;
+      },
+      deleteNews(row) {
+        this.dialogVisible = true;
+        // this.items.splice(row, 1)
+      },
+      delectNewsConfirm(row) {
+        this.items.splice(row, 1)
+      },
+      getNewsList() {
+        this.$axios.get('/api/user/getNewsList', {
+          params: {
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
+          }
+        }).then(res => {
+          console.log(res)
+          this.items = res.data.data.list;
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      getSearchNews() {
+        this.pageNo = 1;
+        this.$axios.get('/api/admin/SearchNews', {
+          params: {
+            pageNo: this.pageNo,
+            pageSize: this.pageSize,
+            searchKey: this.searchKey
+          }
+        }).then(res => {
+          console.log("res:")
+          console.log(res)
+          this.items = res.data.data.list;
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      handleSizeChange(val) {
+        this.pageSize = val;
+        this.getNewsList();
+      },
+      handleCurrentChange(val) {
+        this.pageNo = val;
+        this.getNewsList();
+      },
+    },
+    created() {
+      this.getNewsList();
+    }
+  }
 
 </script>
 
 <style scoped>
-.el-row {
-  margin-bottom: 30px;
-  height: 5%;
-}
+  .el-row {
+    margin-bottom: 30px;
+    height: 5%;
+  }
 
-.el-col {
-  border-radius: 14px;
-}
+  .el-col {
+    border-radius: 14px;
+  }
 
-.card-img {
-  width: 200px;
-  height: 200px;
-}
+  .card-img {
+    width: 200px;
+    height: 200px;
+  }
 
-.image {
-  width: auto;
-  height: 50px;
-}
-.time {
-  font-size: 13px;
-  color: #999;
-}
+  .image {
+    width: auto;
+    height: 50px;
+  }
 
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-}
+  .time {
+    font-size: 13px;
+    color: #999;
+  }
 
-.button {
-  padding: 0;
-  float: right;
-}
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
 
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
+  .button {
+    padding: 0;
+    float: right;
+  }
 
-.clearfix:after {
-  clear: both;
-}
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
 
-.el-select .el-input {
-  width: 130px;
-}
+  .clearfix:after {
+    clear: both;
+  }
 
-.input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
+  .el-select .el-input {
+    width: 130px;
+  }
 
-.line-limit-length {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
+
+  .line-limit-length {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 </style>

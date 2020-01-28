@@ -71,7 +71,7 @@
       }
 
     },
-    created() {
+    activated() {
       this.getNewsDetail()
     },
 

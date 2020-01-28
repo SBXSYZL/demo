@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container ">
-      <el-page-header @back="goBack" content="用户主页"> </el-page-header>
+      <el-page-header @back="goBack" content="用户主页" />
     </div>
 
     <div class="container nopadding">
@@ -13,7 +13,8 @@
               @click="openInfo = true"
               style="cursor:pointer"
             >
-              <el-avatar :size="size" :src="circleUrl"></el-avatar><br />
+              <el-avatar :size="size" :src="circleUrl" />
+              <br />
               <span class="font2">ID:{{ info.userId }}</span
               ><br />
               <span class="font1">昵称：{{ info.nickName }}</span>
@@ -27,8 +28,8 @@
                 >
               </el-row>
               <el-row>
-                <el-avatar :size="size" :src="circleUrl"></el-avatar
-                ><span class="font2"> ID:{{ info.userId }}</span>
+                <el-avatar :size="size" :src="circleUrl" />
+                <span class="font2"> ID:{{ info.userId }}</span>
               </el-row>
 
               <el-row
@@ -59,7 +60,7 @@
             </el-dialog>
             <!-- -END- -->
 
-            <el-divider></el-divider>
+            <el-divider />
             <el-row type="flex" justify="space-around">
               <el-col :span="3">
                 <el-tooltip
@@ -73,8 +74,9 @@
                     icon="el-icon-edit"
                     circle
                     style="height:50px;width:50px"
-                  ></el-button></el-tooltip
-              ></el-col>
+                  />
+                </el-tooltip>
+              </el-col>
 
               <el-col :span="3">
                 <el-tooltip
@@ -88,7 +90,7 @@
                     icon="el-icon-star-off"
                     circle
                     style="height:50px;width:50px;"
-                  ></el-button>
+                  />
                 </el-tooltip>
               </el-col>
 
@@ -104,32 +106,35 @@
                     icon="el-icon-check"
                     circle
                     style="height:50px;width:50px"
-                  ></el-button
-                ></el-tooltip>
+                  />
+                </el-tooltip>
               </el-col>
             </el-row>
             <el-row type="flex" justify="space-around">
-              <el-col :span="2">
-                <span style="height:50px;width:50px;" class="font1"
+              <el-col :span="2"
+                ><span style="height:50px;width:50px;" class="font1"
                   >19</span
                 ></el-col
               >
-              <el-col :span="2">
-                <span style="height:50px;width:50px;" class="font1">20</span>
-              </el-col>
-
-              <el-col :span="2">
-                <span style="height:50px;width:50px" class="font1">100</span>
-              </el-col>
+              <el-col :span="2"
+                ><span style="height:50px;width:50px;" class="font1"
+                  >20</span
+                ></el-col
+              >
+              <el-col :span="2"
+                ><span style="height:50px;width:50px" class="font1"
+                  >100</span
+                ></el-col
+              >
             </el-row>
             <div class="el-card__body font1">
               <router-link :to="{ name: 'article' }">
                 <el-button type="text font1">查看帖子</el-button>
               </router-link>
-              <el-divider></el-divider>
+              <el-divider />
               <router-link :to="{ name: 'like' }">
-                <el-button type="text font1">查看收藏</el-button></router-link
-              >
+                <el-button type="text font1">查看收藏</el-button>
+              </router-link>
             </div>
           </el-card>
         </el-aside>
@@ -138,7 +143,7 @@
             <div class="container noright">
               <div style="margin-bottom: 15px;">
                 <el-input placeholder="请输入内容">
-                  <el-button slot="append" icon="el-icon-search"></el-button>
+                  <el-button slot="append" icon="el-icon-search" />
                 </el-input>
               </div>
             </div>
@@ -146,7 +151,7 @@
           <el-main style="margin-top:50px">
             <transition name="el-zoom-in-top" mode="out-in">
               <keep-alive>
-                <router-view></router-view>
+                <router-view />
               </keep-alive>
             </transition>
           </el-main>
@@ -167,20 +172,22 @@ export default {
       size: 70
     }
   },
-  mounted () {
-
+  created () {
+    this.userId = this.$route.query.id
+  },
+  activated () {
     this.$axios.get('/api/admin/takeUserInfo', {
       params: {
-        'userId': this.$route.query.userId
+        'userId': this.$route.query.id
       }
     }).then(res => {
       let info = res.data.data;
-      if (info.authority == 1) {
+      if (info.authority === 1) {
         info.authority = '正常';
       } else {
         info.authority = '封号';
       }
-      if (info.gender == 1) {
+      if (info.gender === 1) {
         info.gender = '男';
       } else {
         info.gender = '女';
@@ -188,22 +195,19 @@ export default {
       this.info = info;
     }).catch(err => {
       console.log(err);
-    })
+    });
 
     console.log(this.$route);
   },
 
   methods: {
     goBack () {
-      this.$destroy();
-      this.$router.push('/userManage');
+      this.$router.back()
     },
     goArticle () {
-      //this.$router.push({ name: 'article', params: { userId: info.userId, articleId: 1 } });
       this.$router.push('articleDetail');
     },
     goLike () {
-      //this.$router.push({ name: 'like', params: { userId: info.userId, recipeId: 1 } });
       this.$router.push('likeDetail');
     },
   },
@@ -223,27 +227,33 @@ export default {
   width: 25%;
   min-width: 300px;
 }
+
 .nopadding {
   padding-left: 0px;
   padding-right: 0px;
   background-color: rgba(0, 0, 0, 0);
   border: 0px;
 }
+
 .imglayout {
   text-align: center;
   background: #07c4a8;
   padding-top: 40px;
 }
+
 .font1 {
   font-size: 18px;
   text-align: center;
 }
+
 .font2 {
   color: dimgrey;
 }
+
 .el-row {
   margin-bottom: 20px;
 }
+
 .el-col {
   border-radius: 4px;
   text-align: center;

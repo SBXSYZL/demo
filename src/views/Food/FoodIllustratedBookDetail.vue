@@ -1,5 +1,14 @@
 <template>
   <div class="container">
+    <div style="display: flex">
+      <div style="float: left;width: 90%">
+        <el-page-header @back="goBack"/>
+      </div>
+      <div style="float: right;width: 10%">
+        <el-button type="danger" @click="deleteFood">删除本文</el-button>
+      </div>
+    </div>
+
     <div :style="screen">
       <!--标题-->
       <h1>{{food.foodName}}</h1>
@@ -14,7 +23,7 @@
 
       </div>
       <hr style="margin-top: 5px;margin-bottom: 5px">
-      <div style="margin-top: 30px" v-html="food.content"/>
+      <div style="margin-top: 30px" v-loading="load" v-html="food.content"/>
 
 
     </div>
@@ -31,7 +40,7 @@
     data() {
       return {
         screen: {
-          height: 0
+          minHeight: 0
         },
         food: {
           foodId: -1,
@@ -40,18 +49,19 @@
           postUserName: '',
           postDate: '',
           content: ''
-        }
+        },
+        load: true
       }
     },
     methods: {
       getScreenHeight() {
-        this.screen.height = window.innerHeight - 100 + 'px'
+        this.screen.minHeight = window.innerHeight - 100 + 'px'
       },
       getFoodDetail() {
-        let id = this.$route.query.id;
+
         this.$axios.get('/api/admin/getFoodDetail', {
           params: {
-            foodId: id
+            foodId: this.food.foodId
           }
         }).then(res => {
           console.log(res)
@@ -65,9 +75,34 @@
         }).catch(err => {
           console.log(err)
         })
+        this.load = false;
+      },
+
+      goBack() {
+        this.$route.meta.isBack = true;
+        this.$router.back();
+
+      },
+      deleteFood() {
+        // this.axios.get('/api/admin/deleteFood', {
+        //   params: {
+        //     foodId: this.food.foodId
+        //   }
+        // }).then(res => {
+        //   console.log(res)
+        // }).catch(err => {
+        //
+        // })
       }
     },
-    created() {
+
+    activated() {
+      this.food.foodId = this.$route.query.id;
+      this.food.foodTypeName = '';
+      this.food.foodName = '';
+      this.food.postUserName = '';
+      this.food.postDate = '';
+      this.food.content = '';
       this.getFoodDetail();
       this.getScreenHeight();
     }

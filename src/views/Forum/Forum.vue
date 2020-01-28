@@ -149,7 +149,7 @@
       //获取审核通过文章列表
       getArticleList() {
         this.$axios
-          .get("/api/user/getArticleList?" + "pageNo=" + this.pageNo + "&pageSize=" + this.pageSize).then(res => {
+          .get("/api/admin/getArticleList?" + "pageNo=" + this.pageNo + "&pageSize=" + this.pageSize).then(res => {
           // console.log(res)
           this.A1 = res.data.data.list
         }).catch(err => {
@@ -159,7 +159,7 @@
       //获取未审核文章列表
       getReviewArticleList() {
         this.$axios
-          .get("/api/user/getReviewArticleList?" + "pageNo=" + this.pageNo + "&pageSize=" + this.pageSize).then(res => {
+          .get("/api/admin/getReviewArticleList?" + "pageNo=" + this.pageNo + "&pageSize=" + this.pageSize).then(res => {
           // console.log(res)
           this.A2 = res.data.data.list
         }).catch(err => {
@@ -169,7 +169,7 @@
       //获取驳回文章列表
       getTurnDownArticleList() {
         this.$axios
-          .get("/api/user/getTurnDownArticleList?" + "pageNo=" + this.pageNo + "&pageSize=" + this.pageSize).then(res => {
+          .get("/api/admin/getTurnDownArticleList?" + "pageNo=" + this.pageNo + "&pageSize=" + this.pageSize).then(res => {
           // console.log(res)
           this.A3 = res.data.data.list
         }).catch(err => {

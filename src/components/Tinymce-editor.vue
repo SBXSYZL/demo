@@ -57,7 +57,7 @@
           content_css: `${this.baseUrl}/tinymce/skins/content/default/content.css`,
           // skin_url: `${this.baseUrl}/tinymce/skins/ui/oxide-dark`, // 暗色系
           // content_css: `${this.baseUrl}/tinymce/skins/content/dark/content.css`, // 暗色系
-          height: 300,
+          height: 700,
           plugins: this.plugins,
           toolbar: this.toolbar,
           branding: false,

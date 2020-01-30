@@ -4,6 +4,7 @@
       <div style="width: 90%;">
         <h1 style="color: white;">食谱</h1>
       </div>
+
       <div>
         <el-button type="primary" icon="el-icon-edit" @click="writerecipeBook"
                    style="background-color: white;color: #000000;border-radius: 70px; border-color: white;">添加食谱
@@ -17,58 +18,180 @@
           <el-button slot="append" icon="el-icon-search" @click="getsearchRecipe"></el-button>
         </el-input>
       </div>
-      <!--标签-->
-      <div>
-        <el-table
-          :data="items"
-          style="width: 100%">
-          <el-table-column style="width: 80%;position: absolute;">
-            <template slot-scope="scope">
-              <div style="height: 200px; margin: 15px;" @click="itemClick">
-                <div style="width: 100%; ">
-                  <h1 >{{scope.row.title}}</h1>
-                  <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
-                  <div style="position: absolute;bottom: 0;">
-                    <p>{{scope.row.recipeDate}} </p>
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="成功审核" name="first">
+          <!--标签-->
+          <div>
+            <el-table
+              :data="items"
+              style="width: 100%" @row-click="itemClick">
+              <el-table-column style="width: 80%;position: absolute;">
+                <template slot-scope="scope">
+                  <div style="height: 200px; margin: 15px;">
+                    <div style="width: 100%; ">
+                      <h1 >{{scope.row.title}}</h1>
+                      <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
+                      <div style="position: absolute;bottom: 0;">
+                        <p>{{scope.row.recipeDate}} </p>
+                      </div>
+
+
+                    </div>
                   </div>
+                </template>
+              </el-table-column>
+              <el-table-column style="width: 180px" width="180px">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="deleteNews(scope.row)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <!--         删除的弹框-->
+            <el-dialog
+              title="是否确定删除"
+              :visible.sync="dialogVisible"
+              width="30%"
+              :before-close="handleClose"
+            >
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定
+            </el-button>
+          </span>
+            </el-dialog>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="pageNo"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total">
+            </el-pagination>
+
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="待审核" name="second">
+          <div>
+            <el-table
+              :data="items"
+              style="width: 100%" @row-click="itemClick">
+              <el-table-column style="width: 80%;position: absolute;">
+                <template slot-scope="scope">
+                  <div style="height: 200px; margin: 15px;">
+                    <div style="width: 100%; ">
+                      <h1 >{{scope.row.title}}</h1>
+                      <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
+                      <div style="position: absolute;bottom: 0;">
+                        <p>{{scope.row.recipeDate}} </p>
+                      </div>
 
 
-                </div>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column style="width: 180px" width="180px">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="danger"
-                @click="deleteNews(scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <!--         删除的弹框-->
-        <el-dialog
-          title="是否确定删除"
-          :visible.sync="dialogVisible"
-          width="30%"
-          :before-close="handleClose">
-              <span slot="footer" class="dialog-footer" v-model="title">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-               </span>
-        </el-dialog>
+                    </div>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column style="width: 180px" width="180px">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="deleteNews(scope.row)">通过审核</el-button>
+                </template>
+              </el-table-column>
+              <el-table-column style="width: 180px" width="180px">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="">驳回</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <!--         删除的弹框-->
+            <el-dialog
+              title="是否确定删除"
+              :visible.sync="dialogVisible"
+              width="30%"
+              :before-close="handleClose"
+            >
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定
+            </el-button>
+          </span>
+            </el-dialog>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="pageNo"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total">
+            </el-pagination>
 
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="pageNo"
-          :page-sizes="[10, 20, 30, 40]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-        </el-pagination>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="驳回" name="third">
+          <div>
+            <el-table
+              :data="items"
+              style="width: 100%" @row-click="itemClick">
+              <el-table-column style="width: 80%;position: absolute;">
+                <template slot-scope="scope">
+                  <div style="height: 200px; margin: 15px;">
+                    <div style="width: 100%; ">
+                      <h1 >{{scope.row.title}}</h1>
+                      <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
+                      <div style="position: absolute;bottom: 0;">
+                        <p>{{scope.row.recipeDate}} </p>
+                      </div>
 
-      </div>
+
+                    </div>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column style="width: 180px" width="180px">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="deleteNews(scope.row)">重新审核</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <!--         删除的弹框-->
+            <el-dialog
+              title="是否确定删除"
+              :visible.sync="dialogVisible"
+              width="30%"
+              :before-close="handleClose"
+            >
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定
+            </el-button>
+          </span>
+            </el-dialog>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="pageNo"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total">
+            </el-pagination>
+
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+
     </div>
 
 
@@ -80,6 +203,7 @@
     name: 'Recipe',
     data() {
       return {
+        activeName: 'second',
         items: [],
         searchKey: '',
         pageNo: 1,
@@ -89,6 +213,9 @@
       }
     },
     methods: {
+      handleClick(tab, event) {
+        console.log(tab, event);
+      },
       itemClick(obj) {
         console.log(obj)
         // this.$router.push('/Foodrecipedetails')
@@ -138,6 +265,34 @@
           console.log(err)
         })
       },
+      getReviewRecipeList() {
+        this.$axios.get('/api/admin/getReviewRecipeList', {
+          params: {
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
+          }
+        }).then(res => {
+          console.log(res)
+          this.items = res.data.data.list;
+          this.total = res.data.data.pageRows
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      getTurnDownRecipeList() {
+        this.$axios.get('/api/admin/getTurnDownRecipeList', {
+          params: {
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
+          }
+        }).then(res => {
+          console.log(res)
+          this.items = res.data.data.list;
+          this.total = res.data.data.pageRows
+        }).catch(err => {
+          console.log(err)
+        })
+      },
       getsearchRecipe() {
         this.pageNo = 1;
         this.$axios.get('/api/admin/searchRecipe', {
@@ -165,6 +320,7 @@
     },
     created() {
       this.getRecipeList()
+      this.getReviewRecipeList()
     }
   }
 </script>

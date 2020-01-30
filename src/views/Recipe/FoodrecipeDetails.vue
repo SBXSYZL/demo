@@ -1,8 +1,8 @@
 <template>
   <div class="container" style="height: 100%;position: absolute">
     <div>
+      <el-page-header @back="goBack"/>
       <el-button type="danger" @click="collectRecipe()">收藏</el-button>
-
     </div>
     <div style="height: auto">
       <p>食谱详情getRecipeDetail</p>
@@ -52,6 +52,9 @@
     },
 
     methods: {
+      goBack() {
+        this.$router.push('/Recipe');
+      },
       getRecipeDetail() {
         let id = this.$route.query.id;
         console.log(id)
@@ -114,7 +117,7 @@
 
 
     },
-    created() {
+    activated() {
       this.getRecipeDetail()
     }
 
@@ -123,17 +126,19 @@
 </script>
 
 <style scoped>
-  .recipeId{
+  .recipeId {
     display: flex;
 
   }
-  .p1{
-       size: 40px;
-       color: #1a1a1a;
-       font-weight: bold;
 
-     }
-  .p2{
+  .p1 {
+    size: 40px;
+    color: #1a1a1a;
+    font-weight: bold;
+
+  }
+
+  .p2 {
     size: 40px;
     color: #1a1a1a;
     font-weight: bold;

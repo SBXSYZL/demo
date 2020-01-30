@@ -48,7 +48,7 @@
         default: 'undo redo |  formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists image media table | removeformat'
       }
     },
-    data () {
+    data() {
       return {
         init: {
           language_url: `${this.baseUrl}/tinymce/langs/zh_CN.js`,
@@ -57,7 +57,7 @@
           content_css: `${this.baseUrl}/tinymce/skins/content/default/content.css`,
           // skin_url: `${this.baseUrl}/tinymce/skins/ui/oxide-dark`, // 暗色系
           // content_css: `${this.baseUrl}/tinymce/skins/content/dark/content.css`, // 暗色系
-          height: 300,
+          height: 700,
           plugins: this.plugins,
           toolbar: this.toolbar,
           branding: false,
@@ -72,25 +72,25 @@
         myValue: this.value
       }
     },
-    mounted () {
+    created() {
       tinymce.init({})
     },
     methods: {
       // 添加相关的事件，可用的事件参照文档=> https://github.com/tinymce/tinymce-vue => All available events
       // 需要什么事件可以自己增加
-      onClick (e) {
+      onClick(e) {
         this.$emit('onClick', e, tinymce)
       },
       // 可以添加一些自己的自定义事件，如清空内容
-      clear () {
+      clear() {
         this.myValue = ''
       }
     },
     watch: {
-      value (newValue) {
+      value(newValue) {
         this.myValue = newValue
       },
-      myValue (newValue) {
+      myValue(newValue) {
         this.$emit('input', newValue)
       }
     }

@@ -3,12 +3,12 @@
     <div>
       <div style="margin: 10px;">
         <p style="margin-bottom: 5px;">标题：</p>
-        <el-input v-model="inputTitle" placeholder="请输入标题"></el-input>
+        <el-input v-model="inputTitle" placeholder="请输入标题"/>
       </div>
 
       <div style="margin: 10px">
         <p style="margin-bottom: 5px;">摘要：</p>
-        <el-input type="textarea" :rows="4" v-model="inputDesc" placeholder="请输入摘要"></el-input>
+        <el-input type="textarea" :rows="4" v-model="inputDesc" placeholder="请输入摘要"/>
       </div>
 
 

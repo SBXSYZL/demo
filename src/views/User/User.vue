@@ -4,40 +4,44 @@
       <div style="width: 90%">
         <h3>用户管理</h3>
       </div>
-    </div>
-    <div v-if="turn" class="container">
       <el-button type="primary" round @click="roleClick">权限管理</el-button>
-      <br /><br />
+    </div>
+    <div class="container">
       <div style="margin-bottom: 15px;">
         <el-input placeholder="请输入内容" class="input-with-select">
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
       </div>
-      <el-table
-        :data="tableData"
-        :height="height"
-        border
-        style="width: 100%"
-        @row-click="infoClick"
-      >
-        <el-table-column prop="id" label="用户ID" width="180">
-        </el-table-column>
-        <el-table-column prop="name" label="昵称" width="180">
-        </el-table-column>
-        <el-table-column prop="sex" label="性别" width="180"> </el-table-column>
-        <el-table-column prop="address" label="所在城市" width="180">
-        </el-table-column>
-        <el-table-column prop="tel" label="手机号" width="180">
-        </el-table-column>
-        <el-table-column prop="credibility" label="信誉度"> </el-table-column>
-      </el-table>
-      <br /><br />
-      <el-pagination
-        background
-        layout="total, ->, prev, pager, next, jumper"
-        :total="1000"
-      >
-      </el-pagination>
+      <div v-loading="loading">
+        <el-table
+          :data="tableData"
+          :height="height"
+          border
+          style="width: 100%"
+          @row-click="infoClick"
+        >
+          <el-table-column prop="userId" label="用户ID" width="180">
+          </el-table-column>
+          <el-table-column prop="nickName" label="昵称" width="180">
+          </el-table-column>
+          <el-table-column prop="gender" label="性别" width="180">
+          </el-table-column>
+          <el-table-column prop="city" label="所在城市" width="180">
+          </el-table-column>
+          <el-table-column prop="tel" label="手机号" width="180">
+          </el-table-column>
+          <el-table-column prop="credibility" label="信誉度"></el-table-column>
+        </el-table>
+        <br />
+        <el-pagination
+          background
+          @current-change="handleCurrentChange"
+          :page-size="pageSize"
+          :total="rows"
+          layout="total, ->, prev, pager, next, jumper"
+        >
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -45,96 +49,51 @@
 export default {
   data () {
     return {
-      turn: true,
-      height: document.body.clientHeight - 450 <= 100 ? 100 : document.body.clientHeight - 450,
-      tableData: [{
-        id: '1',
-        name: '王小虎',
-        sex: '男',
-        address: '上海市',
-        tel: '12345678910',
-        credibility: 100
-      }, {
-        id: '2',
-        name: '王小虎',
-        sex: '男',
-        address: '上海市',
-        tel: '12345678910',
-        credibility: 100
-      }, {
-        id: '3',
-        name: '王小虎',
-        sex: '男',
-        address: '上海市',
-        tel: '12345678910',
-        credibility: 100
-      }, {
-        id: '4',
-        name: '王小虎',
-        sex: '男',
-        address: '上海市',
-        tel: '12345678910',
-        credibility: 100
-      }, {
-        id: '4',
-        name: '王小虎',
-        sex: '男',
-        address: '上海市',
-        tel: '12345678910',
-        credibility: 100
-      }, {
-        id: '5',
-        name: '王小虎',
-        sex: '男',
-        address: '上海市',
-        tel: '12345678910',
-        credibility: 100
-      }, {
-        id: '6',
-        name: '王小虎',
-        sex: '男',
-        address: '上海市',
-        tel: '12345678910',
-        credibility: 100
-      }, {
-        id: '1',
-        name: '王小虎',
-        sex: '男',
-        address: '上海市',
-        tel: '12345678910',
-        credibility: 100
-      }, {
-        id: '1',
-        name: '王小虎',
-        sex: '男',
-        address: '上海市',
-        tel: '12345678910',
-        credibility: 100
-      }, {
-        id: '1',
-        name: '王小虎',
-        sex: '男',
-        address: '上海市',
-        tel: '12345678910',
-        credibility: 100
-      }, {
-        id: '1',
-        name: '王小虎',
-        sex: '男',
-        address: '上海市',
-        tel: '12345678910',
-        credibility: 100
-      }]
+
+      rows: 1,
+      pageNo: 1,
+      pageSize: 1,
+      height: document.body.clientHeight - 400 <= 100 ? 100 : document.body.clientHeight - 400,
+      loading: true,
+      tableData: []
     }
   },
   mounted () {
-    window.onresize = () => {
-      return (() => {
-        if (document.body.scrollHeight - 450 >= 100) {
-          this.height = document.body.scrollHeight - 450;
+    this.$axios.get('/api/admin/getUserList', {
+      params: {
+        "pageNo": this.pageNo,
+        "pageSize": this.pageSize
+      },
+    }).then(res => {
+      setTimeout(() => {
+        this.loading = false;
 
+        let list = res.data.data.list
+        for (let i in list) {
+          if (list[i].gender == '1') {
+            list[i].gender = '男';
+          } else if (list[i].gender == '0') {
+            list[i].gender = '女';
+          }
         }
-        else {
+
+        this.rows = res.data.data.pageCount;
+        this.tableData = list;
+      }, 500)
+
+    }).catch(err => {
+      setTimeout(() => {
+        this.loading = false;
+      }, 500)
+      //console.log(err);
+    })
+
+    window.onresize = () => {
+
+      return (() => {
+        if (document.body.scrollHeight - 400 >= 100) {
+          this.height = document.body.scrollHeight - 400;
+        } else {
           this.height = 100;
         }
       })()
@@ -150,16 +109,45 @@ export default {
           that.timer = false
         }, 400)
       }
-    }
+    },
   },
   methods: {
     roleClick () {
-      this.$destroy();
-      this.$router.push('/roleManage');
+
+      this.$router.push('roleManage');
     },
     infoClick (row, event, column) {
-      this.$router.push('/userInfo');
+      this.$router.push({ name: 'userInfo', query: { userId: row.userId } });
+      //this.$router.push('/userInfo/' + row.userId);
     },
+    handleCurrentChange (val) {
+      this.loading = true;
+      this.$axios.get('/api/admin/getUserList', {
+        params: {
+          "pageNo": val,
+          "pageSize": this.pageSize
+        }
+      }).then(res => {
+        setTimeout(() => {
+          this.loading = false;
+          let list = res.data.data.list
+          for (let i in list) {
+            if (list[i].gender === '1') {
+              list[i].gender = '男';
+            } else if (list[i].gender === '0') {
+              list[i].gender = '女';
+            }
+          }
+          this.rows = res.data.data.pageRows;
+          this.tableData = list;
+        }, 200)
+      }).catch(err => {
+        setTimeout(() => {
+          this.loading = false;
+        }, 200)
+        //console.log(err);
+      })
+    }
   }
 }
 </script>

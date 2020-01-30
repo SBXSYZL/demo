@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div>
-      <div>
+      <div style="float: left;width: 100%">
+        <el-page-header @back="goBack"/>
+      </div>
+      <div style="padding-top: 50px">
         <p style="margin-bottom: 5px;">标题：</p>
         <el-input v-model="inputTitle" placeholder="请输入标题" style="width:50%"/>
       </div>
@@ -38,41 +41,43 @@
         <el-radio-button :label="typeItem.articleTypeId">{{typeItem.articleTypeName}}</el-radio-button>
       </el-radio-group>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="releaseConfirm">确 定</el-button>
-  </span>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="releaseConfirm">确 定</el-button>
+      </span>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
   import TinymceEditor from '../../components/Tinymce-editor'
-  import QS from 'qs'
+  import VDistpicker from 'v-distpicker'
 
   export default {
     name: 'WriteForum',
     components: {TinymceEditor},
     data() {
       return {
-        options2: [{
-          label: '江苏',
-          cities: []
-        }, {
-          label: '浙江',
-          cities: []
-        }],
+        options2: [
+          {
+            label: '江苏',
+            cities: []
+          },
+          {
+            label: '浙江',
+            cities: []
+          }],
         props: {
           value: 'label',
           children: 'cities'
         },
         inputTitle: '',
         article: '',
-        getArea:'',
+        getArea: '',
         disabled: false,
         articleTypeId: '',
         articleTypes: [],
-        dialogVisible: false
+        dialogVisible: false,
+        articleTypeName: ''
       };
     },
     methods: {
@@ -111,7 +116,9 @@
             message: '已取消清除'
           })
         })
-
+      },
+      goBack() {
+        this.$router.push('/Forum');
       },
       release() {
         this.dialogVisible = true;
@@ -128,12 +135,14 @@
             params.append("title", this.inputTitle);
             params.append("postArea", this.getArea);
             params.append("articleTypeId", this.articleTypeId);
-            params.append("article", this.article)
-            this.$axios({
-              method: 'post',
-              url: '/api/admin/writeArticle',
-              data: params
-            }).then(res => {
+            params.append("article", this.article);
+            this.$axios(
+              {
+                method: 'post',
+                url: '/api/admin/writeArticle',
+                data: params
+              }
+            ).then(res => {
               console.log(res);
               if (res.data.status === 'success' && res.data.data === 'success') {
                 this.$message({

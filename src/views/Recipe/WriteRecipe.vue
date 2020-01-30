@@ -54,7 +54,7 @@
       return {
         inputTitle: '',
         inputDesc: '',
-        inputContent: '',
+        content: '',
         disabled: false,
         typeId: '',
         recipeTypes: [],
@@ -96,7 +96,7 @@
       },
       releaseConfirm() {
         console.log(123)
-        if (this.typeId != null && this.typeId !== '' ) {
+        if (this.typeId != null && this.typeId !== '') {
           this.$confirm('确定上传当前内容？', '验证', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -106,7 +106,7 @@
             params.append("title", this.inputTitle);
             params.append("recipeDesc", this.inputDesc);
             params.append("recipeTypeId", this.typeId);
-            params.append("content", this.inputContent)
+            params.append("content", this.content)
             this.$axios({
               method: 'post',
               url: '/api/admin/writeRecipe',

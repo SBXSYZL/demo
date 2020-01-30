@@ -1,58 +1,63 @@
 <template>
-  <div>
-    <div class="container" style="display: flex">
+  <div :style="getScreenHeight">
+    <div class="container" style="display: flex;min-height: 20%">
       <div style="width: 90%">
         <h3>食品图鉴</h3>
       </div>
-      <div>
-
+      <div style="display:flex">
+        <el-button type="primary" plain @click="foodTypeManage">食品类型管理</el-button>
         <el-button type="primary" icon="el-icon-edit" @click="writeIllustratedBook">添加图鉴</el-button>
       </div>
-
     </div>
-    <div class="container">
+    <div class="container" style="min-height: 80%">
+      <!--搜索框-->
       <div style="margin-bottom: 15px;">
-        <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入内容" v-model="searchStatus.searchKey" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="search"/>
         </el-input>
       </div>
-      <!--标签-->
-      <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-        <el-tab-pane v-for="label in labels" :key="label.id" :label="label.label" :name="label.label"></el-tab-pane>
-        <div class="container">
-          <!--列表-->
-          <el-row>
-            <el-col :span="5" v-for="item in items" :key="item.id" :offset="1">
-              <el-card :body-style="{ padding: '0px' ,margin:'10px'}">
-
-                <img :src="item.img" class="image card-img">
-                <div style="padding: 14px;">
-                  <span>{{item.title}}</span>
-                  <div>
-                    <p class="line-limit-length">{{item.summary}}</p>
-
-                    <el-button type="text" class="button" @click="itemClick(item.id)">了解详情
-                    </el-button>
-                  </div>
+      <!--选项-->
+      <div style="display: flex;margin-left: 85%">
+        <el-button style="margin-right:10px " @click="refresh">刷新</el-button>
+        <el-select v-model="params.foodTypeId" placeholder="请选择" @change="selectChange">
+          <el-option
+            v-for="item in foodTypes"
+            :key="item.foodTypeId"
+            :label="item.foodTypeName"
+            :value="item.foodTypeId"
+            @change="getFoodList">
+          </el-option>
+        </el-select>
+      </div>
+      <hr style="margin: 5px">
+      <!--卡片-->
+      <div v-loading="load" style="margin-top: 10px;">
+        <el-row>
+          <el-col :span="5" v-for="item in foodList" :key="item.foodId" style="margin: 10px">
+            <el-card :body-style="{ padding: '0px',minHeight:'300px',marginTop:'5px',margin:'5px'}"
+                     @click.native="itemClick(item.foodId)">
+              <img :src=item.foodPreviewImg class="image" height="220" alt="">
+              <div style="padding: 14px;">
+                <span>{{item.foodName}}</span>
+                <div class="bottom clearfix">
+                  <time class="time line-limit-length">{{item.content}}</time>
                 </div>
-              </el-card>
-            </el-col>
-          </el-row>
-        </div>
-        <!--分页-->
-        <div class="block">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
-          </el-pagination>
-        </div>
-      </el-tabs>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
 
+        <el-pagination
+          style="margin-top: 20px"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="params.pageNo"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="params.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -62,108 +67,139 @@
     name: 'FoodIllustratedBook',
     data() {
       return {
-        items: [
-          {
-            id: 'a',
-            img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
-            title: '枸杞',
-            summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
-          },
-          {
-            id: 'b',
-            img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
-            title: '枸杞',
-            summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
-
-          },
-          {
-            id: 'c',
-            img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
-            title: '枸杞',
-            summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
-          },
-          {
-            id: 'd',
-            img: 'https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=520577fdf41fbe090853cb460a096756/cdbf6c81800a19d895f0cc8e35fa828ba71e464d.jpg',
-            title: '枸杞',
-            summary: '枸杞属（Lycium）来源于希腊语lykion，指的...'
-          }
-
-        ],
-        labels: [
-          {
-            id: 11,
-            label: '肉禽蛋类',
-            name: '肉禽蛋类'
-          },
-          {
-            id: 12,
-            label: '水产类',
-            name: '水产类'
-          },
-          {
-            id: 13,
-            label: '蔬菜类',
-            name: '蔬菜类'
-          },
-          {
-            id: 14,
-            label: '豆类、豆制品',
-            name: '豆类、豆制品'
-          },
-          {
-            id: 15,
-            label: '五谷杂粮、面类',
-            name: '五谷杂粮、面类'
-          },
-          {
-            id: 16,
-            label: '果品类',
-            name: '果品类'
-          },
-          {
-            id: 17,
-            label: '药食两用类',
-            name: '药食两用类'
-          },
-          {
-            id: 18,
-            label: '调味品、油脂',
-            name: '调味品、油脂'
-          },
-          {
-            id: 19,
-            label: '其他',
-            name: '其他'
-          }
-
-        ],
-        activeName2: '肉禽蛋类',
-        currentPage4: 1,
-        input5: ''
+        screen: {
+          height: 0
+        },
+        searchStatus: {
+          isSearch: false,
+          searchKey: ''
+        },
+        foodTypes: [],
+        total: 0,
+        foodList: [],
+        load: true,
+        params: {
+          foodTypeId: -1,
+          pageNo: 1,
+          pageSize: 10,
+          searchKey: ''
+        }
       }
     },
     methods: {
-      itemClick(key) {
-        this.$router.push('/foodIllustratedBookDetail')
+      //获取屏幕高度
+      getScreenHeight() {
+        this.screen.height = window.innerHeight - 50 + 'px';
       },
-      handleClick(tab, event) {
-        console.log(tab, event)
+      //卡片点击事件
+      itemClick(id) {
+        this.$router.push({
+          path: '/foodIllustratedBookDetail',
+          query: {
+            id: id
+          },
+          meta: {
+            keepAlive: false
+          }
+        })
       },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`)
+      //页面数据量变化事件
+      handleSizeChange(pageSize) {
+        this.params.pageNo = 1;
+        this.params.pageSize = pageSize;
+        this.getFoodList()
       },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`)
+      //页面变化事件
+      handleCurrentChange(pageNo) {
+        this.params.pageNo = pageNo;
+        this.getFoodList()
       },
+      //编写食品图鉴
       writeIllustratedBook() {
-        this.$router.push('/write')
+        this.$router.push('/writeFood')
+      },
+      //获取所有食品类型
+      getFoodTypes() {
+        this.$axios.get('/api/admin/getFoodTypes')
+          .then(res => {
+            this.foodTypes = res.data.data;
+            if (this.foodTypes.length > 0) {
+              this.params.foodTypeId = this.foodTypes[0].foodTypeId;
+              this.getFoodList();
+            } else {
+              this.load = false
+            }
+          })
+      },
+      //获取食品图鉴列表
+      getFoodList() {
+        this.load = true;
+        let url = '';
+        if (!this.searchStatus.isSearch) {
+          url = '/api/admin/getFoodList';
+        } else {
+          url = '/api/admin/searchFoodList'
+          this.params.searchKey = this.searchStatus.searchKey;
+        }
+        this.$axios.get(url, {params: this.params})
+          .then(res => {
+            // console.log(res);
+            this.foodList = res.data.data.list;
+            //去除html标记
+            for (let i in this.foodList) {
+              this.foodList[i].content = this.foodList[i].content.replace(/<\/?.+?\/?>/g, "")
+            }
+            this.total = res.data.data.pageRows;
+            this.load = false;
+          })
+          .catch(err => {
+            this.load = false;
+            this.$message.error('加载失败...');
+          })
+      },
+      //搜索
+      search() {
+
+        if (this.searchStatus.searchKey.length > 0) {
+          this.searchStatus.isSearch = true;
+          this.getFoodList();
+        } else {
+          this.$notify({
+            title: '警告',
+            message: '请输入搜索内容',
+            type: 'warning',
+            duration: 1000
+          });
+        }
+
+      },
+      //选项切换
+      selectChange() {
+        this.getFoodList();
+      },
+      //刷新页面
+      refresh() {
+        this.getFoodList();
+      },
+      foodTypeManage() {
+        this.$router.push('/foodTypeManage')
       }
+    },
+    created() {
+      this.getFoodTypes();
+      this.getScreenHeight();
     }
+
   }
 </script>
 
 <style scoped>
+  .line-limit-length {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .time {
     font-size: 13px;
     color: #999;

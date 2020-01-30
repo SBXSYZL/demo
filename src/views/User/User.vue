@@ -117,7 +117,7 @@ export default {
       this.$router.push('roleManage');
     },
     infoClick (row, event, column) {
-      this.$router.push({ name: 'userInfo', query: { userId: row.userId } });
+      this.$router.push({ path: '/userInfo', query: { id: row.userId } });
       //this.$router.push('/userInfo/' + row.userId);
     },
     handleCurrentChange (val) {

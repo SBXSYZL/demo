@@ -128,11 +128,13 @@
               >
             </el-row>
             <div class="el-card__body font1">
-              <router-link :to="{ name: 'article' }">
+              <router-link
+                :to="{ path: '/articleDetail', query: { id: userId } }"
+              >
                 <el-button type="text font1">查看帖子</el-button>
               </router-link>
               <el-divider />
-              <router-link :to="{ name: 'like' }">
+              <router-link :to="{ path: '/likeDetail', query: { id: userId } }">
                 <el-button type="text font1">查看收藏</el-button>
               </router-link>
             </div>
@@ -150,9 +152,7 @@
           </el-header>
           <el-main style="margin-top:50px">
             <transition name="el-zoom-in-top" mode="out-in">
-              <keep-alive>
-                <router-view />
-              </keep-alive>
+              <router-view />
             </transition>
           </el-main>
         </el-container>
@@ -168,19 +168,19 @@ export default {
       openInfo: false,
       turn1: true,
       turn2: false,
+      userId: -1,
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       size: 70
     }
   },
-  created () {
-    this.userId = this.$route.query.id
-  },
   activated () {
+    this.userId = this.$route.query.id;
     this.$axios.get('/api/admin/takeUserInfo', {
       params: {
-        'userId': this.$route.query.id
+        'userId': this.userId
       }
     }).then(res => {
+
       let info = res.data.data;
       if (info.authority === 1) {
         info.authority = '正常';
@@ -196,20 +196,12 @@ export default {
     }).catch(err => {
       console.log(err);
     });
-
-    console.log(this.$route);
   },
 
   methods: {
     goBack () {
-      this.$router.back()
-    },
-    goArticle () {
-      this.$router.push('articleDetail');
-    },
-    goLike () {
-      this.$router.push('likeDetail');
-    },
+      this.$router.push('/userManage');
+    }
   },
 }
 </script>

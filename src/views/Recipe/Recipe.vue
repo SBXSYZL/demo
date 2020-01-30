@@ -18,8 +18,8 @@
           <el-button slot="append" icon="el-icon-search" @click="getsearchRecipe"></el-button>
         </el-input>
       </div>
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="成功审核" name="first" @click="sucess">
+      <el-tabs v-model="activeName"  @tab-click="getLists">
+        <el-tab-pane label="成功审核" name="first" >
           <!--标签-->
           <div>
             <el-table
@@ -74,7 +74,7 @@
 
           </div>
         </el-tab-pane>
-        <el-tab-pane label="待审核" name="second" @click="daishenhe">
+        <el-tab-pane label="待审核" name="second">
           <div>
             <el-table
               :data="items"
@@ -136,7 +136,7 @@
 
           </div>
         </el-tab-pane>
-        <el-tab-pane label="驳回" name="third" @click="Bohui">
+        <el-tab-pane label="驳回" name="third">
           <div>
             <el-table
               :data="items"
@@ -242,16 +242,7 @@
         this.$router.push('/WriteRecipe')
       },
       handleClick() {
-        
-      },
-      sucess() {
-        this.getRecipeList()
-      },
-      daishenhe() {
-        this.getReviewRecipeList()
-      },
-      Bohui() {
-        this.getTurnDownRecipeList()
+
       },
       handleClose() {
         this.dialogVisible = false;
@@ -260,7 +251,17 @@
         this.dialogVisible = true;
         this.items.splice(row, 1)
       },
-
+      //Tabs切换点击事件
+      getLists (tab, event) {
+        if (tab.name == "first") {
+          this.getRecipeList();
+        }
+        else if (tab.name == "second") {
+          this.getReviewRecipeList();
+        } else {
+          this.getTurnDownRecipeList();
+        }
+      },
       getRecipeList() {
         this.$axios.get('/api/admin/getRecipeList', {
           params: {

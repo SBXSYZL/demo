@@ -19,7 +19,7 @@
         </el-input>
       </div>
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="成功审核" name="first">
+        <el-tab-pane label="成功审核" name="first" @click="sucess">
           <!--标签-->
           <div>
             <el-table
@@ -74,7 +74,7 @@
 
           </div>
         </el-tab-pane>
-        <el-tab-pane label="待审核" name="second">
+        <el-tab-pane label="待审核" name="second" @click="daishenhe">
           <div>
             <el-table
               :data="items"
@@ -136,7 +136,7 @@
 
           </div>
         </el-tab-pane>
-        <el-tab-pane label="驳回" name="third">
+        <el-tab-pane label="驳回" name="third" @click="Bohui">
           <div>
             <el-table
               :data="items"
@@ -243,6 +243,15 @@
       },
       handleClick() {
       },
+      sucess() {
+        this.getRecipeList()
+      },
+      daishenhe() {
+        this.getReviewRecipeList()
+      },
+      Bohui() {
+        this.getTurnDownRecipeList()
+      },
       handleClose() {
         this.dialogVisible = false;
       },
@@ -321,6 +330,7 @@
     created() {
       this.getRecipeList()
       this.getReviewRecipeList()
+      this.getTurnDownRecipeList()
     }
   }
 </script>

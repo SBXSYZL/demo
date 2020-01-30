@@ -8,7 +8,6 @@
         <el-button type="primary" plain @click="foodTypeManage">食品类型管理</el-button>
         <el-button type="primary" icon="el-icon-edit" @click="writeIllustratedBook">添加图鉴</el-button>
       </div>
-
     </div>
     <div class="container" style="min-height: 80%">
       <!--搜索框-->
@@ -37,7 +36,7 @@
           <el-col :span="5" v-for="item in foodList" :key="item.foodId" style="margin: 10px">
             <el-card :body-style="{ padding: '0px',minHeight:'300px',marginTop:'5px',margin:'5px'}"
                      @click.native="itemClick(item.foodId)">
-              <img :src=item.foodPreviewImg class="image" style="height: 220px">
+              <img :src=item.foodPreviewImg class="image" height="220" alt="">
               <div style="padding: 14px;">
                 <span>{{item.foodName}}</span>
                 <div class="bottom clearfix">
@@ -127,13 +126,14 @@
             if (this.foodTypes.length > 0) {
               this.params.foodTypeId = this.foodTypes[0].foodTypeId;
               this.getFoodList();
-            }else{
-              this.load=false
+            } else {
+              this.load = false
             }
           })
       },
       //获取食品图鉴列表
       getFoodList() {
+        this.load = true;
         let url = '';
         if (!this.searchStatus.isSearch) {
           url = '/api/admin/getFoodList';
@@ -179,7 +179,7 @@
       },
       //刷新页面
       refresh() {
-        this.$router.go(0)
+        this.getFoodList();
       },
       foodTypeManage() {
         this.$router.push('/foodTypeManage')

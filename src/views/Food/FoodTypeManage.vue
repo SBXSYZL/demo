@@ -1,7 +1,14 @@
 <template>
   <div>
+
     <div class="container">
-      <h3>食品类型管理</h3>
+      <div style="float: left;width: 100%;margin-bottom: 10px">
+        <el-page-header @back="goBack"/>
+      </div>
+      <div style="margin-top: 15px">
+        <h3>食品类型管理</h3>
+      </div>
+
     </div>
     <div class="container">
       <div style="float: right">
@@ -86,10 +93,10 @@
     },
     methods: {
       handleEdit(index, row) {
-        console.log(index, row);
+        // console.log(index, row);
       },
       handleDelete(index, row) {
-        console.log(row)
+        // console.log(row)
         this.dialogVisible = true;
         this.willDeleteId = row.foodTypeId;
       },
@@ -122,7 +129,7 @@
       getFoodTypes() {
         this.$axios.get('/api/admin/getFoodTypes')
           .then(res => {
-            console.log(res)
+            // console.log(res)
             this.foodTypes = res.data.data;
           })
       },
@@ -167,6 +174,9 @@
       cancleAddFoodType() {
         this.form.foodTypeName = '';
         this.dialogFormVisible = false
+      },
+      goBack() {
+        this.$router.back();
       }
     },
     activated() {

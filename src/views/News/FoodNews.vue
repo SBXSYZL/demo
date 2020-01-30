@@ -45,9 +45,9 @@
           </el-table-column>
 
           <el-table-column style="width: 180px" width="180px">
-            <template>
-              <el-button size="mini" type="danger" @click.stop="deleteNews"
-              >删除
+            <template slot-scope="scope">
+              <el-button size="mini" type="danger"
+                         @click.stop="DeleteNews(scope.$index,scope.row)">删除
               </el-button
               >
             </template>
@@ -61,11 +61,10 @@
           width="30%"
           :before-close="handleClose"
         >
+          <span>确定删除本条新闻？</span>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="delectNewsConfirm(items.row)"
-            >确 定</el-button
-            >
+            <el-button @click="CancleDelete">取 消</el-button>
+            <el-button type="primary" @click="deleteNewsConfirm">确 定</el-button>
           </span>
         </el-dialog>
       </div>
@@ -97,18 +96,22 @@
         pageSize: 10,
         searchKey: '',
         dialogVisible: false,
-        title: ''
+        title: '',
+        WillDeleteId:' ',
+        dialogFormVisible: false
       }
     },
     methods: {
       itemClick(obj) {
-        // this.$router.push('/Foodrecipedetails')
         this.$router.push({
           path: '/NewsDetails',
           query: {
             id: obj.newsId
           }
         })
+      },
+      handleClose(done) {
+        this.dialogVisible = false;
       },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`)
@@ -124,12 +127,34 @@
       handleClose() {
         this.dialogVisible = false;
       },
-      deleteNews(row) {
+      DeleteNews(index,row) {
         this.dialogVisible = true;
-        // this.items.splice(row, 1)
+        this.WillDeleteId=row.newsId;
       },
-      delectNewsConfirm(row) {
-        this.items.splice(row, 1)
+      deleteNewsConfirm() {
+        this.$axios.get('/api/admin/deleteNews',{
+          params: {
+            NewsId: this.willDeleteId
+          }
+        }).then(res => {
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+            this.getFoodTypes()
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(err => {
+          this.$message.error(err.data.data.errMsg);
+        });
+        this.dialogVisible = false;
+        this.willDeleteId = -1
+      },
+      CancleDelete(){
+        this.dialogVisible=false;
+        this.willDeleteId=-1
       },
       getNewsList() {
         this.$axios.get('/api/user/getNewsList', {

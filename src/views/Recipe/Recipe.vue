@@ -19,7 +19,7 @@
         </el-input>
       </div>
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="成功审核" name="first">
+        <el-tab-pane label="成功审核" name="first" @click="sucess">
           <!--标签-->
           <div>
             <el-table
@@ -74,7 +74,7 @@
 
           </div>
         </el-tab-pane>
-        <el-tab-pane label="待审核" name="second">
+        <el-tab-pane label="待审核" name="second" @click="daishenhe">
           <div>
             <el-table
               :data="items"
@@ -99,7 +99,15 @@
                   <el-button
                     size="mini"
                     type="danger"
-                    @click="deleteNews(scope.row)">删除</el-button>
+                    @click="deleteNews(scope.row)">通过审核</el-button>
+                </template>
+              </el-table-column>
+              <el-table-column style="width: 180px" width="180px">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="">驳回</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -128,7 +136,60 @@
 
           </div>
         </el-tab-pane>
-        <el-tab-pane label="驳回" name="third">驳回</el-tab-pane>
+        <el-tab-pane label="驳回" name="third" @click="Bohui">
+          <div>
+            <el-table
+              :data="items"
+              style="width: 100%" @row-click="itemClick">
+              <el-table-column style="width: 80%;position: absolute;">
+                <template slot-scope="scope">
+                  <div style="height: 200px; margin: 15px;">
+                    <div style="width: 100%; ">
+                      <h1 >{{scope.row.title}}</h1>
+                      <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
+                      <div style="position: absolute;bottom: 0;">
+                        <p>{{scope.row.recipeDate}} </p>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column style="width: 180px" width="180px">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="deleteNews(scope.row)">重新审核</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <!--         删除的弹框-->
+            <el-dialog
+              title="是否确定删除"
+              :visible.sync="dialogVisible"
+              width="30%"
+              :before-close="handleClose"
+            >
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定
+            </el-button>
+          </span>
+            </el-dialog>
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="pageNo"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total">
+            </el-pagination>
+
+          </div>
+        </el-tab-pane>
       </el-tabs>
 
     </div>
@@ -182,6 +243,15 @@
       },
       handleClick() {
       },
+      sucess() {
+        this.getRecipeList()
+      },
+      daishenhe() {
+        this.getReviewRecipeList()
+      },
+      Bohui() {
+        this.getTurnDownRecipeList()
+      },
       handleClose() {
         this.dialogVisible = false;
       },
@@ -206,6 +276,20 @@
       },
       getReviewRecipeList() {
         this.$axios.get('/api/admin/getReviewRecipeList', {
+          params: {
+            pageNo: this.pageNo,
+            pageSize: this.pageSize
+          }
+        }).then(res => {
+          console.log(res)
+          this.items = res.data.data.list;
+          this.total = res.data.data.pageRows
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      getTurnDownRecipeList() {
+        this.$axios.get('/api/admin/getTurnDownRecipeList', {
           params: {
             pageNo: this.pageNo,
             pageSize: this.pageSize
@@ -246,6 +330,7 @@
     created() {
       this.getRecipeList()
       this.getReviewRecipeList()
+      this.getTurnDownRecipeList()
     }
   }
 </script>

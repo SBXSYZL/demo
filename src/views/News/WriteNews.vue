@@ -121,17 +121,10 @@
           this.dialogVisible = false;
         }
       },
-      // getRecipeTypes() {
-      //   this.$axios.get('/api/admin/getRecipeTypes')
-      //     .then(res => {
-      //       console.log(res);
-      //       this.recipeTypes = res.data.data;
-      //     })
-      // },
       writeNews() {
         this.$axios.get('/api/admin/writeNews', {
           params: {
-            newsId: this.NewsDetail.newsId
+            newsId: this.NewsDetails.newsId
           }
         }).then(res => {
           let obj = res.data.data

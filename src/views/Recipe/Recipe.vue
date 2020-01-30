@@ -15,7 +15,7 @@
     <div class="container" style="">
       <div style="margin-bottom: 15px;">
         <el-input placeholder="请输入内容" v-model="searchKey" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search" @click="getsearchRecipe"></el-button>
+          <el-button slot="append" icon="el-icon-search" @click="getsearchRecipe"/>
         </el-input>
       </div>
       <el-tabs v-model="activeName" @tab-click="handleClick">

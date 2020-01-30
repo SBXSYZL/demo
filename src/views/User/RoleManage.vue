@@ -10,7 +10,7 @@
         </el-input>
       </div>
       <br /><br />
-      <el-table  :data="tableData" :height="height" border style="width: 100%">
+      <el-table :data="tableData" :height="height" border style="width: 100%">
         <el-table-column prop="id" label="用户ID" width="180"></el-table-column>
         <el-table-column prop="name" label="昵称" width="180">
         </el-table-column>
@@ -19,17 +19,26 @@
         </el-table-column>
         <el-table-column prop="credibility" label="信誉度" width="180" sortable>
         </el-table-column>
-        <el-table-column prop="status" label="状态" :filters="[{ text: '正常', value: '正常' }, { text: '封号', value: '封号' }]"
-        :filter-method="filterTag" filter-placement="bottom-end">
+        <el-table-column
+          prop="status"
+          label="状态"
+          :filters="[
+            { text: '正常', value: '正常' },
+            { text: '封号', value: '封号' }
+          ]"
+          :filter-method="filterTag"
+          filter-placement="bottom-end"
+        >
         </el-table-column>
-        <el-table-column prop="status" label="操作" >
+        <el-table-column prop="status" label="操作">
           <template slot-scope="scope">
             <el-button
               size="mini"
               :type="scope.row.tag === '封禁' ? 'danger' : 'success'"
               @click="handleDelete(scope.$index, scope.row)"
               disable-transitions
-              >{{ scope.row.tag }}</el-button>
+              >{{ scope.row.tag }}</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -44,11 +53,12 @@
   </div>
 </template>
 <script>
+
 export default {
   data () {
     return {
       turn: true,
-      height: document.body.scrollHeight - 400,
+      height: document.body.clientHeight - 450 <= 100 ? 100 : document.body.clientHeight - 450,
       tableData: [{
         id: '1',
         name: '王小虎',
@@ -143,21 +153,68 @@ export default {
   mounted () {
     window.onresize = () => {
       return (() => {
-        this.height = document.body.scrollHeight - 450;
-        console.log(this.height);
+        if (document.body.scrollHeight - 450 >= 100) {
+          this.height = document.body.scrollHeight - 450;
+        }
+        else {
+          this.height = 100;
+        }
       })()
+    }
+  },
+  watch: {
+    height (val) {
+      if (!this.timer) {
+        this.height = val
+        this.timer = true
+        let that = this
+        setTimeout(function () {
+          that.timer = false
+        }, 400)
+      }
     }
   },
   methods: {
     goBack () {
+      this.$destroy();
       this.$router.push('/userManage');
     },
     handleDelete (index, row) {
+      this.open();
       console.log(index, row);
     },
-    filterTag(value, row) {
-        return row.status === value;
+    filterTag (value, row) {
+      return row.status === value;
     },
+    success () {
+      this.$notify({
+        title: '成功',
+        message: '本次操作xxxx秒后生效',
+        type: 'success'
+      });
+    },
+    error () {
+      this.$notify.error({
+        title: '错误',
+        message: '发现未知错误'
+      });
+    },
+    open () {
+      this.$confirm('即将对用户进行封禁操作, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.success();
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          offset: 50,
+          type: 'info',
+          message: '已取消'
+        });
+      });
+    }
   }
 }
 </script>

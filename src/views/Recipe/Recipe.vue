@@ -242,6 +242,7 @@
         this.$router.push('/WriteRecipe')
       },
       handleClick() {
+        
       },
       sucess() {
         this.getRecipeList()

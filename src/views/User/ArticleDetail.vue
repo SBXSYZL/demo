@@ -134,7 +134,7 @@ export default {
         }
       ],
       empty: false,
-      count: 1,
+      count: 0,
       total: 1,
       loading: false,
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -143,7 +143,7 @@ export default {
   },
   computed: {
     noMore () {
-      return this.count >= this.total
+      return this.count == 0 ? false : this.count >= this.total;
     },
     disabled () {
       return this.loading || this.noMore
@@ -152,7 +152,7 @@ export default {
   created () {
     console.log(this.$route);
     this.userId = this.$route.query.id;
-    this.$axios.get('http://localhost:8088/admin/getUserArticle', {
+    this.$axios.get('/api/admin/getUserArticle', {
       params: {
         "pageNo": this.pageNo,
         "pageSize": this.pageSize,
@@ -162,10 +162,14 @@ export default {
       let articlelist = res.data.data.list;
       this.articlelist = articlelist;
       this.total = res.data.data.pageRows;
-      if (this.total != 1) {
+      if (this.total > 1) {
         this.count = 2;
       }
-
+      else {
+        if (this.total == 1) {
+          this.count = 1;
+        }
+      }
     }).catch(err => {
       console.log(err);
     })
@@ -173,9 +177,8 @@ export default {
   methods: {
 
     load () {
-      this.loading = true
       this.pageNo += 1;
-      this.$axios.get('http://localhost:8088/admin/getUserArticle', {
+      this.$axios.get('/api/admin/getUserArticle', {
         params: {
           "pageNo": this.pageNo,
           "pageSize": this.pageSize,
@@ -183,9 +186,13 @@ export default {
         }
       }).then(res => {
         let articlelist = res.data.data.list;
-        for (let i in articlelist) {
-          this.articlelist.push(articlelist[i]);
+        if (res.data.data.pageRows != 1) {
+          this.loading = true;
+          for (let i in articlelist) {
+            this.articlelist.push(articlelist[i]);
+          }
         }
+
       }).catch(err => {
         console.log(err);
       })
@@ -197,8 +204,13 @@ export default {
         else {
           this.count += 2;
         }
+        if (this.count == 0) {
+          this.empty = true;
+        }
         this.loading = false
       }, 2000)
+
+
     }
   }
 }

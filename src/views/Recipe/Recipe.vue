@@ -21,12 +21,12 @@
       <div>
         <el-table
           :data="items"
-          style="width: 100%" @row-click="itemClick">
+          style="width: 100%">
           <el-table-column style="width: 80%;position: absolute;">
             <template slot-scope="scope">
-              <div style="height: 200px; margin: 15px;">
+              <div style="height: 200px; margin: 15px;" @click="itemClick">
                 <div style="width: 100%; ">
-                  <h1>{{scope.row.title}}</h1>
+                  <h1 >{{scope.row.title}}</h1>
                   <div style="margin-top:20px;">{{scope.row.recipeDesc}}</div>
                   <div style="position: absolute;bottom: 0;">
                     <p>{{scope.row.recipeDate}} </p>
@@ -41,16 +41,23 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handleEdit(scope.$index, scope.row)">编辑
-              </el-button>
-              <el-button
-                size="mini"
                 type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除
-              </el-button>
+                @click="deleteNews(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
+        <!--         删除的弹框-->
+        <el-dialog
+          title="是否确定删除"
+          :visible.sync="dialogVisible"
+          width="30%"
+          :before-close="handleClose">
+              <span slot="footer" class="dialog-footer" v-model="title">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+               </span>
+        </el-dialog>
+
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -60,6 +67,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
         </el-pagination>
+
       </div>
     </div>
 
@@ -76,7 +84,8 @@
         searchKey: '',
         pageNo: 1,
         pageSize: 10,
-        total: 0
+        total: 0,
+        dialogVisible: false
       }
     },
     methods: {
@@ -105,6 +114,16 @@
       writerecipeBook() {
         this.$router.push('/WriteRecipe')
       },
+      handleClick() {
+      },
+      handleClose() {
+        this.dialogVisible = false;
+      },
+      deleteNews(row) {
+        this.dialogVisible = true;
+        this.items.splice(row, 1)
+      },
+
       getRecipeList() {
         this.$axios.get('/api/admin/getRecipeList', {
           params: {

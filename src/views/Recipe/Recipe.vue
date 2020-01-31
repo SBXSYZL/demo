@@ -168,9 +168,7 @@ export default {
     }
   },
   methods: {
-    handleClick (tab, event, column) {
 
-    },
     tongguoshenhe () {
       this.$axios.get('/api/admin/recipeReviewOk', {
         params: {
@@ -277,10 +275,13 @@ export default {
     //Tabs切换点击事件
     getLists (tab, event) {
       if (tab.name == "first") {
+        this.pageNo=1;
         this.getRecipeList();
       } else if (tab.name == "second") {
+        this.pageNo=1;
         this.getReviewRecipeList();
       } else {
+        this.pageNo=1;
         this.getTurnDownRecipeList();
       }
     },
@@ -363,45 +364,7 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  background-color: #00d1b2;
-}
-.time {
-  font-size: 13px;
-  color: #999;
-}
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-}
-.button {
-  display: flex;
-  margin: 50px;
-}
-.rightcontent {
-  background-color: #f2f2f2;
-}
-.image {
-  width: 100%;
-  height: 60%;
-}
-.p1 {
-  font-size: 14px;
-  color: #666666;
-  padding: 2px;
-}
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-.clearfix:after {
-  clear: both;
-}
-.card-img {
-  height: 250px;
-  width: 250px;
-}
+
 .el-select .el-input {
   width: 130px;
 }

@@ -36,8 +36,11 @@ const routes = [
             path: '/articleDetail',
             name: 'article',
             component: ArticleDetail,
-          },
-        ]
+          }
+        ],
+        meta: {
+          keepAlive: false
+        }
       },
       {
         path: '/foodNews',

@@ -14,7 +14,7 @@
           icon="el-icon-edit"
           @click="writerecipeBook"
           style="background-color: white;color: #000000;border-radius: 70px; border-color: white;"
-          >添加食谱
+        >添加食谱
         </el-button>
       </div>
 
@@ -51,7 +51,8 @@
                     size="mini"
                     type="danger"
                     @click="deleteNews(scope.row)"
-                    >删除</el-button
+                  >删除
+                  </el-button
                   >
                 </template>
               </el-table-column>
@@ -66,7 +67,7 @@
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="dialogVisible = false"
-                  >确 定
+                >确 定
                 </el-button>
               </span>
             </el-dialog>
@@ -106,7 +107,8 @@
                     size="mini"
                     type="danger"
                     @click="deleteNews(scope.row)"
-                    >通过审核</el-button
+                  >通过审核
+                  </el-button
                   >
                 </template>
               </el-table-column>
@@ -116,7 +118,8 @@
                     size="mini"
                     type="danger"
                     @click="deleteNews(scope.row)"
-                    >驳回</el-button
+                  >驳回
+                  </el-button
                   >
                 </template>
               </el-table-column>
@@ -131,7 +134,7 @@
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="dialogVisible = false"
-                  >确 定
+                >确 定
                 </el-button>
               </span>
             </el-dialog>
@@ -171,7 +174,8 @@
                     size="mini"
                     type="danger"
                     @click="deleteNews(scope.row)"
-                    >重新审核</el-button
+                  >重新审核
+                  </el-button
                   >
                 </template>
               </el-table-column>
@@ -186,7 +190,7 @@
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="dialogVisible = false"
-                  >确 定
+                >确 定
                 </el-button>
               </span>
             </el-dialog>
@@ -208,74 +212,159 @@
 </template>
 
 <script>
-export default {
-  name: 'Recipe',
-  data () {
-    return {
-      activeName: 'second',
-      items: [],
-      searchKey: '',
-      pageNo: 1,
-      pageSize: 10,
-      total: 0,
-      dialogVisible: false
-    }
-  },
-  methods: {
-    handleClick (tab, event) {
-      console.log(tab, event);
+  export default {
+    name: 'Recipe',
+    data() {
+      return {
+        activeName: 'second',
+        items: [],
+        searchKey: '',
+        pageNo: 1,
+        pageSize: 10,
+        total: 0,
+        dialogVisible: false
+      }
     },
     methods: {
-      handleClick (tab, event) {
+      handleClick(tab, event) {
         console.log(tab, event);
       },
-      itemClick (obj) {
-        console.log(obj)
-        // this.$router.push('/Foodrecipedetails')
-        this.$router.push({
-          path: '/Foodrecipedetails',
-          query: {
-            id: obj.recipeId
-          }
-        })
-      },
-      itemshanchuClick (key) {
-        alert('删除食谱')
-      },
-      handleClick (tab, event) {
-        console.log(tab, event)
-      },
-      handleSizeChange (val) {
-        console.log(`每页 ${val} 条`)
-      },
-      handleCurrentChange (val) {
-        console.log(`当前页: ${val}`)
-      },
-      writerecipeBook () {
-        this.$router.push('/WriteRecipe')
-      },
-      handleClick () {
+      methods: {
+        handleClick(tab, event) {
+          console.log(tab, event);
+        },
+        itemClick(obj) {
+          console.log(obj)
+          // this.$router.push('/Foodrecipedetails')
+          this.$router.push({
+            path: '/Foodrecipedetails',
+            query: {
+              id: obj.recipeId
+            }
+          })
+        },
+        itemshanchuClick(key) {
+          alert('删除食谱')
+        },
+        handleClick(tab, event) {
+          console.log(tab, event)
+        },
+        handleSizeChange(val) {
+          console.log(`每页 ${val} 条`)
+        },
+        handleCurrentChange(val) {
+          console.log(`当前页: ${val}`)
+        },
+        writerecipeBook() {
+          this.$router.push('/WriteRecipe')
+        },
+        handleClick() {
 
+        },
+        handleClose() {
+          this.dialogVisible = false;
+        },
+        deleteNews(row) {
+          this.dialogVisible = true;
+          this.items.splice(row, 1)
+        },
+        //Tabs切换点击事件
+        getLists(tab, event) {
+          if (tab.name == "first") {
+            this.getRecipeList();
+          } else if (tab.name == "second") {
+            this.getReviewRecipeList();
+          } else {
+            this.getTurnDownRecipeList();
+          }
+        },
+        getRecipeList() {
+          this.$axios.get('/api/admin/getRecipeList', {
+            params: {
+              pageNo: this.pageNo,
+              pageSize: this.pageSize
+            }
+          }).then(res => {
+            console.log(res)
+            this.items = res.data.data.list;
+            this.total = res.data.data.pageRows
+          }).catch(err => {
+            console.log(err)
+          })
+        },
+        getReviewRecipeList() {
+          this.$axios.get('/api/admin/getReviewRecipeList', {
+            params: {
+              pageNo: this.pageNo,
+              pageSize: this.pageSize
+            }
+          }).then(res => {
+            console.log(res)
+            this.items = res.data.data.list;
+            this.total = res.data.data.pageRows
+          }).catch(err => {
+            console.log(err)
+          })
+        },
+        getTurnDownRecipeList() {
+          this.$axios.get('/api/admin/getTurnDownRecipeList', {
+            params: {
+              pageNo: this.pageNo,
+              pageSize: this.pageSize
+            }
+          }).then(res => {
+            console.log(res)
+            this.items = res.data.data.list;
+            this.total = res.data.data.pageRows
+          }).catch(err => {
+            console.log(err)
+          })
+        },
+        getsearchRecipe() {
+          this.pageNo = 1;
+          this.$axios.get('/api/admin/searchRecipe', {
+            params: {
+              pageNo: this.pageNo,
+              pageSize: this.pageSize,
+              searchKey: this.searchKey
+            }
+          }).then(res => {
+            console.log("res:")
+            console.log(res)
+            this.items = res.data.data.list;
+          }).catch(err => {
+            console.log(err)
+          })
+        },
+        handleSizeChange(val) {
+          this.pageSize = val;
+          this.getRecipeList();
+        },
+        handleCurrentChange(val) {
+          this.pageNo = val;
+          this.getRecipeList();
+        }
       },
-      handleClose () {
+      handleClick() {
+      },
+      sucess() {
+        this.getRecipeList()
+      },
+      daishenhe() {
+        this.getReviewRecipeList()
+      },
+      Bohui() {
+        this.getTurnDownRecipeList()
+      },
+      handleClose() {
         this.dialogVisible = false;
       },
-      deleteNews (row) {
+      deleteNews(row) {
         this.dialogVisible = true;
         this.items.splice(row, 1)
       },
-      //Tabs切换点击事件
-      getLists (tab, event) {
-        if (tab.name == "first") {
-          this.getRecipeList();
-        }
-        else if (tab.name == "second") {
-          this.getReviewRecipeList();
-        } else {
-          this.getTurnDownRecipeList();
-        }
-      },
-      getRecipeList () {
+
+      getRecipeList() {
         this.$axios.get('/api/admin/getRecipeList', {
           params: {
             pageNo: this.pageNo,
@@ -289,7 +378,7 @@ export default {
           console.log(err)
         })
       },
-      getReviewRecipeList () {
+      getReviewRecipeList() {
         this.$axios.get('/api/admin/getReviewRecipeList', {
           params: {
             pageNo: this.pageNo,
@@ -303,7 +392,7 @@ export default {
           console.log(err)
         })
       },
-      getTurnDownRecipeList () {
+      getTurnDownRecipeList() {
         this.$axios.get('/api/admin/getTurnDownRecipeList', {
           params: {
             pageNo: this.pageNo,
@@ -317,7 +406,7 @@ export default {
           console.log(err)
         })
       },
-      getsearchRecipe () {
+      getsearchRecipe() {
         this.pageNo = 1;
         this.$axios.get('/api/admin/searchRecipe', {
           params: {
@@ -333,170 +422,84 @@ export default {
           console.log(err)
         })
       },
-      handleSizeChange (val) {
+      handleSizeChange(val) {
         this.pageSize = val;
         this.getRecipeList();
       },
-      handleCurrentChange (val) {
+      handleCurrentChange(val) {
         this.pageNo = val;
         this.getRecipeList();
       }
     },
-    handleClick () {
-    },
-    sucess () {
+    created() {
       this.getRecipeList()
-    },
-    daishenhe () {
       this.getReviewRecipeList()
-    },
-    Bohui () {
       this.getTurnDownRecipeList()
-    },
-    handleClose () {
-      this.dialogVisible = false;
-    },
-    deleteNews (row) {
-      this.dialogVisible = true;
-      this.items.splice(row, 1)
-    },
-
-    getRecipeList () {
-      this.$axios.get('/api/admin/getRecipeList', {
-        params: {
-          pageNo: this.pageNo,
-          pageSize: this.pageSize
-        }
-      }).then(res => {
-        console.log(res)
-        this.items = res.data.data.list;
-        this.total = res.data.data.pageRows
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    getReviewRecipeList () {
-      this.$axios.get('/api/admin/getReviewRecipeList', {
-        params: {
-          pageNo: this.pageNo,
-          pageSize: this.pageSize
-        }
-      }).then(res => {
-        console.log(res)
-        this.items = res.data.data.list;
-        this.total = res.data.data.pageRows
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    getTurnDownRecipeList () {
-      this.$axios.get('/api/admin/getTurnDownRecipeList', {
-        params: {
-          pageNo: this.pageNo,
-          pageSize: this.pageSize
-        }
-      }).then(res => {
-        console.log(res)
-        this.items = res.data.data.list;
-        this.total = res.data.data.pageRows
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    getsearchRecipe () {
-      this.pageNo = 1;
-      this.$axios.get('/api/admin/searchRecipe', {
-        params: {
-          pageNo: this.pageNo,
-          pageSize: this.pageSize,
-          searchKey: this.searchKey
-        }
-      }).then(res => {
-        console.log("res:")
-        console.log(res)
-        this.items = res.data.data.list;
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    handleSizeChange (val) {
-      this.pageSize = val;
-      this.getRecipeList();
-    },
-    handleCurrentChange (val) {
-      this.pageNo = val;
-      this.getRecipeList();
     }
-  },
-  created () {
-    this.getRecipeList()
-    this.getReviewRecipeList()
-    this.getTurnDownRecipeList()
   }
-}
 </script>
 
 <style scoped>
-.main {
-  background-color: #00d1b2;
-}
+  .main {
+    background-color: #00d1b2;
+  }
 
-.time {
-  font-size: 13px;
-  color: #999;
-}
+  .time {
+    font-size: 13px;
+    color: #999;
+  }
 
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-}
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
 
-.button {
-  display: flex;
-  margin: 50px;
-}
+  .button {
+    display: flex;
+    margin: 50px;
+  }
 
-.rightcontent {
-  background-color: #f2f2f2;
-}
+  .rightcontent {
+    background-color: #f2f2f2;
+  }
 
-.image {
-  width: 100%;
-  height: 60%;
-}
+  .image {
+    width: 100%;
+    height: 60%;
+  }
 
-.p1 {
-  font-size: 14px;
-  color: #666666;
-  padding: 2px;
-}
+  .p1 {
+    font-size: 14px;
+    color: #666666;
+    padding: 2px;
+  }
 
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
 
-.clearfix:after {
-  clear: both;
-}
+  .clearfix:after {
+    clear: both;
+  }
 
-.card-img {
-  height: 250px;
-  width: 250px;
-}
+  .card-img {
+    height: 250px;
+    width: 250px;
+  }
 
-.el-select .el-input {
-  width: 130px;
-}
+  .el-select .el-input {
+    width: 130px;
+  }
 
-.input-with-select .el-input-group__prepend {
-  background-color: #fff;
-}
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
 
-.line-limit-length {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+  .line-limit-length {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 </style>

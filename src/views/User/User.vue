@@ -17,14 +17,19 @@
           <el-button
             slot="append"
             icon="el-icon-search"
-            @click="searchUsers"
+            @click="searchUsers(1)"
           ></el-button>
         </el-input>
       </div>
       <div v-loading="loading">
-        <span
-          >搜索结果如下： <el-button type="primary">点我返回</el-button></span
-        ><br /><br />
+        <div v-if="show">
+          <span
+            >搜索结果如下：
+            <el-button type="primary" @click="backUserList(1)"
+              >点我返回</el-button
+            ></span
+          ><br /><br />
+        </div>
         <el-table
           :data="tableData"
           :height="height"
@@ -62,6 +67,7 @@
 export default {
   data () {
     return {
+      show: false,
       searchKey: '',
       rows: 1,
       pageNo: 1,
@@ -81,7 +87,6 @@ export default {
     }).then(res => {
       setTimeout(() => {
         this.loading = false;
-
         let list = res.data.data.list
         for (let i in list) {
           if (list[i].gender == '1') {
@@ -134,18 +139,21 @@ export default {
       this.$router.push({ path: '/userInfo', query: { id: row.userId } });
       //this.$router.push('/userInfo/' + row.userId);
     },
-    searchUsers () {
+    searchUsers (val) {
       if (this.searchKey != '') {
         this.loading = true;
-        this.currentPage = 1;
         this.$axios.get('http://localhost:8088/admin/searchUsers', {
           params: {
-            "pageNo": this.currentPage,
+            "pageNo": val,
             "pageSize": this.pageSize,
             "searchKey": this.searchKey
           }
         }).then(res => {
           setTimeout(() => {
+            if (!this.show) {
+              this.height = this.height - 70;
+            }
+            this.show = true;
             this.loading = false;
             let list = res.data.data.list
             for (let i in list) {
@@ -157,6 +165,7 @@ export default {
             }
             this.rows = res.data.data.pageRows;
             this.tableData = list;
+            this.currentPage = val;
           }, 200)
         }).catch(err => {
           setTimeout(() => {
@@ -168,6 +177,18 @@ export default {
 
     },
     handleCurrentChange (val) {
+      if (this.show) {
+        this.searchUsers(val);
+      }
+      else {
+        this.getUserList(val);
+      }
+
+    },
+    backUserList (val) {
+      this.getUserList(val);
+    },
+    getUserList (val) {
       this.loading = true;
       this.$axios.get('/api/admin/getUserList', {
         params: {
@@ -177,6 +198,8 @@ export default {
       }).then(res => {
         setTimeout(() => {
           this.loading = false;
+          this.show = false;
+          this.height = document.body.clientHeight - 400 <= 100 ? 100 : document.body.clientHeight - 400;
           let list = res.data.data.list
           for (let i in list) {
             if (list[i].gender === '1') {
@@ -187,6 +210,7 @@ export default {
           }
           this.rows = res.data.data.pageRows;
           this.tableData = list;
+          this.currentPage = val;
         }, 200)
       }).catch(err => {
         setTimeout(() => {

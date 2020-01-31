@@ -5,11 +5,27 @@
     </div>
     <div class="container">
       <div style="margin-bottom: 15px;">
-        <el-input placeholder="请输入内容" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input
+          placeholder="请输入内容"
+          v-model="searchKey"
+          class="input-with-select"
+        >
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="searchUsers(1)"
+          ></el-button>
         </el-input>
       </div>
       <div v-loading="loading">
+        <div v-if="show">
+          <span
+            >搜索结果如下：
+            <el-button type="primary" @click="backUserList(1)"
+              >点我返回</el-button
+            ></span
+          ><br /><br />
+        </div>
         <el-table :data="tableData" :height="height" border style="width: 100%">
           <el-table-column
             prop="userId"
@@ -58,6 +74,7 @@
           @current-change="handleCurrentChange"
           :total="rows"
           :page-size="pageSize"
+          :current-page.sync="currentPage"
           layout="total,->,prev, pager, next, jumper"
         >
         </el-pagination>
@@ -75,6 +92,9 @@ export default {
       rows: 1,
       pageNo: 1,
       pageSize: 1,
+      currentPage: 1,
+      show: false,
+      searchKey: '',
       height: document.body.clientHeight - 400 <= 100 ? 100 : document.body.clientHeight - 400,
       tableData: []
     }
@@ -189,16 +209,73 @@ export default {
       });
     },
 
+    searchUsers (val) {
+      if (this.searchKey != '') {
+        this.loading = true;
+        this.$axios.get('http://localhost:8088/admin/searchUsers', {
+          params: {
+            "pageNo": val,
+            "pageSize": this.pageSize,
+            "searchKey": this.searchKey
+          }
+        }).then(res => {
+          setTimeout(() => {
+            if (!this.show) {
+              this.height = this.height - 70;
+            }
+            this.show = true;
+            this.loading = false;
+            let list = res.data.data.list
+            for (let i in list) {
+              if (list[i].gender == '1') {
+                list[i].gender = '男';
+              } else if (list[i].gender == '0') {
+                list[i].gender = '女';
+              }
+              if (list[i].authority == '1') {
+                list[i].authority = '封号';
+                list[i].tag = '解封';
+              } else if (list[i].authority == '0') {
+                list[i].authority = '正常';
+                list[i].tag = '封禁';
+              }
+            }
+            this.rows = res.data.data.pageRows;
+            this.tableData = list;
+            this.currentPage = val;
+          }, 200)
+        }).catch(err => {
+          setTimeout(() => {
+            this.loading = false;
+          }, 200)
+          //console.log(err);
+        })
+      }
+    },
+
     handleCurrentChange (val) {
+      if (this.show) {
+        this.searchUsers(val);
+      }
+      else {
+        this.getUserList(val);
+      }
+    },
+    backUserList (val) {
+      this.getUserList(val);
+    },
+    getUserList (val) {
       this.loading = true;
       this.$axios.get('/api/admin/getUserList', {
         params: {
           "pageNo": val,
           "pageSize": this.pageSize
-        },
+        }
       }).then(res => {
         setTimeout(() => {
           this.loading = false;
+          this.show = false;
+          this.height = document.body.clientHeight - 400 <= 100 ? 100 : document.body.clientHeight - 400;
           let list = res.data.data.list
           for (let i in list) {
             if (list[i].gender == '1') {
@@ -214,8 +291,9 @@ export default {
               list[i].tag = '封禁';
             }
           }
-          this.rows = res.data.data.pageCount;
+          this.rows = res.data.data.pageRows;
           this.tableData = list;
+          this.currentPage = val;
         }, 200)
       }).catch(err => {
         setTimeout(() => {

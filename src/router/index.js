@@ -16,11 +16,13 @@ const routes = [
     children: [
       {
         path: '/userManage',
-        component: resolve => require(['../views/User/User.vue'], resolve)
+        component: resolve => require(['../views/User/User.vue'], resolve),
+
       },
       {
         path: '/roleManage',
-        component: resolve => require(['../views/User/RoleManage.vue'], resolve)
+        component: resolve => require(['../views/User/RoleManage.vue'], resolve),
+
       },
       {
         path: '/userInfo',

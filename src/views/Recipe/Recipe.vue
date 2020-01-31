@@ -63,7 +63,7 @@
         </el-tab-pane>
         <el-tab-pane label="待审核" name="second">
           <div>
-            <el-table :data="items" style="width: 100%" @row-click="itemClick">
+            <el-table :data="items" style="width: 100%" >
               <el-table-column style="width: 80%;position: absolute;">
                 <template slot-scope="scope">
                   <div style="height: 200px; margin: 15px;">
@@ -181,26 +181,26 @@
         console.log(tab, event);
       },
       tongguoshenhe() {
-        // this.$axios.get('/api/admin/recipeReviewOk', {
-        //   params: {
-        //     recipeId: this.recipeId
-        //   }
-        // }).then(res => {
-        //   console.log(res)
-        //
-        //   if (res.data.status === 'success' && res.data.data === 'success') {
-        //     this.$message({
-        //       type: 'success',
-        //       message: '上传成功!'
-        //     });
-        //     this.$router.push('/Recipe')
-        //   } else {
-        //     this.$message.error(res.data.data.errMsg);
-        //   }
-        // }).catch(() => {
-        //
-        // });
-        // this.dialogVisible = false;
+        this.$axios.get('/api/admin/recipeReviewOk', {
+          params: {
+            recipeId: this.recipeId
+          }
+        }).then(res => {
+          console.log(res)
+
+          if (res.data.status == 'success' && res.data.data == 'success') {
+            this.$message({
+              type: 'success',
+              message: '上传成功!'
+            });
+            this.$router.push('/Recipe')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(() => {
+
+        });
+        this.dialogVisible = false;
         console.log(122)
       },
       itemClick(obj) {

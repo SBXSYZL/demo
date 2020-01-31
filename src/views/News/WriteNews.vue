@@ -49,6 +49,7 @@
         content: '',
         disabled: false,
         title: '',
+        newsId:'',
         dialogVisible: false
       }
     },
@@ -122,13 +123,14 @@
         }
       },
       writeNews() {
+        let id =this.$router.query.id;
         this.$axios.get('/api/admin/writeNews', {
           params: {
-            newsId: this.NewsDetails.newsId
+            // newsId: this.NewsDetails.newsId
+            newsId:id
           }
         }).then(res => {
           let obj = res.data.data
-
         }).catch(err => {
           console.log(err)
         })

@@ -95,10 +95,10 @@
         pageNo: 1,
         pageSize: 10,
         searchKey: '',
-        dialogVisible: false,
         title: '',
         WillDeleteId:' ',
-        dialogFormVisible: false
+        dialogFormVisible: false,
+        dialogVisible: false
       }
     },
     methods: {
@@ -129,7 +129,7 @@
       },
       DeleteNews(index,row) {
         this.dialogVisible = true;
-        this.WillDeleteId=row.newsId;
+        this.WillDeleteId=row.NewsId;
       },
       deleteNewsConfirm() {
         this.$axios.get('/api/admin/deleteNews',{
@@ -142,7 +142,7 @@
               message: '删除成功',
               type: 'success'
             });
-            this.getFoodTypes()
+            this.getNewsList()
           } else {
             this.$message.error(res.data.data.errMsg);
           }

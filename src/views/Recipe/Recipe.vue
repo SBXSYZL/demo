@@ -61,9 +61,9 @@
             </el-pagination>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="待审核" name="second">
+        <el-tab-pane label="待审核" name="second" >
           <div>
-            <el-table :data="items" style="width: 100%" >
+            <el-table :data="items" style="width: 100%" @row-click="itemClick">
               <el-table-column style="width: 80%;position: absolute;">
                 <template slot-scope="scope">
                   <div style="height: 200px; margin: 15px;">
@@ -177,8 +177,8 @@
       }
     },
     methods: {
-      handleClick(tab, event) {
-        console.log(tab, event);
+      handleClick(tab, event,column) {
+
       },
       tongguoshenhe() {
         this.$axios.get('/api/admin/recipeReviewOk', {
@@ -186,12 +186,12 @@
             recipeId: this.recipeId
           }
         }).then(res => {
+          console.log(1)
           console.log(res)
-
-          if (res.data.status == 'success' && res.data.data == 'success') {
+          if (res.data.status === 'fail') {
             this.$message({
               type: 'success',
-              message: '上传成功!'
+              message: '通过审核'
             });
             this.$router.push('/Recipe')
           } else {
@@ -203,15 +203,15 @@
         this.dialogVisible = false;
         console.log(122)
       },
-      itemClick(obj) {
-        console.log(obj)
-        //this.$router.push({path:'/Foodrecipedetails',query:{id:obj.recipeId}});
-        this.$router.push({
-          path: '/Foodrecipedetails',
-          query: {
-            id: obj.recipeId
-          }
-        })
+      itemClick(row, event,column) {
+
+        this.$router.push({path:'/Foodrecipedetails',query:{id:row.recipeId}});
+        // this.$router.push({
+        //   path: '/Foodrecipedetails',
+        //   query: {
+        //     id: obj.recipeId
+        //   }
+        // })
       },
       itemshanchuClick(key) {
         alert('删除食谱')

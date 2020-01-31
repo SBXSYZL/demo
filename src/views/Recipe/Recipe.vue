@@ -29,9 +29,9 @@
         <el-tab-pane label="成功审核" name="first">
           <!--标签-->
           <div>
-            <el-table :data="items" style="width: 100%" @row-click.stop="itemClick">
-              <el-table-column style="width: 80%;position: absolute;">
-                <template slot-scope="scope">
+            <el-table :data="items" style="width: 100%" @row-click="itemClick">
+              <el-table-column style="width: 80%;position: absolute;" >
+                <template slot-scope="scope" >
                   <div style="height: 200px; margin: 15px;">
                     <div style="width: 100%; ">
                       <h1>{{ scope.row.title }}</h1>
@@ -45,32 +45,10 @@
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column style="width: 180px" width="180px">
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    type="danger"
-                    @click="deleteNews(scope.row)"
-                  >删除
-                  </el-button
-                  >
-                </template>
-              </el-table-column>
+
             </el-table>
             <!--         删除的弹框-->
-            <el-dialog
-              title="是否确定删除"
-              :visible.sync="dialogVisible"
-              width="30%"
-              :before-close="handleClose"
-            >
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false"
-                >确 定
-                </el-button>
-              </span>
-            </el-dialog>
+
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
@@ -102,42 +80,29 @@
                 </template>
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    type="danger"
-                    @click="tongguoshenhe()"
-                  >通过审核
-                  </el-button
-                  >
-                </template>
-              </el-table-column>
-              <el-table-column style="width: 180px" width="180px">
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    type="danger"
+                  <template slot-scope="scope">
+                    <el-button
+                      size="mini"
+                      type="danger"
+                      @click="tongguoshenhe()"
+                    >通过审核
+                    </el-button
+                    >
+                  </template>
+                </el-table-column>
+                  <el-table-column style="width: 180px" width="180px">
+                    <template slot-scope="scope">
+                      <el-button
+                        size="mini"
+                        type="danger"
 
-                  >驳回
-                  </el-button
-                  >
+                      >驳回
+                      </el-button
+                      >
                 </template>
               </el-table-column>
             </el-table>
-            <!--         删除的弹框-->
-            <el-dialog
-              title="是否确定删除"
-              :visible.sync="dialogVisible"
-              width="30%"
-              :before-close="handleClose"
-            >
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false"
-                >确 定
-                </el-button>
-              </span>
-            </el-dialog>
+
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
@@ -152,7 +117,7 @@
         </el-tab-pane>
         <el-tab-pane label="驳回" name="third">
           <div>
-            <el-table :data="items" style="width: 100%" @row-click.stop="itemClick">
+            <el-table :data="items" style="width: 100%" @row-click="itemClick">
               <el-table-column style="width: 80%;position: absolute;">
                 <template slot-scope="scope">
                   <div style="height: 200px; margin: 15px;">
@@ -179,20 +144,7 @@
                 </template>
               </el-table-column>
             </el-table>
-            <!--         删除的弹框-->
-            <el-dialog
-              title="是否确定删除"
-              :visible.sync="dialogVisible"
-              width="30%"
-              :before-close="handleClose"
-            >
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false"
-                >确 定
-                </el-button>
-              </span>
-            </el-dialog>
+
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
@@ -229,30 +181,31 @@
         console.log(tab, event);
       },
       tongguoshenhe() {
-        this.$axios.get('/api/admin/recipeReviewOk', {
-          params: {
-            recipeId: this.recipeId
-          }
-        }).then(res => {
-          console.log(res)
-
-          if (res.data.status === 'success' && res.data.data === 'success') {
-            this.$message({
-              type: 'success',
-              message: '上传成功!'
-            });
-            this.$router.push('/Recipe')
-          } else {
-            this.$message.error(res.data.data.errMsg);
-          }
-        }).catch(() => {
-          
-        });
-        this.dialogVisible = false;
+        // this.$axios.get('/api/admin/recipeReviewOk', {
+        //   params: {
+        //     recipeId: this.recipeId
+        //   }
+        // }).then(res => {
+        //   console.log(res)
+        //
+        //   if (res.data.status === 'success' && res.data.data === 'success') {
+        //     this.$message({
+        //       type: 'success',
+        //       message: '上传成功!'
+        //     });
+        //     this.$router.push('/Recipe')
+        //   } else {
+        //     this.$message.error(res.data.data.errMsg);
+        //   }
+        // }).catch(() => {
+        //
+        // });
+        // this.dialogVisible = false;
+        console.log(122)
       },
       itemClick(obj) {
         console.log(obj)
-        // this.$router.push('/Foodrecipedetails')
+        //this.$router.push({path:'/Foodrecipedetails',query:{id:obj.recipeId}});
         this.$router.push({
           path: '/Foodrecipedetails',
           query: {

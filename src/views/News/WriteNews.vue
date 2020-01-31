@@ -23,6 +23,7 @@
       <el-button type="danger" @click="clear">清空</el-button>
       <el-button type="primary" @click="release">发布</el-button>
     </div>
+
     <el-dialog
       title="是否发布"
       :visible.sync="dialogVisible"
@@ -122,24 +123,24 @@
           this.dialogVisible = false;
         }
       },
-      writeNews() {
-        this.$axios.get('/api/admin/writeNews', {
-          params: {
-            newsId: this.NewsDetails.newsId
-          }
-        }).then(res => {
-          let obj = res.data.data
-        }).catch(err => {
-          console.log(err)
-        })
-      },
+      // writeNews() {
+      //   this.$axios.get('/api/admin/writeNews', {
+      //     params: {
+      //       newsId: this.NewsDetails.newsId
+      //     }
+      //   }).then(res => {
+      //     let obj = res.data.data
+      //   }).catch(err => {
+      //     console.log(err)
+      //   })
+      // },
       handleClose() {
         this.dialogVisible = false;
       }
     },
-    created() {
-     this.writeNews();
-    }
+    // created() {
+    //  this.writeNews();
+    // }
   }
 </script>
 <style scoped>

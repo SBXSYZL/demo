@@ -49,16 +49,18 @@
       go() {
         this.$router.push('/foodNews')
       },
-      DelectNews(){
-
+      mounted(){
+        this.getNewsDetail();
       },
+      DelectNews(){},
       writeIllustratedBook() {
         this.$router.push('/WriteNews')
       },
 
       getNewsDetail() {
         let id = this.$route.query.id;
-        this.$axios.get('/api/user/getNewsDetail', {
+        console.log(id)
+        this.$axios.get('/api/admin/getNewsDetail', {
           params: {
             newsId: id
           }
@@ -73,7 +75,6 @@
             this.news.newsDesc = obj.newsDesc;
             this.news.content = obj.content;
           }
-
         }).catch(err => {
           console.log(err)
         })

@@ -103,6 +103,7 @@
     },
     methods: {
       itemClick(obj) {
+        console.log(obj)
         this.$router.push({
           path: '/NewsDetails',
           query: {
@@ -157,7 +158,7 @@
         this.willDeleteId=-1
       },
       getNewsList() {
-        this.$axios.get('/api/user/getNewsList', {
+        this.$axios.get('/api/admin/getNewsList', {
           params: {
             pageNo: this.pageNo,
             pageSize: this.pageSize

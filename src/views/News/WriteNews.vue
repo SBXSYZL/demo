@@ -123,11 +123,9 @@
         }
       },
       writeNews() {
-        let id =this.$router.query.id;
         this.$axios.get('/api/admin/writeNews', {
           params: {
-            // newsId: this.NewsDetails.newsId
-            newsId:id
+            newsId: this.NewsDetails.newsId
           }
         }).then(res => {
           let obj = res.data.data

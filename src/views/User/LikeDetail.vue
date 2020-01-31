@@ -150,7 +150,7 @@ export default {
   created () {
     console.log(this.$route);
     this.userId = this.$route.query.id;
-    this.$axios.get('http://localhost:8088/admin/getUserLike', {
+    this.$axios.get('/api/admin/getUserLike', {
       params: {
         "pageNo": this.pageNo,
         "pageSize": this.pageSize,
@@ -175,7 +175,7 @@ export default {
   methods: {
     load () {
       this.pageNo += 1;
-      this.$axios.get('http://localhost:8088/admin/getUserLike', {
+      this.$axios.get('/api/admin/getUserLike', {
         params: {
           "pageNo": this.pageNo,
           "pageSize": this.pageSize,

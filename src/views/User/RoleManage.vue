@@ -212,7 +212,7 @@ export default {
     searchUsers (val) {
       if (this.searchKey != '') {
         this.loading = true;
-        this.$axios.get('http://localhost:8088/admin/searchUsers', {
+        this.$axios.get('/api/admin/searchUsers', {
           params: {
             "pageNo": val,
             "pageSize": this.pageSize,

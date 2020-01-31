@@ -1,23 +1,19 @@
 <template>
   <div>
-    <div
-      class="container"
-      style="display: flex;background-color: red;border-radius: 50px;height: 30px;"
-    >
-      <div style="width: 90%;">
-        <h1 style="color: white;">食谱</h1>
+    <div class="container" style="display: flex">
+      <div style="width: 90%">
+        <h3>食谱</h3>
       </div>
-
       <div>
         <el-button
           type="primary"
           icon="el-icon-edit"
+          style="float: right"
           @click="writerecipeBook"
-          style="background-color: white;color: #000000;border-radius: 70px; border-color: white;"
         >添加食谱
-        </el-button>
+        </el-button
+        >
       </div>
-
     </div>
     <div class="container" style="">
       <div style="margin-bottom: 15px;">
@@ -52,7 +48,7 @@
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="pageNo"
+              :current-page="1"
               :page-sizes="[10, 20, 30, 40]"
               :page-size="pageSize"
               layout="total, sizes, prev, pager, next, jumper"
@@ -95,7 +91,7 @@
                       <el-button
                         size="mini"
                         type="danger"
-
+                        @click="bohui()"
                       >驳回
                       </el-button
                       >
@@ -106,7 +102,7 @@
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="pageNo"
+              :current-page="1"
               :page-sizes="[10, 20, 30, 40]"
               :page-size="pageSize"
               layout="total, sizes, prev, pager, next, jumper"
@@ -138,7 +134,7 @@
                   <el-button
                     size="mini"
                     type="danger"
-
+                    @click="Reshenhe()"
                   >重新审核
                   </el-button>
                 </template>
@@ -148,7 +144,7 @@
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="pageNo"
+              :current-page="1"
               :page-sizes="[10, 20, 30, 40]"
               :page-size="pageSize"
               layout="total, sizes, prev, pager, next, jumper"
@@ -192,6 +188,52 @@
             this.$message({
               type: 'success',
               message: '通过审核'
+            });
+            this.$router.push('/Recipe')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(() => {
+
+        });
+        this.dialogVisible = false;
+        console.log(122)
+      },
+      bohui() {
+        this.$axios.get('/api/admin/recipeTurnDown', {
+          params: {
+            recipeId: this.recipeId
+          }
+        }).then(res => {
+          console.log(1)
+          console.log(res)
+          if (res.data.status === 'fail') {
+            this.$message({
+              type: 'success',
+              message: '成功驳回'
+            });
+            this.$router.push('/Recipe')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(() => {
+
+        });
+        this.dialogVisible = false;
+        console.log(122)
+      },
+      Reshenhe() {
+        this.$axios.get('/api/admin/recipeReReview', {
+          params: {
+            recipeId: this.recipeId
+          }
+        }).then(res => {
+          console.log(1)
+          console.log(res)
+          if (res.data.status === 'fail') {
+            this.$message({
+              type: 'success',
+              message: '已重新审核'
             });
             this.$router.push('/Recipe')
           } else {

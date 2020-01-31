@@ -49,9 +49,10 @@
       go() {
         this.$router.push('/foodNews')
       },
-      DelectNews(){
-
+      mounted(){
+        this.getNewsDetail();
       },
+      DelectNews(){},
       writeIllustratedBook() {
         this.$router.push('/WriteNews')
       },
@@ -74,7 +75,6 @@
             this.news.newsDesc = obj.newsDesc;
             this.news.content = obj.content;
           }
-
         }).catch(err => {
           console.log(err)
         })

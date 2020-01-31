@@ -49,6 +49,7 @@
         content: '',
         disabled: false,
         title: '',
+        newsId:'',
         dialogVisible: false
       }
     },
@@ -128,7 +129,6 @@
           }
         }).then(res => {
           let obj = res.data.data
-
         }).catch(err => {
           console.log(err)
         })

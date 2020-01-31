@@ -22,7 +22,9 @@
         </el-input>
       </div>
       <div v-loading="loading">
-        <span>搜索结果如下：<el-button></el-button></span><br /><br />
+        <span
+          >搜索结果如下： <el-button type="primary">点我返回</el-button></span
+        ><br /><br />
         <el-table
           :data="tableData"
           :height="height"

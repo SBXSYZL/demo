@@ -177,7 +177,7 @@ export default {
       }).then(res => {
         console.log(1)
         console.log(res)
-        if (res.data.status === 'fail') {
+        if (res.data.status === 'success') {
           this.$message({
             type: 'success',
             message: '通过审核'
@@ -200,7 +200,7 @@ export default {
       }).then(res => {
         console.log(1)
         console.log(res)
-        if (res.data.status === 'fail') {
+        if (res.data.status === 'success') {
           this.$message({
             type: 'success',
             message: '成功驳回'
@@ -223,7 +223,7 @@ export default {
       }).then(res => {
         console.log(1)
         console.log(res)
-        if (res.data.status === 'fail') {
+        if (res.data.status === 'success') {
           this.$message({
             type: 'success',
             message: '已重新审核'

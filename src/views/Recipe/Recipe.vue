@@ -280,13 +280,13 @@ export default {
     //Tabs切换点击事件
     getLists (tab, event) {
       if (tab.name == "first") {
-        this.pageNo=1;
+        this.pageNo = 1;
         this.getRecipeList();
       } else if (tab.name == "second") {
-        this.pageNo=1;
+        this.pageNo = 1;
         this.getReviewRecipeList();
       } else {
-        this.pageNo=1;
+        this.pageNo = 1;
         this.getTurnDownRecipeList();
       }
     },
@@ -368,7 +368,6 @@ export default {
 </script>
 
 <style scoped>
-
 .el-select .el-input {
   width: 130px;
 }

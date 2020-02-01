@@ -84,15 +84,15 @@
                 </template>
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
-                <template>
-                  <el-button size="mini" type="danger" @click="tongguoshenhe()"
+                <template slot-scope="scope">
+                  <el-button size="mini" type="danger" @click="tongguoshenhe(scope.row.recipeId)"
                     >通过审核
                   </el-button>
                 </template>
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
-                <template>
-                  <el-button size="mini" type="danger" @click="bohui()"
+                <template slot-scope="scope">
+                  <el-button size="mini" type="danger" @click="bohui(scope.row.recipeId)"
                     >驳回
                   </el-button>
                 </template>
@@ -131,8 +131,8 @@
                 </template>
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
-                <template>
-                  <el-button size="mini" type="danger" @click="Reshenhe()"
+                <template slot-scope="scope">
+                  <el-button size="mini" type="danger" @click="Reshenhe(scope.row.recipeId)"
                     >重新审核
                   </el-button>
                 </template>
@@ -173,10 +173,11 @@ export default {
   },
   methods: {
 
-    tongguoshenhe () {
+    tongguoshenhe (val) {
+      console.log(this.recipeId)
       this.$axios.get('/api/admin/recipeReviewOk', {
         params: {
-          recipeId: this.recipeId
+          recipeId: val
         }
       }).then(res => {
         console.log(1)
@@ -196,10 +197,10 @@ export default {
       this.dialogVisible = false;
       console.log(122)
     },
-    bohui () {
+    bohui (val) {
       this.$axios.get('/api/admin/recipeTurnDown', {
         params: {
-          recipeId: this.recipeId
+          recipeId: val
         }
       }).then(res => {
         console.log(1)
@@ -219,10 +220,10 @@ export default {
       this.dialogVisible = false;
       console.log(122)
     },
-    Reshenhe () {
+    Reshenhe (val) {
       this.$axios.get('/api/admin/recipeReReview', {
         params: {
-          recipeId: this.recipeId
+          recipeId: val
         }
       }).then(res => {
         console.log(1)
@@ -359,8 +360,7 @@ export default {
   },
   created () {
     this.getRecipeList()
-    this.getReviewRecipeList()
-    this.getTurnDownRecipeList()
+
   }
 
 

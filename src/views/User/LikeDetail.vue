@@ -21,7 +21,77 @@
         infinite-scroll-disabled="disabled"
       >
         <li v-for="i in count" class="list-item" :key="i">
-          <div class="container">收藏:{{ i }}</div>
+          <div
+            class="container"
+            style="padding-top:20px;padding-left:10px;padding-bottom:0px"
+          >
+            <el-row>
+              <el-col :span="3">
+                <el-avatar :size="size" :src="circleUrl"></el-avatar>
+              </el-col>
+              <el-col :span="6">
+                <div style="text-align:left">
+                  <span class="author">作者：{{ userId }}</span
+                  ><br />
+                  <span class="datefont"
+                    >收藏日期：{{ likelist[i - 1].recipeDate }}</span
+                  >
+                </div>
+              </el-col>
+              <el-col :span="15"> </el-col>
+            </el-row>
+
+            <el-card
+              class="box-card"
+              shadow="never"
+              style="border:0px;width:100%"
+            >
+              <div slot="header" class="clearfix">
+                <span>{{ likelist[i - 1].title }}</span>
+              </div>
+              <div
+                class="el-card__body"
+                v-html="likelist[i - 1].recipeDesc"
+              ></div>
+            </el-card>
+            <!-- <div slot="bottom " class="clearfix ">
+              <el-row type="flex" justify="end">
+                <el-col :span="12"> </el-col>
+                <el-col :span="3">
+                  <el-button
+                    icon="el-icon-location-outline icon-size"
+                    style="border:0px;"
+                    plain
+                    >厦门</el-button
+                  >
+                </el-col>
+                <el-col :span="3">
+                  <el-button
+                    style="border:0px;"
+                    icon="el-icon-thumb icon-size"
+                    plain
+                    >点赞</el-button
+                  >
+                </el-col>
+                <el-col :span="3">
+                  <el-button
+                    style="border:0px;"
+                    icon="el-icon-chat-dot-round icon-size"
+                    plain
+                    >评论</el-button
+                  >
+                </el-col>
+                <el-col :span="3">
+                  <el-button
+                    style="border:0px;"
+                    icon="el-icon-connection icon-size"
+                    plain
+                    >分享</el-button
+                  >
+                </el-col>
+              </el-row>
+            </div> -->
+          </div>
         </li>
       </ul>
       <div v-if="loading">
@@ -50,24 +120,90 @@
 export default {
   data () {
     return {
-      empty: true,
-      count: 10,
+      empty: false,
+      userId: -1,
+      pageNo: 1,
+      pageSize: 2,
+      likelist: [
+        {
+          recipeId: '',
+          recipeDesc: '',
+          recipeDate: '',
+          title: ''
+        }
+      ],
+      count: 0,
+      total: 1,
+      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      size: 40,
       loading: false
     }
   },
   computed: {
     noMore () {
-      return this.count >= 20
+      return this.count == 0 ? false : this.count >= this.total;
     },
     disabled () {
       return this.loading || this.noMore
     }
   },
+  created () {
+    console.log(this.$route);
+    this.userId = this.$route.query.id;
+    this.$axios.get('/api/admin/getUserLike', {
+      params: {
+        "pageNo": this.pageNo,
+        "pageSize": this.pageSize,
+        "userId": this.userId
+      }
+    }).then(res => {
+      let likelist = res.data.data.list;
+      this.likelist = likelist;
+      this.total = res.data.data.pageRows;
+      if (this.total > 1) {
+        this.count = 2;
+      }
+      else {
+        if (this.total == 1) {
+          this.count = 1;
+        }
+      }
+    }).catch(err => {
+      console.log(err);
+    })
+  },
   methods: {
     load () {
-      this.loading = true
+      this.pageNo += 1;
+      this.$axios.get('/api/admin/getUserLike', {
+        params: {
+          "pageNo": this.pageNo,
+          "pageSize": this.pageSize,
+          "userId": this.userId
+        }
+      }).then(res => {
+        let likelist = res.data.data.list;
+        if (res.data.data.pageRows != 1) {
+          this.loading = true;
+          for (let i in likelist) {
+            this.likelist.push(likelist[i]);
+          }
+        }
+
+      }).catch(err => {
+        console.log(err);
+      })
       setTimeout(() => {
-        this.count += 2
+
+        if (this.count + 2 >= this.total) {
+          this.count = this.total;
+        }
+        else {
+          this.count += 2;
+        }
+        if (this.count == 0) {
+          this.empty = true;
+        }
         this.loading = false
       }, 2000)
     }

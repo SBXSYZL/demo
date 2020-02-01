@@ -33,9 +33,9 @@
                 <div style="text-align:left">
                   <span class="author">{{ userId }}</span
                   ><br />
-                  <span class="datefont">{{
-                    articlelist[i - 1].releaseDate
-                  }}</span>
+                  <span class="datefont"
+                    >发布日期：{{ articlelist[i - 1].releaseDate }}</span
+                  >
                 </div>
               </el-col>
               <el-col :span="15"> </el-col>

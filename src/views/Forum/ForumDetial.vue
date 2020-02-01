@@ -99,10 +99,10 @@
         this.$router.back();
       },
       //删除文章
-      deleteArticle(val){
+      deleteArticle(){
         this.$axios.get('/api/admin/deleteArticle', {
           params: {
-            recipeId: val
+            recipeId: this.articleId
           }
         }).then(res => {
           console.log(res)
@@ -143,8 +143,7 @@
         this.dialogVisible = false;
       },
     },
-
-    created() {
+    activated () {
       this.getArticleDetail()
     }
   }

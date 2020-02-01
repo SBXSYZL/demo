@@ -5,15 +5,15 @@
         <h3>论坛</h3>
       </div>
       <div>
-        <el-button type="primary" icon="el-icon-edit" @click="postForum()"
-          >发布帖子</el-button
-        >
+        <el-button type="primary" icon="el-icon-edit" @click="postForum()">
+          发布帖子
+        </el-button>
       </div>
     </div>
     <div class="container" style="display: flex;height: 100%">
       <div style="width:100%">
-        <el-tabs @tab-click="getList">
-          <el-tab-pane label="审核通过" name="first">
+        <el-tabs v-model="activeName" @tab-click="getList">
+          <el-tab-pane label="审核通过" name="pass">
             <div style="margin-bottom: 15px">
               <el-input
                 placeholder="请输入内容"
@@ -28,7 +28,7 @@
               </el-input>
               <el-row
                 :span="5"
-                v-for="item in A1"
+                v-for="item in items"
                 :key="item.id"
                 :offset="1"
                 @click.native="checkDetial(item.articleId)"
@@ -47,7 +47,7 @@
               </el-row>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="未审核" name="second">
+          <el-tab-pane label="未审核" name="check">
             <div style="margin-bottom: 15px;">
               <el-input
                 placeholder="请输入内容"
@@ -60,7 +60,11 @@
                   @click="getSearchArticle"
                 />
               </el-input>
-              <el-row :span="5" v-for="item in A2" :key="item.id" :offset="1">
+              <el-row
+                :span="5" v-for="item in items"
+                :key="item.id"
+                :offset="1"
+                @click.native="checkDetial(item.articleId)">
                 <el-card class="box-card" style="margin-top: 10px">
                   <div class="body">
                     <div class="body-l">
@@ -75,13 +79,12 @@
               </el-row>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="驳回" name="third">
+          <el-tab-pane label="驳回" name="reject">
             <div style="margin-bottom: 15px;">
               <el-input
                 placeholder="请输入内容"
                 v-model="searchKey"
-                class="input-with-select"
-              >
+                class="input-with-select">
                 <el-button
                   slot="append"
                   icon="el-icon-search"
@@ -90,7 +93,7 @@
               </el-input>
               <el-row
                 :span="5"
-                v-for="item in A3"
+                v-for="item in items"
                 :key="item.id"
                 :offset="1"
                 @click.native="checkDetial(item.articleId)"
@@ -132,13 +135,12 @@ export default {
   name: 'list',
   data () {
     return {
-      A1: [],
-      A2: [],
-      A3: [],
+      items: [],
       pageNo: 1,
       pageSize: 10,
       searchKey: '',
       total: 0,
+      activeName: 'pass',
       dialogVisible: false
     }
   },
@@ -183,10 +185,9 @@ export default {
     },
     //Tabs切换点击事件
     getList (tab, event) {
-      if (tab.name == "first") {
+      if (tab.name == "pass") {
         this.getArticleList();
-      }
-      else if (tab.name == "second") {
+      } else if (tab.name == "check") {
         this.getReviewArticleList();
       } else {
         this.getTurnDownArticleList();
@@ -194,42 +195,55 @@ export default {
     },
     //获取审核通过文章列表
     getArticleList () {
-      this.$axios
-        .get("/api/admin/getArticleList?" + "pageNo=" + this.pageNo + "&pageSize=" + this.pageSize).then(res => {
-          console.log(res)
-          this.A1 = res.data.data.list
-        }).catch(err => {
-          console.log(err);
-        })
+      this.$axios.get('/api/admin/getArticleList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        }
+      }).then(res => {
+        console.log(res)
+        this.items = res.data.data.list;
+        this.total = res.data.data.pageRows
+      }).catch(err => {
+        console.log(err)
+      })
     },
     //获取未审核文章列表
     getReviewArticleList () {
-      this.$axios
-        .get("/api/admin/getReviewArticleList?" + "pageNo=" + this.pageNo + "&pageSize=" + this.pageSize).then(res => {
-          console.log(res)
-          this.A2 = res.data.data.list
-        }).catch(err => {
-          console.log(err);
-        })
+      this.$axios.get('/api/admin/getReviewArticleList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        }
+      }).then(res => {
+        console.log(res)
+        this.items = res.data.data.list;
+        this.total = res.data.data.pageRows
+      }).catch(err => {
+        console.log(err)
+      })
     },
     //获取驳回文章列表
     getTurnDownArticleList () {
-      this.$axios
-        .get("/api/admin/getTurnDownArticleList?" + "pageNo=" + this.pageNo + "&pageSize=" + this.pageSize).then(res => {
-          console.log(res)
-          this.A3 = res.data.data.list
-        }).catch(err => {
-          console.log(err);
-        })
+      this.$axios.get('/api/admin/getTurnDownArticleList', {
+        params: {
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        }
+      }).then(res => {
+        console.log(res)
+        this.items = res.data.data.list;
+        this.total = res.data.data.pageRows
+      }).catch(err => {
+        console.log(err)
+      })
     }
   },
-  created () {
-    this.getArticleList();
-    this.getReviewArticleList();
-    this.getTurnDownArticleList();
-  }
+  created()
+  {
 
-};
+  }
+}
 </script>
 <style scoped>
 .box-card {

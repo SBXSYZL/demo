@@ -64,7 +64,7 @@
           <span>确定删除本条新闻？</span>
           <span slot="footer" class="dialog-footer">
             <el-button @click="CancleDelete">取 消</el-button>
-            <el-button type="primary" @click="deleteNewsConfirm">确 定</el-button>
+            <el-button type="primary" @click="confirmDelete">确 定</el-button>
           </span>
         </el-dialog>
       </div>
@@ -132,10 +132,10 @@
         this.dialogVisible = true;
         this.WillDeleteId=row.NewsId;
       },
-      deleteNewsConfirm() {
+      confirmDelete() {
         this.$axios.get('/api/admin/deleteNews',{
           params: {
-            NewsId: this.willDeleteId
+            newsId: this.willDeleteId
           }
         }).then(res => {
           if (res.data.status === 'success' && res.data.data === 'success') {
@@ -195,7 +195,7 @@
         this.getNewsList();
       },
     },
-    created() {
+   created() {
       this.getNewsList();
     }
   }

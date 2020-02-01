@@ -213,7 +213,7 @@ export default {
     },
     //删除文章
     deleteArticle(val){
-      this.$axios.get('/api/admin/deleteReview', {
+      this.$axios.get('/api/admin/deleteArticle', {
         params: {
           recipeId: val
         }

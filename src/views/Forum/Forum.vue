@@ -40,8 +40,10 @@
                       <span v-html="item.content" style="height: 100px" />
                     </div>
                     <div class="body-r">
-                      <el-button type="danger"
-                                 @click="recheckArticle(item.articleId)">重审
+                      <el-button
+                        type="danger"
+                        @click="recheckArticle(item.articleId)"
+                        >重审
                       </el-button>
                     </div>
                   </div>
@@ -63,10 +65,12 @@
                 />
               </el-input>
               <el-row
-                :span="5" v-for="item in items"
+                :span="5"
+                v-for="item in items"
                 :key="item.id"
                 :offset="1"
-                @click.native="checkDetial(item.articleId)">
+                @click.native="checkDetial(item.articleId)"
+              >
                 <el-card class="box-card" style="margin-top: 10px">
                   <div class="body">
                     <div class="body-l">
@@ -74,11 +78,15 @@
                       <span v-html="item.content" style="height: 100px" />
                     </div>
                     <div class="body-r">
-                      <el-button type="danger"
-                                 @click="acceptArticle(item.articleId)">通过
+                      <el-button
+                        type="danger"
+                        @click="acceptArticle(item.articleId)"
+                        >通过
                       </el-button>
-                      <el-button type="danger"
-                                 @click="rejectArticle(item.articleId)">驳回
+                      <el-button
+                        type="danger"
+                        @click="rejectArticle(item.articleId)"
+                        >驳回
                       </el-button>
                     </div>
                   </div>
@@ -91,7 +99,8 @@
               <el-input
                 placeholder="请输入内容"
                 v-model="searchKey"
-                class="input-with-select">
+                class="input-with-select"
+              >
                 <el-button
                   slot="append"
                   icon="el-icon-search"
@@ -112,11 +121,15 @@
                       <span v-html="item.content" style="height: 100px" />
                     </div>
                     <div class="body-r">
-                      <el-button type="danger"
-                                 @click="recheckArticle(item.articleId)">重审
+                      <el-button
+                        type="danger"
+                        @click="recheckArticle(item.articleId)"
+                        >重审
                       </el-button>
-                      <el-button type="danger"
-                                 @click="deleteArticle(item.articleId)">删除
+                      <el-button
+                        type="danger"
+                        @click="deleteArticle(item.articleId)"
+                        >删除
                       </el-button>
                     </div>
                   </div>
@@ -167,7 +180,7 @@ export default {
       })
     },
     //驳回文章
-    rejectArticle(val){
+    rejectArticle (val) {
       this.$axios.get('/api/admin/articleTurnDown', {
         params: {
           articleId: val
@@ -189,7 +202,7 @@ export default {
       this.dialogVisible = false;
     },
     //通过审核
-    acceptArticle(val){
+    acceptArticle (val) {
       console.log(this.recipeId)
       this.$axios.get('/api/admin/articleReviewOk', {
         params: {
@@ -212,8 +225,8 @@ export default {
       this.dialogVisible = false;
     },
     //删除文章
-    deleteArticle(val){
-      this.$axios.get('/api/admin/deleteArticle', {
+    deleteArticle (val) {
+      this.$axios.get('/api/admin/deleteReview', {
         params: {
           recipeId: val
         }
@@ -234,7 +247,7 @@ export default {
       this.dialogVisible = false;
     },
     //重审文章
-    recheckArticle(val){
+    recheckArticle (val) {
       this.$axios.get('/api/admin/articleReReview', {
         params: {
           recipeId: val
@@ -343,7 +356,7 @@ export default {
       })
     }
   },
-  created() {
+  created () {
     this.getArticleList();
   }
 }

@@ -85,14 +85,20 @@
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" @click="tongguoshenhe(scope.row.recipeId)"
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="tongguoshenhe(scope.row.recipeId)"
                     >通过审核
                   </el-button>
                 </template>
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" @click="bohui(scope.row.recipeId)"
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="bohui(scope.row.recipeId)"
                     >驳回
                   </el-button>
                 </template>
@@ -132,7 +138,10 @@
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" @click="Reshenhe(scope.row.recipeId)"
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="Reshenhe(scope.row.recipeId)"
                     >重新审核
                   </el-button>
                 </template>
@@ -164,7 +173,7 @@ export default {
       activeName: 'second',
       items: [],
       searchKey: '',
-      recipeId:'',
+      recipeId: '',
       pageNo: 1,
       pageSize: 10,
       total: 0,
@@ -228,7 +237,7 @@ export default {
       }).then(res => {
         console.log(1)
         console.log(res)
-        if (res.data.status === 'success' && res.data.data === 'success' )  {
+        if (res.data.status === 'success' && res.data.data === 'success') {
           this.$message({
             type: 'success',
             message: '已重新审核'
@@ -360,10 +369,7 @@ export default {
   },
   created () {
     this.getRecipeList()
-
   }
-
-
 }
 </script>
 

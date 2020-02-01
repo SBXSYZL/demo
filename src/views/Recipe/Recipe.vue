@@ -38,6 +38,7 @@
                   <div style="height: 200px; margin: 15px;">
                     <div style="width: 100%; ">
                       <h1>{{ scope.row.title }}</h1>
+                      <h1>{{ scope.row.recipeId }}</h1>
                       <div style="margin-top:20px;">
                         {{ scope.row.recipeDesc }}
                       </div>
@@ -71,6 +72,7 @@
                   <div style="height: 200px; margin: 15px;">
                     <div style="width: 100%; ">
                       <h1>{{ scope.row.title }}</h1>
+                      <h1>{{ scope.row.recipeId }}</h1>
                       <div style="margin-top:20px;">
                         {{ scope.row.recipeDesc }}
                       </div>
@@ -117,6 +119,7 @@
                   <div style="height: 200px; margin: 15px;">
                     <div style="width: 100%; ">
                       <h1>{{ scope.row.title }}</h1>
+                      <h1>{{ scope.row.recipeId }}</h1>
                       <div style="margin-top:20px;">
                         {{ scope.row.recipeDesc }}
                       </div>
@@ -161,6 +164,7 @@ export default {
       activeName: 'second',
       items: [],
       searchKey: '',
+      recipeId:'',
       pageNo: 1,
       pageSize: 10,
       total: 0,
@@ -177,7 +181,7 @@ export default {
       }).then(res => {
         console.log(1)
         console.log(res)
-        if (res.data.status === 'success') {
+        if (res.data.status === 'success' && res.data.data === 'success') {
           this.$message({
             type: 'success',
             message: '通过审核'
@@ -200,7 +204,7 @@ export default {
       }).then(res => {
         console.log(1)
         console.log(res)
-        if (res.data.status === 'success') {
+        if (res.data.status === 'success' && res.data.data === 'success') {
           this.$message({
             type: 'success',
             message: '成功驳回'
@@ -223,7 +227,7 @@ export default {
       }).then(res => {
         console.log(1)
         console.log(res)
-        if (res.data.status === 'success') {
+        if (res.data.status === 'success' && res.data.data === 'success' )  {
           this.$message({
             type: 'success',
             message: '已重新审核'

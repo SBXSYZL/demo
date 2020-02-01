@@ -52,7 +52,7 @@
     },
 
     methods: {
-      goBack () {
+      goBack() {
         this.$router.push('/Recipe');
       },
       getRecipeDetail() {
@@ -117,7 +117,7 @@
 
 
     },
-    created() {
+    activated() {
       this.getRecipeDetail()
     }
 
@@ -126,17 +126,19 @@
 </script>
 
 <style scoped>
-  .recipeId{
+  .recipeId {
     display: flex;
 
   }
-  .p1{
-       size: 40px;
-       color: #1a1a1a;
-       font-weight: bold;
 
-     }
-  .p2{
+  .p1 {
+    size: 40px;
+    color: #1a1a1a;
+    font-weight: bold;
+
+  }
+
+  .p2 {
     size: 40px;
     color: #1a1a1a;
     font-weight: bold;

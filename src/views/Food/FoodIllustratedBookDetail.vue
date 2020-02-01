@@ -1,5 +1,14 @@
 <template>
   <div class="container">
+    <div style="display: flex">
+      <div style="float: left;width: 90%">
+        <el-page-header @back="goBack"/>
+      </div>
+      <div style="float: right;width: 10%">
+        <el-button type="danger" @click="deleteFood">删除本文</el-button>
+      </div>
+    </div>
+
     <div :style="screen">
       <!--标题-->
       <h1>{{food.foodName}}</h1>
@@ -14,7 +23,7 @@
 
       </div>
       <hr style="margin-top: 5px;margin-bottom: 5px">
-      <div style="margin-top: 30px" v-html="food.content"/>
+      <div style="margin-top: 30px" v-loading="load" v-html="food.content"/>
 
 
     </div>
@@ -22,6 +31,17 @@
       <hr>
       <p style="text-align: center">一不小心滑到底了哦...</p>
     </div>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <span>确定删除本文？</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="handleClose">取 消</el-button>
+    <el-button type="primary" @click="confirmDelete">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -31,7 +51,7 @@
     data() {
       return {
         screen: {
-          height: 0
+          minHeight: 0
         },
         food: {
           foodId: -1,
@@ -40,34 +60,77 @@
           postUserName: '',
           postDate: '',
           content: ''
-        }
+        },
+        load: true,
+        dialogVisible: false
       }
     },
     methods: {
       getScreenHeight() {
-        this.screen.height = window.innerHeight - 100 + 'px'
+        this.screen.minHeight = window.innerHeight - 100 + 'px'
       },
       getFoodDetail() {
-        let id = this.$route.query.id;
         this.$axios.get('/api/admin/getFoodDetail', {
           params: {
-            foodId: id
+            foodId: this.food.foodId
           }
         }).then(res => {
-          console.log(res)
-          let data = res.data.data;
-          this.food.foodId = data.foodId;
-          this.food.foodTypeName = data.foodTypeName;
-          this.food.foodName = data.foodName;
-          this.food.postUserName = data.postUserName;
-          this.food.postDate = data.postDate;
-          this.food.content = data.content;
+          if (res.data.status === 'success') {
+            let data = res.data.data;
+            this.food.foodId = data.foodId;
+            this.food.foodTypeName = data.foodTypeName;
+            this.food.foodName = data.foodName;
+            this.food.postUserName = data.postUserName;
+            this.food.postDate = data.postDate;
+            this.food.content = data.content;
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+
         }).catch(err => {
-          console.log(err)
+          this.$message.error('请求失败...');
         })
+        this.load = false;
+      },
+      goBack() {
+        this.$router.back();
+      },
+      handleClose() {
+        this.dialogVisible = false
+      },
+      deleteFood() {
+        this.dialogVisible = true;
+      },
+      confirmDelete() {
+        this.$axios.get('/api/admin/deleteFood', {
+          params: {
+            foodId: this.food.foodId
+          }
+        }).then(res => {
+          // console.log(res)
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$router.back();
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(err => {
+          this.$message.error('请求失败...');
+        })
+        this.dialogVisible = false
       }
     },
-    created() {
+
+    activated() {
+      this.food.foodId = this.$route.query.id;
+      this.food.foodTypeName = '';
+      this.food.foodName = '';
+      this.food.postUserName = '';
+      this.food.postDate = '';
+      this.food.content = '';
       this.getFoodDetail();
       this.getScreenHeight();
     }

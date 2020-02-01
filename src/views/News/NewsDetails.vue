@@ -1,13 +1,20 @@
 <template>
   <div class="container">
-    <div style="float: top">
-      <div style="float: left">
-        <button @click="go" style="width: 80px;height:40px;background:lightskyblue">返回</button>
+    <div style="width: 100%;display: flex;">
+      <!--左侧按钮-->
+      <div style="float: left;width: 82%">
+        <el-page-header @back="go"/>
       </div>
-      <div style="float: right">
-        <button style="float: right;width: 80px;height:40px;background:lightskyblue" @click="Delect">删除</button>
-        <button style="float: right;width: 80px;height:40px;background:lightskyblue" @click="writeIllustratedBook">修改
-        </button>
+      <!--右侧按钮-->
+      <div style="justify-content: space-between;">
+        <el-row :gutter="10">
+          <el-col :span="12">
+            <el-button type="danger" round @click="DelectNews">删除</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button type="danger" round @click="writeIllustratedBook">修改</el-button>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="container" style="float: bottom">
@@ -42,14 +49,18 @@
       go() {
         this.$router.push('/foodNews')
       },
+      mounted(){
+        this.getNewsDetail();
+      },
+      DelectNews(){},
       writeIllustratedBook() {
-        this.$router.push('/write')
+        this.$router.push('/WriteNews')
       },
-      Delect() {
-      },
+
       getNewsDetail() {
         let id = this.$route.query.id;
-        this.$axios.get('/api/user/getNewsDetail', {
+        console.log(id)
+        this.$axios.get('/api/admin/getNewsDetail', {
           params: {
             newsId: id
           }
@@ -64,14 +75,13 @@
             this.news.newsDesc = obj.newsDesc;
             this.news.content = obj.content;
           }
-
         }).catch(err => {
           console.log(err)
         })
       }
 
     },
-    created() {
+    created(){
       this.getNewsDetail()
     },
 

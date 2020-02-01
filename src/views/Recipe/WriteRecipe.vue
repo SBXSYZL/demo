@@ -35,9 +35,9 @@
         <el-radio-button :label="typeItem.recipeTypeId">{{typeItem.recipeTypeName}}</el-radio-button>
       </el-radio-group>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="releaseConfirm">确 定</el-button>
-  </span>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="releaseConfirme">确 定</el-button>
+      </span>
     </el-dialog>
 
   </div>
@@ -55,6 +55,7 @@
         inputTitle: '',
         inputDesc: '',
         content: '',
+        recipeId: '',
         disabled: false,
         typeId: '',
         recipeTypes: [],
@@ -94,7 +95,7 @@
       release() {
         this.dialogVisible = true;
       },
-      releaseConfirm() {
+      releaseConfirme() {
         console.log(123)
         if (this.typeId != null && this.typeId !== '') {
           this.$confirm('确定上传当前内容？', '验证', {
@@ -145,7 +146,7 @@
       writeRecipe() {
         this.$axios.get('/api/admin/writeRecipe', {
           params: {
-            recipeId: this.recipedetail.recipeId
+            recipeId: this.FoodrecipeDetails.recipeId
           }
         }).then(res => {
           let obj = res.data.data
@@ -160,6 +161,7 @@
     },
     created() {
       this.getRecipeTypes();
+      this.writeRecipe();
     }
   }
 </script>

@@ -25,7 +25,7 @@
         <p style="text-align: center">{{news.releaseDate}}</p>
       </div>
       <div style="float: bottom">
-        <p>{{news.content}}</p>
+        <p style="float: left">{{news.content}}</p>
       </div>
     </div>
   </div>
@@ -81,7 +81,7 @@
       }
 
     },
-    created(){
+    activated(){
       this.getNewsDetail()
     },
 

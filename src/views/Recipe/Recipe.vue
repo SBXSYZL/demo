@@ -38,6 +38,7 @@
                   <div style="height: 200px; margin: 15px;">
                     <div style="width: 100%; ">
                       <h1>{{ scope.row.title }}</h1>
+                      <h1>{{ scope.row.recipeId }}</h1>
                       <div style="margin-top:20px;">
                         {{ scope.row.recipeDesc }}
                       </div>
@@ -71,6 +72,7 @@
                   <div style="height: 200px; margin: 15px;">
                     <div style="width: 100%; ">
                       <h1>{{ scope.row.title }}</h1>
+                      <h1>{{ scope.row.recipeId }}</h1>
                       <div style="margin-top:20px;">
                         {{ scope.row.recipeDesc }}
                       </div>
@@ -82,15 +84,15 @@
                 </template>
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
-                <template>
-                  <el-button size="mini" type="danger" @click="tongguoshenhe()"
+                <template slot-scope="scope">
+                  <el-button size="mini" type="danger" @click="tongguoshenhe(scope.row.recipeId)"
                     >通过审核
                   </el-button>
                 </template>
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
-                <template>
-                  <el-button size="mini" type="danger" @click="bohui()"
+                <template slot-scope="scope">
+                  <el-button size="mini" type="danger" @click="bohui(scope.row.recipeId)"
                     >驳回
                   </el-button>
                 </template>
@@ -117,6 +119,7 @@
                   <div style="height: 200px; margin: 15px;">
                     <div style="width: 100%; ">
                       <h1>{{ scope.row.title }}</h1>
+                      <h1>{{ scope.row.recipeId }}</h1>
                       <div style="margin-top:20px;">
                         {{ scope.row.recipeDesc }}
                       </div>
@@ -128,8 +131,8 @@
                 </template>
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
-                <template>
-                  <el-button size="mini" type="danger" @click="Reshenhe()"
+                <template slot-scope="scope">
+                  <el-button size="mini" type="danger" @click="Reshenhe(scope.row.recipeId)"
                     >重新审核
                   </el-button>
                 </template>
@@ -161,6 +164,7 @@ export default {
       activeName: 'second',
       items: [],
       searchKey: '',
+      recipeId:'',
       pageNo: 1,
       pageSize: 10,
       total: 0,
@@ -169,15 +173,16 @@ export default {
   },
   methods: {
 
-    tongguoshenhe () {
+    tongguoshenhe (val) {
+      console.log(this.recipeId)
       this.$axios.get('/api/admin/recipeReviewOk', {
         params: {
-          recipeId: this.recipeId
+          recipeId: val
         }
       }).then(res => {
         console.log(1)
         console.log(res)
-        if (res.data.status === 'fail') {
+        if (res.data.status === 'success' && res.data.data === 'success') {
           this.$message({
             type: 'success',
             message: '通过审核'
@@ -192,15 +197,15 @@ export default {
       this.dialogVisible = false;
       console.log(122)
     },
-    bohui () {
+    bohui (val) {
       this.$axios.get('/api/admin/recipeTurnDown', {
         params: {
-          recipeId: this.recipeId
+          recipeId: val
         }
       }).then(res => {
         console.log(1)
         console.log(res)
-        if (res.data.status === 'fail') {
+        if (res.data.status === 'success' && res.data.data === 'success') {
           this.$message({
             type: 'success',
             message: '成功驳回'
@@ -215,15 +220,15 @@ export default {
       this.dialogVisible = false;
       console.log(122)
     },
-    Reshenhe () {
+    Reshenhe (val) {
       this.$axios.get('/api/admin/recipeReReview', {
         params: {
-          recipeId: this.recipeId
+          recipeId: val
         }
       }).then(res => {
         console.log(1)
         console.log(res)
-        if (res.data.status === 'fail') {
+        if (res.data.status === 'success' && res.data.data === 'success' )  {
           this.$message({
             type: 'success',
             message: '已重新审核'
@@ -355,8 +360,7 @@ export default {
   },
   created () {
     this.getRecipeList()
-    this.getReviewRecipeList()
-    this.getTurnDownRecipeList()
+
   }
 
 

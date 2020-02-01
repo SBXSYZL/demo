@@ -13,7 +13,7 @@
     <div class="container" style="display: flex;height: 100%">
       <div style="width:100%">
         <el-tabs v-model="activeName" @tab-click="getList">
-          <el-tab-pane label="审核通过" name="pass">
+          <el-tab-pane label="审核通过" name="accept">
             <div style="margin-bottom: 15px">
               <el-input
                 placeholder="请输入内容"
@@ -40,7 +40,9 @@
                       <span v-html="item.content" style="height: 100px" />
                     </div>
                     <div class="body-r">
-                      <el-button type="danger">重审</el-button>
+                      <el-button type="danger"
+                                 @click="recheckArticle(item.articleId)">重审
+                      </el-button>
                     </div>
                   </div>
                 </el-card>
@@ -72,7 +74,12 @@
                       <span v-html="item.content" style="height: 100px" />
                     </div>
                     <div class="body-r">
-                      <el-button type="danger">驳回</el-button>
+                      <el-button type="danger"
+                                 @click="acceptArticle(item.articleId)">通过
+                      </el-button>
+                      <el-button type="danger"
+                                 @click="rejectArticle(item.articleId)">驳回
+                      </el-button>
                     </div>
                   </div>
                 </el-card>
@@ -105,7 +112,12 @@
                       <span v-html="item.content" style="height: 100px" />
                     </div>
                     <div class="body-r">
-                      <el-button type="danger">删除</el-button>
+                      <el-button type="danger"
+                                 @click="recheckArticle(item.articleId)">重审
+                      </el-button>
+                      <el-button type="danger"
+                                 @click="deleteArticle(item.articleId)">删除
+                      </el-button>
                     </div>
                   </div>
                 </el-card>
@@ -140,11 +152,12 @@ export default {
       pageSize: 10,
       searchKey: '',
       total: 0,
-      activeName: 'pass',
+      activeName: 'accept',
       dialogVisible: false
     }
   },
   methods: {
+    //查看文章详情
     checkDetial (key) {
       this.$router.push({
         path: '/ForumDetial',
@@ -153,6 +166,96 @@ export default {
         }
       })
     },
+    //驳回文章
+    rejectArticle(val){
+      this.$axios.get('/api/admin/articleTurnDown', {
+        params: {
+          articleId: val
+        }
+      }).then(res => {
+        console.log(res)
+        if (res.data.status === 'success' && res.data.data === 'success') {
+          this.$message({
+            type: 'success',
+            message: '驳回成功'
+          });
+          this.$router.push('/Forum')
+        } else {
+          this.$message.error(res.data.data.errMsg);
+        }
+      }).catch(() => {
+
+      });
+      this.dialogVisible = false;
+    },
+    //通过审核
+    acceptArticle(val){
+      console.log(this.recipeId)
+      this.$axios.get('/api/admin/articleReviewOk', {
+        params: {
+          recipeId: val
+        }
+      }).then(res => {
+        console.log(res)
+        if (res.data.status === 'success' && res.data.data === 'success') {
+          this.$message({
+            type: 'success',
+            message: '审核通过'
+          });
+          this.$router.push('/Forum')
+        } else {
+          this.$message.error(res.data.data.errMsg);
+        }
+      }).catch(() => {
+
+      });
+      this.dialogVisible = false;
+    },
+    //删除文章
+    deleteArticle(val){
+      this.$axios.get('/api/admin/deleteReview', {
+        params: {
+          recipeId: val
+        }
+      }).then(res => {
+        console.log(res)
+        if (res.data.status === 'success' && res.data.data === 'success') {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          });
+          this.$router.push('/Forum')
+        } else {
+          this.$message.error(res.data.data.errMsg);
+        }
+      }).catch(() => {
+
+      });
+      this.dialogVisible = false;
+    },
+    //重审文章
+    recheckArticle(val){
+      this.$axios.get('/api/admin/articleReReview', {
+        params: {
+          recipeId: val
+        }
+      }).then(res => {
+        console.log(res)
+        if (res.data.status === 'success' && res.data.data === 'success') {
+          this.$message({
+            type: 'success',
+            message: '文章状态改变'
+          });
+          this.$router.push('/Forum')
+        } else {
+          this.$message.error(res.data.data.errMsg);
+        }
+      }).catch(() => {
+
+      });
+      this.dialogVisible = false;
+    },
+    //搜索文章
     getSearchArticle () {
       this.pageNo = 1;
       this.$axios.get('/api/admin/searchArticle', {
@@ -177,6 +280,7 @@ export default {
       this.pageNo = val;
       this.getRecipeList();
     },
+    //发布文章
     postForum () {
       this.$router.push('/WriteForum')
     },
@@ -185,7 +289,7 @@ export default {
     },
     //Tabs切换点击事件
     getList (tab, event) {
-      if (tab.name == "pass") {
+      if (tab.name == "accept") {
         this.getArticleList();
       } else if (tab.name == "check") {
         this.getReviewArticleList();
@@ -239,9 +343,8 @@ export default {
       })
     }
   },
-  created()
-  {
-
+  created() {
+    this.getArticleList();
   }
 }
 </script>

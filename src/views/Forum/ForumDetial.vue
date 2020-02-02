@@ -93,6 +93,7 @@ export default {
     getArticleDetail () {
       this.articleId = this.$route.query.id;
       console.log(this.articleId)
+
       this.$axios
         .get("/api/user/getArticleDetail",
           {

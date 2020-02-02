@@ -61,7 +61,7 @@
               <el-button
                 size="mini"
                 :type="scope.row.tag === '封禁' ? 'danger' : 'success'"
-                @click="handleDelete(scope.$index, scope.row)"
+                @click="handleUpdate(scope.$index, scope.row)"
                 disable-transitions
                 >{{ scope.row.tag }}
               </el-button>
@@ -99,47 +99,10 @@ export default {
       tableData: []
     }
   },
-  activated () {
-
+  created () {
+    this.getUserList(this.pageNo);
   },
   mounted () {
-    this.$axios.get('/api/admin/getUserList', {
-      params: {
-        "pageNo": this.pageNo,
-        "pageSize": this.pageSize
-      },
-    }).then(res => {
-      setTimeout(() => {
-        this.loading = false;
-        let list = res.data.data.list
-
-        for (let i in list) {
-          if (list[i].gender == '1') {
-            list[i].gender = '男';
-          } else if (list[i].gender == '0') {
-            list[i].gender = '女';
-          }
-          if (list[i].authority == '1') {
-            list[i].authority = '封号';
-            list[i].tag = '解封';
-          } else if (list[i].authority == '0') {
-            list[i].authority = '正常';
-            list[i].tag = '封禁';
-          }
-        }
-
-        this.rows = res.data.data.pageCount
-        this.tableData = list;
-        console.log(this.tableData);
-      }, 500)
-
-    }).catch(err => {
-      setTimeout(() => {
-        this.loading = false;
-      }, 500)
-      //console.log(err);
-    })
-
     window.onresize = () => {
       return (() => {
 
@@ -168,9 +131,8 @@ export default {
       this.$router.back();
     },
 
-    handleDelete (index, row) {
-      this.open();
-      console.log(index, row);
+    handleUpdate (index, row) {
+      this.open(row.userId, row.authority);
     },
 
     filterTag (value, row) {
@@ -180,9 +142,12 @@ export default {
     success () {
       this.$notify({
         title: '成功',
-        message: '本次操作xxxx秒后生效',
+        message: '本次操作2秒后生效',
         type: 'success'
       });
+      setTimeout(() => {
+        this.getUserList(1);
+      }, 2000);
     },
 
     error () {
@@ -192,13 +157,29 @@ export default {
       });
     },
 
-    open () {
+    open (val, tag) {
+      if (tag == "封号") {
+        tag = 1;
+      }
+      else {
+        tag = 0;
+      }
       this.$confirm('即将对用户进行封禁操作, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.success();
+        this.$axios.get('http://localhost:8088/admin/banUsers', {
+          params: {
+            "userId": val,
+            "authority": tag
+          }
+        }).then(res => {
+          this.success();
+        }).catch(err => {
+          console.log(err);
+        })
+
       }).catch(() => {
         this.$message({
           showClose: true,

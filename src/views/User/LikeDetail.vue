@@ -148,7 +148,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$route);
     this.userId = this.$route.query.id;
     this.$axios.get('/api/admin/getUserLike', {
       params: {

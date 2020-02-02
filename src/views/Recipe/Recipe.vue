@@ -32,7 +32,11 @@
         <el-tab-pane label="成功审核" name="first">
           <!--标签-->
           <div>
-            <el-table :data="items" style="width: 100%" @row-click="itemClick">
+            <el-table
+              :data="items"
+              style="width: 100%"
+              @row-click.native="itemClick"
+            >
               <el-table-column style="width: 80%;position: absolute;">
                 <template slot-scope="scope">
                   <div style="height: 200px; margin: 15px;">
@@ -66,7 +70,11 @@
         </el-tab-pane>
         <el-tab-pane label="待审核" name="second">
           <div>
-            <el-table :data="items" style="width: 100%" @row-click="itemClick">
+            <el-table
+              :data="items"
+              style="width: 100%"
+              @row-click.native="itemClick"
+            >
               <el-table-column style="width: 80%;position: absolute;">
                 <template slot-scope="scope">
                   <div style="height: 200px; margin: 15px;">
@@ -119,7 +127,11 @@
         </el-tab-pane>
         <el-tab-pane label="驳回" name="third">
           <div>
-            <el-table :data="items" style="width: 100%" @row-click="itemClick">
+            <el-table
+              :data="items"
+              style="width: 100%"
+              @row-click.native="itemClick"
+            >
               <el-table-column style="width: 80%;position: absolute;">
                 <template slot-scope="scope">
                   <div style="height: 200px; margin: 15px;">
@@ -368,7 +380,7 @@ export default {
 
   },
   created () {
-    this.getRecipeList()
+    this.getReviewRecipeList()
   }
 }
 </script>

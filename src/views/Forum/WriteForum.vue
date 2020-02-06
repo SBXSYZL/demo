@@ -173,18 +173,6 @@
             this.articleTypes = res.data.data;
           })
       },
-      // writeArticle() {
-      //   this.$axios.get('/api/admin/writeArticle', {
-      //     params: {
-      //       recipeId: this.recipedetail.recipeId
-      //     }
-      //   }).then(res => {
-      //     let obj = res.data.data
-      //
-      //   }).catch(err => {
-      //     console.log(err)
-      //   })
-      // },
       handleClose() {
         this.dialogVisible = false;
       }

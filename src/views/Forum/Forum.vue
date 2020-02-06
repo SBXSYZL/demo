@@ -203,10 +203,10 @@ export default {
     },
     //通过审核
     acceptArticle (val) {
-      console.log(this.recipeId)
+      console.log(this.articleId)
       this.$axios.get('/api/admin/articleReviewOk', {
         params: {
-          recipeId: val
+          articleId: val
         }
       }).then(res => {
         console.log(res)
@@ -226,9 +226,9 @@ export default {
     },
     //删除文章
     deleteArticle (val) {
-      this.$axios.get('/api/admin/deleteReview', {
+      this.$axios.get('/api/admin/deleteArticle', {
         params: {
-          recipeId: val
+          articleId: val
         }
       }).then(res => {
         console.log(res)
@@ -250,14 +250,14 @@ export default {
     recheckArticle (val) {
       this.$axios.get('/api/admin/articleReReview', {
         params: {
-          recipeId: val
+          articleId: val
         }
       }).then(res => {
         console.log(res)
         if (res.data.status === 'success' && res.data.data === 'success') {
           this.$message({
             type: 'success',
-            message: '文章状态改变'
+            message: '文章重审'
           });
           this.$router.push('/Forum')
         } else {
@@ -287,11 +287,11 @@ export default {
     },
     handleSizeChange (val) {
       this.pageSize = val;
-      this.getRecipeList();
+      this.getArticleList();
     },
     handleCurrentChange (val) {
       this.pageNo = val;
-      this.getRecipeList();
+      this.getArticleList();
     },
     //发布文章
     postForum () {

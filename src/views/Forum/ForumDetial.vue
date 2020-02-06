@@ -10,20 +10,22 @@
       <div style="justify-content: space-between;">
         <el-row :gutter="10">
           <el-col :span="7">
-            <el-button type="danger" round @click="deleteArticle({ articleId })"
-              >删除</el-button
-            >
+            <el-button type="danger" round @click="deleteArticle()">
+              删除
+            </el-button>
           </el-col>
           <el-col :span="7">
-            <el-button type="danger" round>修改</el-button>
+            <el-button type="danger" round @click="modifyArticle()">
+              修改
+            </el-button>
           </el-col>
           <el-col :span="7">
             <el-button
               type="danger"
               round
-              @click="recheckArticle({ articleId })"
-              >重新审核</el-button
-            >
+              @click="recheckArticle()">
+              重新审核
+            </el-button>
           </el-col>
         </el-row>
       </div>
@@ -52,7 +54,6 @@
         &nbsp;&nbsp;{{ area }}
       </div>
     </div>
-
     <!--正文-->
     <div
       class="container"
@@ -62,8 +63,34 @@
     <!--评论-->
     <div class="container" style="margin-top: 5px">
       <div>
-        <span style="color: #909399;">转发{{ shareCnt }}</span>
-        <span>评论25</span>
+        <span style="color: #909399;margin-left: 10px">转发{{ shareCnt }}</span>
+        <span>评论{{commentcnt}}</span>
+        <div style="display:flex;padding-top: 18px">
+          <div style="display: flex;padding-left: 10px;padding-top: 10px;padding-bottom: 20px;margin-right: 15px">
+            <el-avatar :size="size" :src="circleUrl" />
+          </div>
+          <div class="el-textarea">
+            <textarea autocomplete="off" placeholder="想对作者说什么" class="el-textarea__inner"/>
+            <el-button type="danger" style="float: right;margin-top: 5px">发布</el-button>
+          </div>
+        </div>
+        <el-row
+          :span="5"
+          v-for="item in items"
+          :key="item.id"
+          :offset="1"
+        >
+          <div class="xiangqing-b">
+            <div class="xiangqing-b-l">
+              <el-avatar :size="size" :src="circleUrl" />
+            </div>
+            <div class="xiangqing-b-r">
+              <p style="font-size: 18px;"><b>{{item.postUserName}}</b></p>
+              <span style="color: #909399;font-size: 10px;">{{item.postDate}}</span>
+              <p style="height: auto;min-height: 20px;padding-top: 8px">{{item.commentContent}}</p>
+            </div>
+          </div>
+        </el-row>
       </div>
     </div>
   </div>
@@ -72,12 +99,45 @@
 span {
   padding-right: 20px;
 }
+.el-textarea__inner{
+  resize: none;
+  min-height: 80px;
+  padding: 15px;
+}
+.xiangqing-b{
+  background:#fff;
+  padding:10px;
+  overflow: hidden;
+  border-bottom: 1px solid #f0f0f0;
+}
+.xiangqing-b-l{
+  width: 5%;
+  float: left;
+
+}
+.xiangqing-b-r{
+  width: 95%;
+  float: left;
+}
+.text1{
+  width: 90%;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  display: block;
+  padding: 7px 8px;
+  height: 80px;
+  font-size: 14px;
+  line-height: 22px;
+}
+
 </style>
 <script>
 export default {
   name: 'ForumDetial',
   data () {
     return {
+      size:40,
+      textarea: '',
       historyMsg: '',
       type: '',
       data: '',
@@ -86,14 +146,22 @@ export default {
       viewCnt: '',
       shareCnt: '',
       title: "",
-      articleId: -1
+      articleId: '',
+      commentcnt:'',
+      items: [],
+      answeredUserName:'',
+      postUserName:'',
+      postDate:'',
+      commentContent:'',
+      dialogVisible:false,
+      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
     }
   },
   methods: {
+    //获取文章详情
     getArticleDetail () {
       this.articleId = this.$route.query.id;
       console.log(this.articleId)
-
       this.$axios
         .get("/api/user/getArticleDetail",
           {
@@ -110,9 +178,59 @@ export default {
             this.author = res.data.data.author
             this.viewCnt = res.data.data.viewCnt
             this.shareCnt = res.data.data.shareCnt
+            this.commentcnt = res.data.data.commentsMap.pageRows
+            this.items = res.data.data.commentsMap.list
           }).catch(err => {
             console.log(err)
           })
+    },
+    //删除文章
+    deleteArticle () {
+      this.$axios.get('/api/admin/deleteArticle', {
+        params: {
+          articleId: this.articleId
+        }
+      }).then(res => {
+        console.log(res)
+        if (res.data.status === 'success' && res.data.data === 'success') {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          });
+          this.$router.push('/Forum')
+        } else {
+          this.$message.error(res.data.data.errMsg);
+        }
+      }).catch(() => {
+
+      });
+      this.dialogVisible = false;
+    },
+    //重审文章
+    recheckArticle () {
+      this.$axios.get('/api/admin/articleReReview', {
+        params: {
+          articleId: this.articleId
+        }
+      }).then(res => {
+        console.log(res)
+        if (res.data.status === 'success' && res.data.data === 'success') {
+          this.$message({
+            type: 'success',
+            message: '文章重审'
+          });
+          this.$router.push('/Forum')
+        } else {
+          this.$message.error(res.data.data.errMsg);
+        }
+      }).catch(() => {
+
+      });
+      this.dialogVisible = false;
+    },
+    //修改文章
+    modifyArticle(){
+
     },
     goBack () {
       this.$router.back();

@@ -130,7 +130,7 @@
       },
       DeleteNews(index,row) {
         this.dialogVisible = true;
-        this.WillDeleteId=row.NewsId;
+        this.WillDeleteId=row.newsId;
       },
       confirmDelete() {
         this.$axios.get('/api/admin/deleteNews',{

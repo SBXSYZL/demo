@@ -49,10 +49,7 @@
               <div slot="header" class="clearfix">
                 <span>{{ articlelist[i - 1].title }}</span>
               </div>
-              <div
-                class="el-card__body"
-                v-html="articlelist[i - 1].content"
-              ></div>
+              <div class="el-card__body">{{ articlelist[i - 1].content }}</div>
             </el-card>
             <div slot="bottom " class="clearfix ">
               <el-row type="flex" justify="end">
@@ -150,7 +147,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$route);
     this.userId = this.$route.query.id;
     this.$axios.get('/api/admin/getUserArticle', {
       params: {
@@ -176,7 +172,12 @@ export default {
   },
   methods: {
 
+    // gotoDetail (val) {
+    //   this.$router.push({ path: '/ForumDetial', query: { id: val } });
+    // },
+
     load () {
+
       this.pageNo += 1;
       this.$axios.get('/api/admin/getUserArticle', {
         params: {
@@ -186,7 +187,7 @@ export default {
         }
       }).then(res => {
         let articlelist = res.data.data.list;
-        if (res.data.data.pageRows != 1) {
+        if (this.total != 1) {
           this.loading = true;
           for (let i in articlelist) {
             this.articlelist.push(articlelist[i]);

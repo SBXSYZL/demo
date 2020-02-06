@@ -34,7 +34,7 @@
                   <span class="author">作者：{{ userId }}</span
                   ><br />
                   <span class="datefont"
-                    >收藏日期：{{ likelist[i - 1].recipeDate }}</span
+                    >发布日期：{{ likelist[i - 1].recipeDate }}</span
                   >
                 </div>
               </el-col>
@@ -148,7 +148,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$route);
     this.userId = this.$route.query.id;
     this.$axios.get('/api/admin/getUserLike', {
       params: {
@@ -194,7 +193,7 @@ export default {
         console.log(err);
       })
       setTimeout(() => {
-
+        this.loading = false
         if (this.count + 2 >= this.total) {
           this.count = this.total;
         }
@@ -204,7 +203,7 @@ export default {
         if (this.count == 0) {
           this.empty = true;
         }
-        this.loading = false
+
       }, 2000)
     }
   }

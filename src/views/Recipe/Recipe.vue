@@ -32,7 +32,11 @@
         <el-tab-pane label="成功审核" name="first">
           <!--标签-->
           <div>
-            <el-table :data="items" style="width: 100%" @row-click="itemClick">
+            <el-table
+              :data="items"
+              style="width: 100%"
+              @row-click.native="itemClick"
+            >
               <el-table-column style="width: 80%;position: absolute;">
                 <template slot-scope="scope">
                   <div style="height: 200px; margin: 15px;">
@@ -66,7 +70,11 @@
         </el-tab-pane>
         <el-tab-pane label="待审核" name="second">
           <div>
-            <el-table :data="items" style="width: 100%" @row-click="itemClick">
+            <el-table
+              :data="items"
+              style="width: 100%"
+              @row-click.native="itemClick"
+            >
               <el-table-column style="width: 80%;position: absolute;">
                 <template slot-scope="scope">
                   <div style="height: 200px; margin: 15px;">
@@ -85,14 +93,20 @@
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" @click="tongguoshenhe(scope.row.recipeId)"
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="tongguoshenhe(scope.row.recipeId)"
                     >通过审核
                   </el-button>
                 </template>
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" @click="bohui(scope.row.recipeId)"
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="bohui(scope.row.recipeId)"
                     >驳回
                   </el-button>
                 </template>
@@ -113,7 +127,11 @@
         </el-tab-pane>
         <el-tab-pane label="驳回" name="third">
           <div>
-            <el-table :data="items" style="width: 100%" @row-click="itemClick">
+            <el-table
+              :data="items"
+              style="width: 100%"
+              @row-click.native="itemClick"
+            >
               <el-table-column style="width: 80%;position: absolute;">
                 <template slot-scope="scope">
                   <div style="height: 200px; margin: 15px;">
@@ -132,7 +150,10 @@
               </el-table-column>
               <el-table-column style="width: 180px" width="180px">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" @click="Reshenhe(scope.row.recipeId)"
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="Reshenhe(scope.row.recipeId)"
                     >重新审核
                   </el-button>
                 </template>
@@ -164,7 +185,7 @@ export default {
       activeName: 'second',
       items: [],
       searchKey: '',
-      recipeId:'',
+      recipeId: '',
       pageNo: 1,
       pageSize: 10,
       total: 0,
@@ -228,7 +249,7 @@ export default {
       }).then(res => {
         console.log(1)
         console.log(res)
-        if (res.data.status === 'success' && res.data.data === 'success' )  {
+        if (res.data.status === 'success' && res.data.data === 'success') {
           this.$message({
             type: 'success',
             message: '已重新审核'
@@ -280,13 +301,13 @@ export default {
     //Tabs切换点击事件
     getLists (tab, event) {
       if (tab.name == "first") {
-        this.pageNo=1;
+        this.pageNo = 1;
         this.getRecipeList();
       } else if (tab.name == "second") {
-        this.pageNo=1;
+        this.pageNo = 1;
         this.getReviewRecipeList();
       } else {
-        this.pageNo=1;
+        this.pageNo = 1;
         this.getTurnDownRecipeList();
       }
     },
@@ -359,16 +380,12 @@ export default {
 
   },
   created () {
-    this.getRecipeList()
-
+    this.getReviewRecipeList()
   }
-
-
 }
 </script>
 
 <style scoped>
-
 .el-select .el-input {
   width: 130px;
 }

@@ -112,19 +112,19 @@
             </el-row>
             <el-row type="flex" justify="space-around">
               <el-col :span="2"
-                ><span style="height:50px;width:50px;" class="font1"
-                  >19</span
-                ></el-col
+                ><span style="height:50px;width:50px;" class="font1">{{
+                  articleCnt
+                }}</span></el-col
               >
               <el-col :span="2"
-                ><span style="height:50px;width:50px;" class="font1"
-                  >20</span
-                ></el-col
+                ><span style="height:50px;width:50px;" class="font1">{{
+                  likeCnt
+                }}</span></el-col
               >
               <el-col :span="2"
-                ><span style="height:50px;width:50px" class="font1"
-                  >100</span
-                ></el-col
+                ><span style="height:50px;width:50px" class="font1">{{
+                  info.credibility
+                }}</span></el-col
               >
             </el-row>
             <div class="el-card__body font1">
@@ -165,6 +165,8 @@ export default {
   data () {
     return {
       info: {},
+      articleCnt: 0,
+      likeCnt: 0,
       openInfo: false,
       turn1: true,
       turn2: false,
@@ -193,6 +195,26 @@ export default {
         info.gender = '女';
       }
       this.info = info;
+    }).catch(err => {
+      console.log(err);
+    });
+
+    this.$axios.get('/api/admin/getUserArticle', {
+      params: {
+        'userId': this.userId
+      }
+    }).then(res => {
+      this.articleCnt = res.data.data.pageRows;
+    }).catch(err => {
+      console.log(err);
+    });
+
+    this.$axios.get('/api/admin/getUserLike', {
+      params: {
+        'userId': this.userId
+      }
+    }).then(res => {
+      this.likeCnt = res.data.data.pageRows;
     }).catch(err => {
       console.log(err);
     });

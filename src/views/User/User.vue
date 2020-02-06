@@ -95,7 +95,6 @@ export default {
             list[i].gender = '女';
           }
         }
-
         this.rows = res.data.data.pageCount;
         this.tableData = list;
       }, 500)

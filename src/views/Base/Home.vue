@@ -8,7 +8,6 @@
       <div class="content">
         <transition name="move"
                     mode="out-in">
-
           <template>
             <keep-alive>
               <router-view/>

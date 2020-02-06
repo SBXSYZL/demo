@@ -71,7 +71,7 @@
           </div>
           <div class="el-textarea">
             <textarea autocomplete="off" placeholder="想对作者说什么" class="el-textarea__inner"/>
-            <el-button type="danger" style="float: right;margin-top: 5px">发布</el-button>
+            <el-button type="danger" style="float: right;margin-top: 5px" @click="postComment()">发布</el-button>
           </div>
         </div>
         <el-row
@@ -137,6 +137,7 @@ export default {
   data () {
     return {
       size:40,
+      shareID:'',
       textarea: '',
       historyMsg: '',
       type: '',
@@ -170,16 +171,18 @@ export default {
             }
           }).then(res => {
             console.log(res)
-            this.historyMsg = res.data.data.content
-            this.title = res.data.data.title
-            this.type = res.data.data.articleTypeName
-            this.data = res.data.data.releaseDate
-            this.area = res.data.data.releaseArea
-            this.author = res.data.data.author
-            this.viewCnt = res.data.data.viewCnt
-            this.shareCnt = res.data.data.shareCnt
-            this.commentcnt = res.data.data.commentsMap.pageRows
-            this.items = res.data.data.commentsMap.list
+            this.historyMsg = res.data.data.content   //文章内容
+            this.title = res.data.data.title          //文章标题
+            this.articleId = res.data.data.articleId  //文章ID
+            this.type = res.data.data.articleTypeName //文章类型名
+            this.data = res.data.data.releaseDate     //文章发布时间
+            this.area = res.data.data.releaseArea     //文章发布地点
+            this.author = res.data.data.author        //文章作者
+            this.viewCnt = res.data.data.viewCnt      //阅读数
+            // this.shareID = res.data.data.shareID
+            this.shareCnt = res.data.data.shareCnt    //转发数
+            this.commentcnt = res.data.data.commentsMap.pageRows    //评论数
+            this.items = res.data.data.commentsMap.list       //评论内容数组
           }).catch(err => {
             console.log(err)
           })
@@ -230,7 +233,57 @@ export default {
     },
     //修改文章
     modifyArticle(){
+      var content = this.historyMsg  //文章内容
+      var id = this.articleId        //文章ID
+      var area = this.area           //文章发布地区
+      var title = this.title         //文章标题
+      localStorage.setItem('historyMsg',JSON.stringify(content));
+      localStorage.setItem('articleId',JSON.stringify(id));
+      localStorage.setItem('area',JSON.stringify(area));
+      localStorage.setItem('title',JSON.stringify(title));
+      this.$router.push('/WriteForum')
+    },
+    //原创评论
+    postComment(){
+      console.log(123)
+      if (this.articleTypeId != null && this.articleTypeId !== '') {
+        this.$confirm('确定上传当前内容？', '验证', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'info'
+        }).then(() => {
+          let params = new URLSearchParams();
+          params.append("articleID", this.inputTitle);
+          params.append("comment", this.getArea);
+          this.$axios(
+            {
+              method: 'post',
+              url: '/api/admin/writeComment',
+              data: params
+            }
+          ).then(res => {
+            console.log(res);
+            if (res.data.status === 'success' && res.data.data === 'success') {
+              this.$message({
+                type: 'success',
+                message: '上传成功!'
+              });
+              this.$router.push('/Forum')
+            } else {
+              this.$message.error(res.data.data.errMsg);
+            }
+          }).catch(err => {
+            this.$message.error('上传失败');
+          })
 
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消上传'
+          })
+        });
+        this.dialogVisible = false;
+      }
     },
     goBack () {
       this.$router.back();

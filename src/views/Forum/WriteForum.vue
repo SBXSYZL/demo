@@ -6,7 +6,7 @@
       </div>
       <div style="padding-top: 50px">
         <p style="margin-bottom: 5px;">标题：</p>
-        <el-input v-model="inputTitle" placeholder="请输入标题" style="width:50%"/>
+        <el-input v-model="inputTitle" placeholder="请输入标题" style="width:50%">{{title}}</el-input>
       </div>
       <div style="margin-top: 10px">
         <p style="margin-bottom: 5px;">事件所在地区：</p>
@@ -15,7 +15,7 @@
           @active-item-change="handleItemChange"
           :props="props"
           v-model="getArea"
-        />
+        >{{area}}</el-cascader>
       </div>
 
     </div>
@@ -50,13 +50,13 @@
 
 <script>
   import TinymceEditor from '../../components/Tinymce-editor'
-  import VDistpicker from 'v-distpicker'
 
   export default {
     name: 'WriteForum',
     components: {TinymceEditor},
     data() {
       return {
+        title : this.$route.query.title,
         options2: [
           {
             label: '江苏',
@@ -123,6 +123,14 @@
       release() {
         this.dialogVisible = true;
       },
+      //获取跳转信息
+      getItem(){
+        this.content = JSON.parse(localStorage.historyMsg);
+        this.id = JSON.parse(localStorage.articleId);
+        this.area = JSON.parse(localStorage.area);
+        this.title = JSON.parse(localStorage.title);
+      },
+      //发布文章
       releaseConfirm() {
         console.log(123)
         if (this.articleTypeId != null && this.articleTypeId !== '') {
@@ -179,7 +187,7 @@
     },
     created() {
       this.getArticleType();
-      // this.writeArticle();
+      this.getItem();
     }
   }
 </script>

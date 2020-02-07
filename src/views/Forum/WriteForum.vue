@@ -10,12 +10,7 @@
       </div>
       <div style="margin-top: 10px">
         <p style="margin-bottom: 5px;">事件所在地区：</p>
-        <el-cascader
-          :options="options2"
-          @active-item-change="handleItemChange"
-          :props="props"
-          v-model="area"
-        />
+        <v-distpicker @selected="onSelected" v-model="area"/>
       </div>
 
     </div>
@@ -54,7 +49,7 @@
 
   export default {
     name: 'WriteForum',
-    components: {TinymceEditor,VDistpicker },
+    components: {TinymceEditor,VDistpicker},
     data() {
       return {
         options2: [
@@ -83,19 +78,8 @@
     },
     methods: {
       //地区
-      handleItemChange(val) {
-        console.log('active item:', val);
-        setTimeout(_ => {
-          if (val.indexOf('江苏') > -1 && !this.options2[0].cities.length) {
-            this.options2[0].cities = [{
-              label: '南京'
-            }];
-          } else if (val.indexOf('浙江') > -1 && !this.options2[1].cities.length) {
-            this.options2[1].cities = [{
-              label: '杭州'
-            }];
-          }
-        }, 300);
+      onSelected(data) {
+        console.log(data)
       },
       refresh() {
         this.$router.go(0)

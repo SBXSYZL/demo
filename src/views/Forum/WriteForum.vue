@@ -15,7 +15,8 @@
           @active-item-change="handleItemChange"
           :props="props"
           v-model="getArea"
-        >{{area}}</el-cascader>
+        >{{area}}
+        </el-cascader>
       </div>
 
     </div>
@@ -79,9 +80,9 @@
         articleTypes: [],
         dialogVisible: false,
         articleTypeName: '',
-        content:sessionStorage.getItem("content"),
-        id:'',
-        title:'',
+        content: sessionStorage.getItem("content"),
+        id: '',
+        title: '',
       };
     },
     methods: {
@@ -128,7 +129,7 @@
         this.dialogVisible = true;
       },
       //获取修改文章请求信息
-      getItem(){
+      getItem() {
         this.content = sessionStorage.getItem("content")
         this.id = sessionStorage.getItem("id")
         this.area = sessionStorage.getItem("area")
@@ -190,9 +191,12 @@
         this.dialogVisible = false;
       }
     },
+    activated(){
+      this.getItem();
+    },
     created() {
       this.getArticleType();
-      this.getItem();
+
     }
   }
 </script>

@@ -71,21 +71,9 @@
           title: '',
           foodTypeId: '',
           content: ''
-        }
-        // ,
-        // rules: {
-        //   title: [{required: true, message: '请输入标题', trigger: 'blur'},
-        //     {validator: validateTitle, trigger: 'blur'}
-        //   ],
-        //   foodTypeId: [
-        //     {required: true, message: '请选择类型', trigger: 'blur'},
-        //     {validator: validateFoodTypeId, trigger: 'blur'}
-        //   ],
-        //   content: [
-        //     {required: true, message: '内容不能为空', trigger: 'blur'},
-        //     {validator: validateContent, trigger: 'blur'}
-        //   ]
-        // }
+        },
+        disabled: false
+
       }
     }
     ,

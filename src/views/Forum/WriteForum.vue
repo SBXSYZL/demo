@@ -6,7 +6,7 @@
       </div>
       <div style="padding-top: 50px">
         <p style="margin-bottom: 5px;">标题：</p>
-        <el-input v-model="inputTitle" placeholder="请输入标题" style="width:50%">{{title}}</el-input>
+        <el-input v-model="title" placeholder="请输入标题" style="width:50%"/>
       </div>
       <div style="margin-top: 10px">
         <p style="margin-bottom: 5px;">事件所在地区：</p>
@@ -14,16 +14,15 @@
           :options="options2"
           @active-item-change="handleItemChange"
           :props="props"
-          v-model="getArea"
-        >{{area}}</el-cascader>
+          v-model="area"
+        />
       </div>
 
     </div>
     <el-tag type="warning" style="margin-top: 10px">编辑框支持伸缩哦，出现问题请刷新再尝试！</el-tag>
     <TinymceEditor ref="editor"
-                   v-model="article"
-                   :disabled="disabled">
-      {{content}}
+                   v-model="content"
+                   :disabled="false">
     </TinymceEditor>
     <div style="text-align: center;margin-top: 20px;">
       <el-button @click="refresh">刷新</el-button>
@@ -51,13 +50,13 @@
 
 <script>
   import TinymceEditor from '../../components/Tinymce-editor'
+  import VDistpicker from 'v-distpicker'
 
   export default {
     name: 'WriteForum',
-    components: {TinymceEditor},
+    components: {TinymceEditor,VDistpicker },
     data() {
       return {
-        articleId: '',
         options2: [
           {
             label: '江苏',
@@ -71,20 +70,19 @@
           value: 'label',
           children: 'cities'
         },
-        inputTitle: '',
-        article: '',
-        getArea: '',
+        articleId: '',
+        title: '',
+        content: '',
+        area: '',
         disabled: false,
         articleTypeId: '',
         articleTypes: [],
         dialogVisible: false,
         articleTypeName: '',
-        content:sessionStorage.getItem("content"),
-        id:'',
-        title:'',
       };
     },
     methods: {
+      //地区
       handleItemChange(val) {
         console.log('active item:', val);
         setTimeout(_ => {
@@ -121,18 +119,35 @@
           })
         })
       },
+      //回退
       goBack() {
-        this.$router.push('/Forum');
-      },
-      release() {
-        this.dialogVisible = true;
+        this.$confirm("返回将不保存页面信息，是否继续?",'提示',{
+          confirmButtonText:'确定',
+          cancelButtonText:'取消',
+          type:'warning'
+        }).then(()=>{
+          sessionStorage.removeItem('content');
+          sessionStorage.removeItem('id');
+          sessionStorage.removeItem('title');
+          sessionStorage.removeItem('area');
+          this.$router.push('/Forum');
+        }).catch(()=>{
+        });
       },
       //获取修改文章请求信息
       getItem(){
         this.content = sessionStorage.getItem("content")
-        this.id = sessionStorage.getItem("id")
+        this.articleId = sessionStorage.getItem("id")
         this.area = sessionStorage.getItem("area")
         this.title = sessionStorage.getItem("title")
+      },
+      //获取文章类型
+      getArticleType() {
+        this.$axios.get('/api/admin/getArticleType')
+          .then(res => {
+            console.log(res);
+            this.articleTypes = res.data.data;
+          })
       },
       //发布文章
       releaseConfirm() {
@@ -144,10 +159,10 @@
             type: 'info'
           }).then(() => {
             let params = new URLSearchParams();
-            params.append("title", this.inputTitle);
-            params.append("postArea", this.getArea);
-            params.append("articleTypeId", this.articleTypeId);
-            params.append("article", this.article);
+            params.append("title", this.title);
+            params.append("postArea", this.area);
+            params.append("article", this.content);
+            params.append("articleId",this.articleId);
             this.$axios(
               {
                 method: 'post',
@@ -178,13 +193,8 @@
           this.dialogVisible = false;
         }
       },
-      //获取文章类型
-      getArticleType() {
-        this.$axios.get('/api/admin/getArticleType')
-          .then(res => {
-            console.log(res);
-            this.articleTypes = res.data.data;
-          })
+      release() {
+        this.dialogVisible = true;
       },
       handleClose() {
         this.dialogVisible = false;

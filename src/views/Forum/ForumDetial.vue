@@ -38,20 +38,8 @@
         <span style="color: skyblue">{{ author }}</span>
         <span style="color: #909399">发布于{{ data }}</span>
         <span style="color: #909399">阅读数{{ viewCnt }}</span>
-        <el-tag
-          size="small"
-          type="danger"
-          style="text-align: center;width: 40px;"
-          >类型</el-tag
-        >
-        &nbsp;&nbsp;{{ type }}
-        <el-tag
-          size="small"
-          type="danger"
-          style="text-align: center;width: 65px"
-          >事件地区</el-tag
-        >
-        &nbsp;&nbsp;{{ area }}
+        <el-tag size="small" type="danger" style="text-align: center;width: 40px;">类型</el-tag>&nbsp;&nbsp;{{ type }}
+        <el-tag size="small" type="danger" style="text-align: center;width: 65px">事件地区</el-tag>&nbsp;&nbsp;{{ area }}
       </div>
     </div>
     <!--正文-->
@@ -63,14 +51,14 @@
     <!--评论-->
     <div class="container" style="margin-top: 5px">
       <div>
-        <span style="color: #909399;margin-left: 10px">转发{{ shareCnt }}</span>
-        <span>评论{{commentcnt}}</span>
+        <span style="color: #909399;margin-left: 10px">转发&nbsp;&nbsp;{{ shareCnt }}</span>
+        <span>评论&nbsp;&nbsp;{{commentcnt}}</span>
         <div style="display:flex;padding-top: 18px">
           <div style="display: flex;padding-left: 10px;padding-top: 10px;padding-bottom: 20px;margin-right: 15px">
             <el-avatar :size="size" :src="circleUrl" />
           </div>
           <div class="el-textarea">
-            <textarea autocomplete="off" placeholder="想对作者说什么" class="el-textarea__inner"/>
+            <textarea autocomplete="off" placeholder="想对作者说什么" v-model="comment" class="el-textarea__inner"/>
             <el-button type="danger" style="float: right;margin-top: 5px" @click="postComment()">发布</el-button>
           </div>
         </div>
@@ -137,21 +125,23 @@ export default {
   data () {
     return {
       size:40,
-      shareID:'',
-      textarea: '',
       historyMsg: '',
+      title: "",
+      articleId: '',
       type: '',
+      articleTypeId: '',
       data: '',
       area: '',
       author: '',
       viewCnt: '',
+
       shareCnt: '',
-      title: "",
-      articleId: '',
-      articleTypeId: '',
       commentcnt:'',
       items: [],
+      answeredUserId:'null',
+      parentCommentId:'null',
       answeredUserName:'',
+      comment: '',
       postUserName:'',
       postDate:'',
       commentContent:'',
@@ -180,7 +170,6 @@ export default {
             this.area = res.data.data.releaseArea     //文章发布地点
             this.author = res.data.data.author        //文章作者
             this.viewCnt = res.data.data.viewCnt      //阅读数
-            // this.shareID = res.data.data.shareID
             this.shareCnt = res.data.data.shareCnt    //转发数
             this.commentcnt = res.data.data.commentsMap.pageRows    //评论数
             this.items = res.data.data.commentsMap.list       //评论内容数组
@@ -238,60 +227,63 @@ export default {
       let Id = this.articleId        //文章ID
       let Area = this.area           //文章发布地区
       let Title = this.title         //文章标题
-      sessionStorage.setItem("content",Content)
+      sessionStorage.setItem("content",this.historyMsg)
       sessionStorage.setItem("id",Id)
       sessionStorage.setItem("area",Area)
       sessionStorage.setItem("title",Title)
       this.$router.push('/WriteForum')
     },
     //原创评论
-    // postComment(){
-    //   console.log(123)
-    //   if (this.articleTypeId != null && this.articleTypeId !== '') {
-    //     this.$confirm('确定上传当前内容？', '验证', {
-    //       confirmButtonText: '确定',
-    //       cancelButtonText: '取消',
-    //       type: 'info'
-    //     }).then(() => {
-    //       let params = new URLSearchParams();
-    //       params.append("articleID", this.inputTitle);
-    //       params.append("comment", this.getArea);
-    //       this.$axios(
-    //         {
-    //           method: 'post',
-    //           url: '/api/admin/writeComment',
-    //           data: params
-    //         }
-    //       ).then(res => {
-    //         console.log(res);
-    //         if (res.data.status === 'success' && res.data.data === 'success') {
-    //           this.$message({
-    //             type: 'success',
-    //             message: '上传成功!'
-    //           });
-    //           this.$router.push('/Forum')
-    //         } else {
-    //           this.$message.error(res.data.data.errMsg);
-    //         }
-    //       }).catch(err => {
-    //         this.$message.error('上传失败');
-    //       })
-    //
-    //     }).catch(() => {
-    //       this.$message({
-    //         type: 'info',
-    //         message: '已取消上传'
-    //       })
-    //     });
-    //     this.dialogVisible = false;
-    //   }
-    // },
+    postComment(){
+      console.log(1)
+      this.$confirm('确定发表当前内容？', '验证', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        let params = new URLSearchParams();
+        params.append("comment", this.comment);
+        params.append("articleId", this.articleId);
+        params.append("answeredUserId", this.answeredUserId);
+        params.append("parentCommentId",this.parentCommentId);
+        this.$axios(
+          {
+            method: 'post',
+            url: '/api/admin/writeComment',
+            data: params
+          }
+        ).then(res => {
+          console.log(res);
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$message({
+              type: 'success',
+              message: '评论成功!'
+            });
+            this.$router.push('/ForumDetial')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(err => {
+          this.$message.error('评论失败');
+        })
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消评论'
+        })
+      });
+      this.dialogVisible = false;
+    },
     goBack () {
       this.$router.back();
     },
   },
   activated () {
     this.getArticleDetail()
+  },
+  created () {
+
   }
 }
 </script>

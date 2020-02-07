@@ -23,6 +23,7 @@
     <TinymceEditor ref="editor"
                    v-model="article"
                    :disabled="disabled">
+      {{content}}
     </TinymceEditor>
     <div style="text-align: center;margin-top: 20px;">
       <el-button @click="refresh">刷新</el-button>
@@ -56,7 +57,7 @@
     components: {TinymceEditor},
     data() {
       return {
-        title : this.$route.query.title,
+        articleId: '',
         options2: [
           {
             label: '江苏',
@@ -77,7 +78,10 @@
         articleTypeId: '',
         articleTypes: [],
         dialogVisible: false,
-        articleTypeName: ''
+        articleTypeName: '',
+        content:sessionStorage.getItem("content"),
+        id:'',
+        title:'',
       };
     },
     methods: {
@@ -123,12 +127,12 @@
       release() {
         this.dialogVisible = true;
       },
-      //获取跳转信息
+      //获取修改文章请求信息
       getItem(){
-        this.content = JSON.parse(localStorage.historyMsg);
-        this.id = JSON.parse(localStorage.articleId);
-        this.area = JSON.parse(localStorage.area);
-        this.title = JSON.parse(localStorage.title);
+        this.content = sessionStorage.getItem("content")
+        this.id = sessionStorage.getItem("id")
+        this.area = sessionStorage.getItem("area")
+        this.title = sessionStorage.getItem("title")
       },
       //发布文章
       releaseConfirm() {
@@ -174,6 +178,7 @@
           this.dialogVisible = false;
         }
       },
+      //获取文章类型
       getArticleType() {
         this.$axios.get('/api/admin/getArticleType')
           .then(res => {

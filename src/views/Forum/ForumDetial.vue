@@ -148,6 +148,7 @@ export default {
       shareCnt: '',
       title: "",
       articleId: '',
+      articleTypeId: '',
       commentcnt:'',
       items: [],
       answeredUserName:'',
@@ -233,58 +234,58 @@ export default {
     },
     //修改文章
     modifyArticle(){
-      var content = this.historyMsg  //文章内容
-      var id = this.articleId        //文章ID
-      var area = this.area           //文章发布地区
-      var title = this.title         //文章标题
-      localStorage.setItem('historyMsg',JSON.stringify(content));
-      localStorage.setItem('articleId',JSON.stringify(id));
-      localStorage.setItem('area',JSON.stringify(area));
-      localStorage.setItem('title',JSON.stringify(title));
+      let Content = this.historyMsg  //文章内容
+      let Id = this.articleId        //文章ID
+      let Area = this.area           //文章发布地区
+      let Title = this.title         //文章标题
+      sessionStorage.setItem("content",Content)
+      sessionStorage.setItem("id",Id)
+      sessionStorage.setItem("area",Area)
+      sessionStorage.setItem("title",Title)
       this.$router.push('/WriteForum')
     },
     //原创评论
-    postComment(){
-      console.log(123)
-      if (this.articleTypeId != null && this.articleTypeId !== '') {
-        this.$confirm('确定上传当前内容？', '验证', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'info'
-        }).then(() => {
-          let params = new URLSearchParams();
-          params.append("articleID", this.inputTitle);
-          params.append("comment", this.getArea);
-          this.$axios(
-            {
-              method: 'post',
-              url: '/api/admin/writeComment',
-              data: params
-            }
-          ).then(res => {
-            console.log(res);
-            if (res.data.status === 'success' && res.data.data === 'success') {
-              this.$message({
-                type: 'success',
-                message: '上传成功!'
-              });
-              this.$router.push('/Forum')
-            } else {
-              this.$message.error(res.data.data.errMsg);
-            }
-          }).catch(err => {
-            this.$message.error('上传失败');
-          })
-
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消上传'
-          })
-        });
-        this.dialogVisible = false;
-      }
-    },
+    // postComment(){
+    //   console.log(123)
+    //   if (this.articleTypeId != null && this.articleTypeId !== '') {
+    //     this.$confirm('确定上传当前内容？', '验证', {
+    //       confirmButtonText: '确定',
+    //       cancelButtonText: '取消',
+    //       type: 'info'
+    //     }).then(() => {
+    //       let params = new URLSearchParams();
+    //       params.append("articleID", this.inputTitle);
+    //       params.append("comment", this.getArea);
+    //       this.$axios(
+    //         {
+    //           method: 'post',
+    //           url: '/api/admin/writeComment',
+    //           data: params
+    //         }
+    //       ).then(res => {
+    //         console.log(res);
+    //         if (res.data.status === 'success' && res.data.data === 'success') {
+    //           this.$message({
+    //             type: 'success',
+    //             message: '上传成功!'
+    //           });
+    //           this.$router.push('/Forum')
+    //         } else {
+    //           this.$message.error(res.data.data.errMsg);
+    //         }
+    //       }).catch(err => {
+    //         this.$message.error('上传失败');
+    //       })
+    //
+    //     }).catch(() => {
+    //       this.$message({
+    //         type: 'info',
+    //         message: '已取消上传'
+    //       })
+    //     });
+    //     this.dialogVisible = false;
+    //   }
+    // },
     goBack () {
       this.$router.back();
     },

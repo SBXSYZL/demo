@@ -43,6 +43,27 @@
     name: 'Write',
     components: {TinymceEditor},
     data() {
+      // const validateTitle = (rule, value, callback) => {
+      //   if (value === '' || value.replace(/(^\s*)|(\s*$)/g, "") === '') {
+      //     callback(new Error('标题不能为空'))
+      //   } else {
+      //     callback()
+      //   }
+      // };
+      // const validateFoodTypeId = (rule, value, callback) => {
+      //   if (value === '') {
+      //     callback(new Error('请选择类型'))
+      //   } else {
+      //     callback()
+      //   }
+      // };
+      // const validateContent = (rule, content, callback) => {
+      //   if (value === '' || value.replace(/(^\s*)|(\s*$)/g, "") === '') {
+      //     callback(new Error('标题不能为空'))
+      //   } else {
+      //     callback()
+      //   }
+      // };
       return {
         disabled: false,
         foodTypes: [],
@@ -50,7 +71,9 @@
           title: '',
           foodTypeId: '',
           content: ''
-        }
+        },
+        disabled: false
+
       }
     }
     ,
@@ -81,6 +104,31 @@
       }
       ,
       release() {
+        if (this.params.title === '' || this.params.title.replace(/(^\s*)|(\s*$)/g, "") === '') {
+          this.$message({
+            showClose: true,
+            message: '标题不能为空',
+            type: 'error'
+          });
+          return;
+        }
+        if (this.params.foodTypeId === '') {
+          this.$message({
+            showClose: true,
+            message: '请选择类型',
+            type: 'error'
+          });
+          return;
+        }
+        if (this.params.content === '' || this.params.content.replace(/(^\s*)|(\s*$)/g, "") === '') {
+          this.$message({
+            showClose: true,
+            message: '内容不能为空',
+            type: 'error'
+          });
+          return;
+        }
+
         this.$confirm('确定上传当前内容？', '验证', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -130,6 +178,8 @@
             message: '已取消上传'
           })
         })
+
+
       }
       ,
       getFoodTypes() {

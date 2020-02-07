@@ -10,20 +10,22 @@
       <div style="justify-content: space-between;">
         <el-row :gutter="10">
           <el-col :span="7">
-            <el-button type="danger" round @click="deleteArticle({ articleId })"
-              >删除</el-button
-            >
+            <el-button type="danger" round @click="deleteArticle()">
+              删除
+            </el-button>
           </el-col>
           <el-col :span="7">
-            <el-button type="danger" round>修改</el-button>
+            <el-button type="danger" round @click="modifyArticle()">
+              修改
+            </el-button>
           </el-col>
           <el-col :span="7">
             <el-button
               type="danger"
               round
-              @click="recheckArticle({ articleId })"
-              >重新审核</el-button
-            >
+              @click="recheckArticle()">
+              重新审核
+            </el-button>
           </el-col>
         </el-row>
       </div>
@@ -36,23 +38,10 @@
         <span style="color: skyblue">{{ author }}</span>
         <span style="color: #909399">发布于{{ data }}</span>
         <span style="color: #909399">阅读数{{ viewCnt }}</span>
-        <el-tag
-          size="small"
-          type="danger"
-          style="text-align: center;width: 40px;"
-          >类型</el-tag
-        >
-        &nbsp;&nbsp;{{ type }}
-        <el-tag
-          size="small"
-          type="danger"
-          style="text-align: center;width: 65px"
-          >事件地区</el-tag
-        >
-        &nbsp;&nbsp;{{ area }}
+        <el-tag size="small" type="danger" style="text-align: center;width: 40px;">类型</el-tag>&nbsp;&nbsp;{{ type }}
+        <el-tag size="small" type="danger" style="text-align: center;width: 65px">事件地区</el-tag>&nbsp;&nbsp;{{ area }}
       </div>
     </div>
-
     <!--正文-->
     <div
       class="container"
@@ -62,8 +51,34 @@
     <!--评论-->
     <div class="container" style="margin-top: 5px">
       <div>
-        <span style="color: #909399;">转发{{ shareCnt }}</span>
-        <span>评论25</span>
+        <span style="color: #909399;margin-left: 10px">转发&nbsp;&nbsp;{{ shareCnt }}</span>
+        <span>评论&nbsp;&nbsp;{{commentcnt}}</span>
+        <div style="display:flex;padding-top: 18px">
+          <div style="display: flex;padding-left: 10px;padding-top: 10px;padding-bottom: 20px;margin-right: 15px">
+            <el-avatar :size="size" :src="circleUrl" />
+          </div>
+          <div class="el-textarea">
+            <textarea autocomplete="off" placeholder="想对作者说什么" v-model="comment" class="el-textarea__inner"/>
+            <el-button type="danger" style="float: right;margin-top: 5px" @click="postComment()">发布</el-button>
+          </div>
+        </div>
+        <el-row
+          :span="5"
+          v-for="item in items"
+          :key="item.id"
+          :offset="1"
+        >
+          <div class="xiangqing-b">
+            <div class="xiangqing-b-l">
+              <el-avatar :size="size" :src="circleUrl" />
+            </div>
+            <div class="xiangqing-b-r">
+              <p style="font-size: 18px;"><b>{{item.postUserName}}</b></p>
+              <span style="color: #909399;font-size: 10px;">{{item.postDate}}</span>
+              <p style="height: auto;min-height: 20px;padding-top: 8px">{{item.commentContent}}</p>
+            </div>
+          </div>
+        </el-row>
       </div>
     </div>
   </div>
@@ -72,28 +87,73 @@
 span {
   padding-right: 20px;
 }
+.el-textarea__inner{
+  resize: none;
+  min-height: 80px;
+  padding: 15px;
+}
+.xiangqing-b{
+  background:#fff;
+  padding:10px;
+  overflow: hidden;
+  border-bottom: 1px solid #f0f0f0;
+}
+.xiangqing-b-l{
+  width: 5%;
+  float: left;
+
+}
+.xiangqing-b-r{
+  width: 95%;
+  float: left;
+}
+.text1{
+  width: 90%;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  display: block;
+  padding: 7px 8px;
+  height: 80px;
+  font-size: 14px;
+  line-height: 22px;
+}
+
 </style>
 <script>
 export default {
   name: 'ForumDetial',
   data () {
     return {
+      size:40,
       historyMsg: '',
+      title: "",
+      articleId: '',
       type: '',
+      articleTypeId: '',
       data: '',
       area: '',
       author: '',
       viewCnt: '',
+
       shareCnt: '',
-      title: "",
-      articleId: -1
+      commentcnt:'',
+      items: [],
+      answeredUserId:'null',
+      parentCommentId:'null',
+      answeredUserName:'',
+      comment: '',
+      postUserName:'',
+      postDate:'',
+      commentContent:'',
+      dialogVisible:false,
+      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
     }
   },
   methods: {
+    //获取文章详情
     getArticleDetail () {
       this.articleId = this.$route.query.id;
       console.log(this.articleId)
-
       this.$axios
         .get("/api/user/getArticleDetail",
           {
@@ -102,17 +162,128 @@ export default {
             }
           }).then(res => {
             console.log(res)
-            this.historyMsg = res.data.data.content
-            this.title = res.data.data.title
-            this.type = res.data.data.articleTypeName
-            this.data = res.data.data.releaseDate
-            this.area = res.data.data.releaseArea
-            this.author = res.data.data.author
-            this.viewCnt = res.data.data.viewCnt
-            this.shareCnt = res.data.data.shareCnt
+            this.historyMsg = res.data.data.content   //文章内容
+            this.title = res.data.data.title          //文章标题
+            this.articleId = res.data.data.articleId  //文章ID
+            this.type = res.data.data.articleTypeName //文章类型名
+            this.data = res.data.data.releaseDate     //文章发布时间
+            this.area = res.data.data.releaseArea     //文章发布地点
+            this.author = res.data.data.author        //文章作者
+            this.viewCnt = res.data.data.viewCnt      //阅读数
+            this.shareCnt = res.data.data.shareCnt    //转发数
+            this.commentcnt = res.data.data.commentsMap.pageRows    //评论数
+            this.items = res.data.data.commentsMap.list       //评论内容数组
           }).catch(err => {
             console.log(err)
           })
+    },
+    //删除文章
+    deleteArticle (val) {
+      this.$confirm('确认删除该文章?','警告',{
+        confirmButtonText:'确认',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=> {
+        this.$axios.get('/api/admin/deleteArticle', {
+          params: {
+            articleId: val
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            });
+            this.$router.push('/Forum')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(() => {
+
+        });
+      })
+      this.dialogVisible = false;
+    },
+    //重审文章
+    recheckArticle (val) {
+      this.$confirm('确认重新审核该文章?','警告',{
+        confirmButtonText:'确认',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=> {
+        this.$axios.get('/api/admin/articleReReview', {
+          params: {
+            articleId: val
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$message({
+              type: 'success',
+              message: '文章重审'
+            });
+            this.$router.push('/Forum')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(() => {
+
+        });
+      })
+      this.dialogVisible = false;
+    },
+    //修改文章
+    modifyArticle(){
+      let Content = this.historyMsg  //文章内容
+      let Id = this.articleId        //文章ID
+      let Area = this.area           //文章发布地区
+      let Title = this.title         //文章标题
+      sessionStorage.setItem("content",this.historyMsg)
+      sessionStorage.setItem("id",Id)
+      sessionStorage.setItem("area",Area)
+      sessionStorage.setItem("title",Title)
+      this.$router.push('/WriteForum')
+    },
+    //原创评论
+    postComment(){
+      console.log(1)
+      this.$confirm('确定发表当前内容？', '验证', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        let params = new URLSearchParams();
+        params.append("comment", this.comment);
+        params.append("articleId", this.articleId);
+        this.$axios(
+          {
+            method: 'post',
+            url: '/api/admin/writeComment',
+            data: params
+          }
+        ).then(res => {
+          console.log(res);
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$message({
+              type: 'success',
+              message: '评论成功!'
+            });
+            this.$router.push('/ForumDetial')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(err => {
+          this.$message.error('评论失败');
+        })
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消评论'
+        })
+      });
+      this.dialogVisible = false;
     },
     goBack () {
       this.$router.back();
@@ -120,6 +291,9 @@ export default {
   },
   activated () {
     this.getArticleDetail()
+  },
+  created () {
+
   }
 }
 </script>

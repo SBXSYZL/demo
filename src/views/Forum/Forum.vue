@@ -42,8 +42,7 @@
                     <div class="body-r">
                       <el-button
                         type="danger"
-                        @click="recheckArticle(item.articleId)"
-                        >重审
+                        @click="recheckArticle(item.articleId)">重审
                       </el-button>
                     </div>
                   </div>
@@ -157,6 +156,7 @@
 
 <script>
 export default {
+  inject:['reload'],
   name: 'list',
   data () {
     return {
@@ -181,91 +181,116 @@ export default {
     },
     //驳回文章
     rejectArticle (val) {
-      this.$axios.get('/api/admin/articleTurnDown', {
-        params: {
-          articleId: val
-        }
-      }).then(res => {
-        console.log(res)
-        if (res.data.status === 'success' && res.data.data === 'success') {
-          this.$message({
-            type: 'success',
-            message: '驳回成功'
-          });
-          this.$router.push('/Forum')
-        } else {
-          this.$message.error(res.data.data.errMsg);
-        }
-      }).catch(() => {
+      this.$confirm('确认驳回该文章?','警告',{
+        confirmButtonText:'确认',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=>{
+        this.$axios.get('/api/admin/articleTurnDown', {
+          params: {
+            articleId: val
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$message({
+              type: 'success',
+              message: '驳回成功',
 
-      });
+            });
+            this.$router.push('/Forum')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(() => {
+
+        });
+      })
       this.dialogVisible = false;
     },
     //通过审核
     acceptArticle (val) {
-      console.log(this.recipeId)
-      this.$axios.get('/api/admin/articleReviewOk', {
-        params: {
-          recipeId: val
-        }
-      }).then(res => {
-        console.log(res)
-        if (res.data.status === 'success' && res.data.data === 'success') {
-          this.$message({
-            type: 'success',
-            message: '审核通过'
-          });
-          this.$router.push('/Forum')
-        } else {
-          this.$message.error(res.data.data.errMsg);
-        }
-      }).catch(() => {
+      console.log(this.articleId)
+      this.$confirm('确人通过该文章?','警告',{
+        confirmButtonText:'确认',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=> {
+        this.$axios.get('/api/admin/articleReviewOk', {
+          params: {
+            articleId: val
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$message({
+              type: 'success',
+              message: '审核通过'
+            });
+            this.$router.push('/Forum')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(() => {
 
-      });
+        });
+      })
       this.dialogVisible = false;
     },
     //删除文章
     deleteArticle (val) {
-      this.$axios.get('/api/admin/deleteReview', {
-        params: {
-          recipeId: val
-        }
-      }).then(res => {
-        console.log(res)
-        if (res.data.status === 'success' && res.data.data === 'success') {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          });
-          this.$router.push('/Forum')
-        } else {
-          this.$message.error(res.data.data.errMsg);
-        }
-      }).catch(() => {
+      this.$confirm('确认删除该文章?','警告',{
+        confirmButtonText:'确认',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=> {
+        this.$axios.get('/api/admin/deleteArticle', {
+          params: {
+            articleId: val
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            });
+            this.$router.push('/Forum')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(() => {
 
-      });
+        });
+      })
       this.dialogVisible = false;
     },
     //重审文章
     recheckArticle (val) {
-      this.$axios.get('/api/admin/articleReReview', {
-        params: {
-          recipeId: val
-        }
-      }).then(res => {
-        console.log(res)
-        if (res.data.status === 'success' && res.data.data === 'success') {
-          this.$message({
-            type: 'success',
-            message: '文章状态改变'
-          });
-          this.$router.push('/Forum')
-        } else {
-          this.$message.error(res.data.data.errMsg);
-        }
-      }).catch(() => {
+      this.$confirm('确认重新审核该文章?','警告',{
+        confirmButtonText:'确认',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=> {
+        this.$axios.get('/api/admin/articleReReview', {
+          params: {
+            articleId: val
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$message({
+              type: 'success',
+              message: '文章重审'
+            });
+            this.$router.push('/Forum')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(() => {
 
-      });
+        });
+      })
       this.dialogVisible = false;
     },
     //搜索文章
@@ -287,11 +312,11 @@ export default {
     },
     handleSizeChange (val) {
       this.pageSize = val;
-      this.getRecipeList();
+      this.getArticleList();
     },
     handleCurrentChange (val) {
       this.pageNo = val;
-      this.getRecipeList();
+      this.getArticleList();
     },
     //发布文章
     postForum () {

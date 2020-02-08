@@ -13,19 +13,31 @@
     <div class="container" style="display: flex;height: 100%">
       <div style="width:100%">
         <el-tabs v-model="activeName" @tab-click="getList">
+          <!--搜索框-->
+          <el-input
+            placeholder="请输入内容"
+            v-model="searchKey"
+            class="input-with-select"
+          >
+            <el-button
+              slot="append"
+              icon="el-icon-search"
+              @click="getSearchArticle"
+            />
+          </el-input>
+          <!--选项-->
+          <el-button style="margin-right:10px " @click="refresh">刷新</el-button>
+          <el-select v-model="articleTypeId" placeholder="请选择" @change="selectChange">
+            <el-option
+              v-for="item in ArticleTypes"
+              :key="item.articleTypeId"
+              :label="item.articleTypeName"
+              :value="item.articleTypeId"
+              @change="getList">
+            </el-option>
+          </el-select>
           <el-tab-pane label="审核通过" name="accept">
             <div style="margin-bottom: 15px">
-              <el-input
-                placeholder="请输入内容"
-                v-model="searchKey"
-                class="input-with-select"
-              >
-                <el-button
-                  slot="append"
-                  icon="el-icon-search"
-                  @click="getSearchArticle"
-                />
-              </el-input>
               <el-row
                 :span="5"
                 v-for="item in items"
@@ -52,17 +64,6 @@
           </el-tab-pane>
           <el-tab-pane label="未审核" name="check">
             <div style="margin-bottom: 15px;">
-              <el-input
-                placeholder="请输入内容"
-                v-model="searchKey"
-                class="input-with-select"
-              >
-                <el-button
-                  slot="append"
-                  icon="el-icon-search"
-                  @click="getSearchArticle"
-                />
-              </el-input>
               <el-row
                 :span="5"
                 v-for="item in items"
@@ -95,17 +96,6 @@
           </el-tab-pane>
           <el-tab-pane label="驳回" name="reject">
             <div style="margin-bottom: 15px;">
-              <el-input
-                placeholder="请输入内容"
-                v-model="searchKey"
-                class="input-with-select"
-              >
-                <el-button
-                  slot="append"
-                  icon="el-icon-search"
-                  @click="getSearchArticle"
-                />
-              </el-input>
               <el-row
                 :span="5"
                 v-for="item in items"
@@ -144,8 +134,7 @@
               :page-sizes="[10, 20, 30, 40]"
               :page-size="pageSize"
               layout="total, sizes, prev, pager, next, jumper"
-              :total="total"
-            >
+              :total="total">
             </el-pagination>
           </div>
         </el-tabs>
@@ -156,8 +145,7 @@
 
 <script>
 export default {
-  inject:['reload'],
-  name: 'list',
+  name: 'Forum',
   data () {
     return {
       items: [],
@@ -166,7 +154,10 @@ export default {
       searchKey: '',
       total: 0,
       activeName: 'accept',
-      dialogVisible: false
+      ArticleTypes:[],
+      articleTypeId:-1,
+      dialogVisible: false,
+      name:'',
     }
   },
   methods: {
@@ -310,30 +301,33 @@ export default {
         console.log(err)
       })
     },
-    handleSizeChange (val) {
-      this.pageSize = val;
-      this.getArticleList();
-    },
-    handleCurrentChange (val) {
-      this.pageNo = val;
-      this.getArticleList();
-    },
     //发布文章
     postForum () {
       this.$router.push('/WriteForum')
     },
-    handleDelete (index, row) {
-      // console.log(index, row);
-    },
     //Tabs切换点击事件
     getList (tab, event) {
-      if (tab.name == "accept") {
+      if (tab.name === "accept") {
         this.getArticleList();
-      } else if (tab.name == "check") {
+      } else if (tab.name === "check") {
         this.getReviewArticleList();
       } else {
         this.getTurnDownArticleList();
       }
+    },
+    //获取文章类型
+    getArticleTypes(){
+      this.$axios.get('/api/admin/getArticleType')
+        .then(res => {
+          this.ArticleTypes = res.data.data;
+          if (this.ArticleTypes.length > 0) {
+            this.ArticleTypeId = this.ArticleTypes[0].ArticleTypeId;
+            this.getList();
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     //获取审核通过文章列表
     getArticleList () {
@@ -379,10 +373,30 @@ export default {
       }).catch(err => {
         console.log(err)
       })
-    }
+    },
+    handleSizeChange (val) {
+      this.pageNo = 1;
+      this.pageSize = val;
+      this.getArticleList();
+    },
+    handleCurrentChange (val) {
+      this.pageNo = val;
+      this.getArticleList();
+    },
+    handleDelete (index, row) {
+      // console.log(index, row);
+    },
+    refresh() {
+      this.getList();
+    },
+    //选项切换
+    selectChange() {
+      this.getList();
+    },
   },
   created () {
     this.getArticleList();
+    this.getArticleTypes();
   }
 }
 </script>

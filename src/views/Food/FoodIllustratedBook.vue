@@ -153,7 +153,7 @@
                 this.foodList[i].content = this.foodList[i].content.replace(/<\/?.+?\/?>/g, "")
               }
             } catch (exception) {
-              console.log(exception.toString())
+              // console.log(exception.toString())
             }
 
             this.total = res.data.data.pageRows;
@@ -161,7 +161,7 @@
           })
           .catch(err => {
             this.load = false;
-            console.log("err", err)
+            // console.log("err", err)
             // this.$message.error(err.data.data.errMsg);
           })
       },

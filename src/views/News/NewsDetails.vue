@@ -9,10 +9,10 @@
       <div style="justify-content: space-between;">
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-button type="danger" round @click="DelectNews">删除</el-button>
+            <el-button type="danger" round @click="DelectNews()">删除</el-button>
           </el-col>
           <el-col :span="12">
-            <el-button type="danger" round @click="writeIllustratedBook">修改</el-button>
+            <el-button type="danger" round @click="modifyNews()">修改</el-button>
           </el-col>
         </el-row>
       </div>
@@ -52,9 +52,45 @@
       mounted(){
         this.getNewsDetail();
       },
-      DelectNews(){},
-      writeIllustratedBook() {
-        this.$router.push('/WriteNews')
+      //删除新闻
+      DelectNews(val){
+        this.$confirm('确定删除该新闻','警告',{
+          confirmButtonText:'确认',
+          cancelButtonText:'取消',
+          type:'warning'
+        }).then(() => {
+          this.$axios.get('/api/admin/deleteNews',{
+            params:{
+              newsId:val
+            }
+          }).then(res => {
+            console.log(res)
+            if(res.data.status ==='success' && res.data.data === 'success'){
+              this.$message({
+                type:'success',
+                message:'删除成功'
+              });
+              this.$router.push('FoodNews')
+            }else {
+              this.$message.error(res.data.data.errMsg);
+            }
+          }).catch(() =>{
+
+          });
+          })
+        this.dialogVisible =false;
+      },
+      //修改新闻
+     modifyNews() {
+       let Id = this.news.newsId          //文章ID
+       let Content = this.news.content    //文章内容
+       let Date = this.news.releaseDate          //文章发布时间
+       let Desc = this.news.newsDesc        //文章摘要
+       sessionStorage.setItem("content",Content)
+       sessionStorage.setItem("newsId",Id)
+       sessionStorage.setItem("releaseDate",Date)
+       sessionStorage.setItem("newsDesc",Desc)
+       this.$router.push('/WriteNews')
       },
 
       getNewsDetail() {
@@ -69,11 +105,11 @@
           if (res.data.status === 'success') {
             let obj = res.data.data;
             this.news.newsId = obj.newsId;
-            this.news.releaseDate = obj.releaseDate;
+            this.news.releaseDate = obj.releaseDate; //发布日期
             this.news.viewCnt = obj.viewCnt;
-            this.news.title = obj.title;
-            this.news.newsDesc = obj.newsDesc;
-            this.news.content = obj.content;
+            this.news.title = obj.title;     //新闻标题
+            this.news.newsDesc = obj.newsDesc;   //新闻摘要
+            this.news.content = obj.content;   //新闻内容
           }
         }).catch(err => {
           console.log(err)

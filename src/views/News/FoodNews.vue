@@ -130,15 +130,16 @@
       },
       DeleteNews(index,row) {
         this.dialogVisible = true;
-        this.WillDeleteId=row.NewsId;
+        this.WillDeleteId=row.newsId;
       },
+      //删除新闻
       confirmDelete() {
         this.$axios.get('/api/admin/deleteNews',{
           params: {
             newsId: this.willDeleteId
           }
         }).then(res => {
-          if (res.data.status === 'success' && res.data.data === 'success') {
+          if (res.data.status === 'success' && res.data.data === 'success' &&res.data.data !=null) {
             this.$message({
               message: '删除成功',
               type: 'success'

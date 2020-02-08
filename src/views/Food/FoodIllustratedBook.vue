@@ -129,7 +129,9 @@
             } else {
               this.load = false
             }
-          })
+          }).catch(err => {
+          this.$message.error(err.data.data.errMsg);
+        })
       },
       //获取食品图鉴列表
       getFoodList() {
@@ -146,15 +148,21 @@
             // console.log(res);
             this.foodList = res.data.data.list;
             //去除html标记
-            for (let i in this.foodList) {
-              this.foodList[i].content = this.foodList[i].content.replace(/<\/?.+?\/?>/g, "")
+            try {
+              for (let i in this.foodList) {
+                this.foodList[i].content = this.foodList[i].content.replace(/<\/?.+?\/?>/g, "")
+              }
+            } catch (exception) {
+              // console.log(exception.toString())
             }
+
             this.total = res.data.data.pageRows;
             this.load = false;
           })
           .catch(err => {
             this.load = false;
-            this.$message.error('加载失败...');
+            // console.log("err", err)
+            // this.$message.error(err.data.data.errMsg);
           })
       },
       //搜索

@@ -61,6 +61,13 @@ export default {
     refresh () {
       this.$router.go(0)
     },
+    //获取修改文章请求信息
+    getItem(){
+      this.content = sessionStorage.getItem("content")
+      this.newsId = sessionStorage.getItem("id")
+      this.inputDesc = sessionStorage.getItem("newsDesc")
+      this.inputTitle = sessionStorage.getItem("title")
+    },
     // 清空内容
     clear () {
       this.$confirm('确定清空所有内容？', '警告', {
@@ -140,9 +147,10 @@ export default {
       this.dialogVisible = false;
     }
   },
-  // created() {
-  //  this.writeNews();
-  // }
+  activated() {
+   // this.writeNews();
+   this.getItem();
+  }
 }
 </script>
 <style scoped>

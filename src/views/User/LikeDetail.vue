@@ -1,211 +1,143 @@
 <template>
-  <div class="infinite-list-wrapper" style="overflow:auto">
-    <div v-if="empty">
-      <div class="container nopadding">
-        <el-row>
-          <el-col :span="16" :offset="4">
-            <span>收藏都没有，我太难了！！！</span>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="16" :offset="4">
-            <span>(╯‵□′)╯︵┻━┻</span>
-          </el-col>
-        </el-row>
-      </div>
+  <div class="container" style="height: 100%;position: absolute">
+    <div>
+      <el-page-header @back="goBack" />
+      <el-button type="danger" @click="collectRecipe()">收藏</el-button>
     </div>
-    <div v-else>
-      <ul
-        class="list"
-        v-infinite-scroll="load"
-        infinite-scroll-disabled="disabled"
-      >
-        <li v-for="i in count" class="list-item" :key="i">
-          <div
-            class="container"
-            style="padding-top:20px;padding-left:10px;padding-bottom:0px"
-          >
-            <el-row>
-              <el-col :span="3">
-                <el-avatar :size="size" :src="circleUrl"></el-avatar>
-              </el-col>
-              <el-col :span="6">
-                <div style="text-align:left">
-                  <span class="author">作者：{{ userId }}</span
-                  ><br />
-                  <span class="datefont"
-                    >发布日期：{{ likelist[i - 1].recipeDate }}</span
-                  >
-                </div>
-              </el-col>
-              <el-col :span="15"> </el-col>
-            </el-row>
+    <div style="height: auto">
+      <p>食谱详情getRecipeDetail</p>
+      <div class="recipeId">
+        <p class="p1">recipeId:{{ recipedetail.recipeId }}</p>
+        <p class="p2">{{ recipedetail.recipeDate }}</p>
+      </div>
 
-            <el-card
-              class="box-card"
-              shadow="never"
-              style="border:0px;width:100%"
-            >
-              <div slot="header" class="clearfix">
-                <span>{{ likelist[i - 1].title }}</span>
-              </div>
-              <div
-                class="el-card__body"
-                v-html="likelist[i - 1].recipeDesc"
-              ></div>
-            </el-card>
-            <!-- <div slot="bottom " class="clearfix ">
-              <el-row type="flex" justify="end">
-                <el-col :span="12"> </el-col>
-                <el-col :span="3">
-                  <el-button
-                    icon="el-icon-location-outline icon-size"
-                    style="border:0px;"
-                    plain
-                    >厦门</el-button
-                  >
-                </el-col>
-                <el-col :span="3">
-                  <el-button
-                    style="border:0px;"
-                    icon="el-icon-thumb icon-size"
-                    plain
-                    >点赞</el-button
-                  >
-                </el-col>
-                <el-col :span="3">
-                  <el-button
-                    style="border:0px;"
-                    icon="el-icon-chat-dot-round icon-size"
-                    plain
-                    >评论</el-button
-                  >
-                </el-col>
-                <el-col :span="3">
-                  <el-button
-                    style="border:0px;"
-                    icon="el-icon-connection icon-size"
-                    plain
-                    >分享</el-button
-                  >
-                </el-col>
-              </el-row>
-            </div> -->
-          </div>
-        </li>
-      </ul>
-      <div v-if="loading">
-        <div class="container nopadding">
-          <el-row>
-            <el-col :span="16" :offset="4">
-              <span>努力加载中... \ (^o^) /~</span>
-            </el-col>
-          </el-row>
-        </div>
+      <div class="postuserid">
+        <p class="p1">postUserId:{{ recipedetail.postUserId }}</p>
       </div>
-      <div v-if="noMore">
-        <div class="container nopadding">
-          <el-row>
-            <el-col :span="16" :offset="4">
-              <span>没有更多了 ╭ (╯^╰) ╮</span>
-            </el-col>
-          </el-row>
-        </div>
+      <div>
+        <p class="p1">recipeDesc:{{ recipedetail.recipeDesc }}</p>
       </div>
+      <div>{{ recipedetail.recipeTypeId }}</div>
+      <div>{{ recipedetail.title }}</div>
+      <div v-html="recipedetail.recipeContent"></div>
+      <div>{{ recipedetail.status }}</div>
+      <div>{{ recipedetail.viewCnt }}</div>
+    </div>
+    <div style="float: right;margin:20px;bottom: 0">
+      <el-button type="danger" @click="evalRecipe(1)">喜欢</el-button>
+      <el-button type="danger" @click="evalRecipe(0)">不喜欢</el-button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'Foodrecipedetails',
   data () {
     return {
-      empty: false,
-      userId: -1,
-      pageNo: 1,
-      pageSize: 2,
-      likelist: [
-        {
-          recipeId: '',
-          recipeDesc: '',
-          recipeDate: '',
-          title: ''
-        }
-      ],
-      count: 0,
-      total: 1,
-      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-      size: 40,
-      loading: false
+      recipedetail: {
+        recipeId: '',
+        postUserId: '',
+        recipeDesc: '',
+        recipeDate: '',
+        recipeTypeId: '',
+        title: '',
+        recipeContent: '',
+        status: '',
+        viewCnt: '',
+      }
     }
   },
-  computed: {
-    noMore () {
-      return this.count == 0 ? false : this.count >= this.total;
-    },
-    disabled () {
-      return this.loading || this.noMore
-    }
-  },
-  created () {
-    this.userId = this.$route.query.id;
-    this.$axios.get('/api/admin/getUserLike', {
-      params: {
-        "pageNo": this.pageNo,
-        "pageSize": this.pageSize,
-        "userId": this.userId
-      }
-    }).then(res => {
-      let likelist = res.data.data.list;
-      this.likelist = likelist;
-      this.total = res.data.data.pageRows;
-      if (this.total > 1) {
-        this.count = 2;
-      }
-      else {
-        if (this.total == 1) {
-          this.count = 1;
-        }
-      }
-    }).catch(err => {
-      console.log(err);
-    })
-  },
+
   methods: {
-    load () {
-      this.pageNo += 1;
-      this.$axios.get('/api/admin/getUserLike', {
+    goBack () {
+      this.$router.back();
+    },
+    getRecipeDetail () {
+      let id = this.$route.query.id;
+      console.log(id)
+      this.$axios.get('/api/admin/getRecipeDetail', {
         params: {
-          "pageNo": this.pageNo,
-          "pageSize": this.pageSize,
-          "userId": this.userId
+          recipeId: id
         }
       }).then(res => {
-        let likelist = res.data.data.list;
-        if (res.data.data.pageRows != 1) {
-          this.loading = true;
-          for (let i in likelist) {
-            this.likelist.push(likelist[i]);
-          }
+        let obj = res.data.data
+        this.recipedetail.recipeId = obj.recipeId
+        this.recipedetail.postUserId = obj.postUserId
+        this.recipedetail.recipeDesc = obj.recipeDesc
+        this.recipedetail.recipeDate = obj.recipeDate
+        this.recipedetail.recipeTypeId = obj.recipeTypeId
+        this.recipedetail.title = obj.title
+        this.recipedetail.recipeContent = obj.recipeContent
+        this.recipedetail.status = obj.status
+        this.recipedetail.viewCnt = obj.viewCnt
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    evalRecipe (key) {
+      this.$axios.get('/api/admin/evalRecipe', {
+        params: {
+          eva: key,
+          recipeId: this.recipedetail.recipeId
         }
+      }).then(res => {
+        let obj = res.data.data
+        if (res.data.status === 'success' && res.data.data === 'success') {
+          this.$message({
+            message: '评价成功！',
+            type: 'success'
+          });
+        } else {
+          this.$message({
+            message: res.data.data.errMsg,
+            type: 'warning'
+          });
+        }
+
 
       }).catch(err => {
-        console.log(err);
+        console.log(err)
       })
-      setTimeout(() => {
-        this.loading = false
-        if (this.count + 2 >= this.total) {
-          this.count = this.total;
+    },
+    collectRecipe () {
+      this.$axios.get('/api/admin/collectRecipe', {
+        params: {
+          recipeId: this.recipedetail.recipeId
         }
-        else {
-          this.count += 2;
-        }
-        if (this.count == 0) {
-          this.empty = true;
-        }
+      }).then(res => {
+        let obj = res.data.data
 
-      }, 2000)
+      }).catch(err => {
+        console.log(err)
+      })
     }
+
+
+  },
+  activated () {
+    this.getRecipeDetail()
   }
+
 }
+
 </script>
+
+<style scoped>
+.recipeId {
+  display: flex;
+}
+
+.p1 {
+  size: 40px;
+  color: #1a1a1a;
+  font-weight: bold;
+}
+
+.p2 {
+  size: 40px;
+  color: #1a1a1a;
+  font-weight: bold;
+  margin-left: 1000px;
+}
+</style>

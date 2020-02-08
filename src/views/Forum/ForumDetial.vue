@@ -178,47 +178,59 @@ export default {
           })
     },
     //删除文章
-    deleteArticle () {
-      this.$axios.get('/api/admin/deleteArticle', {
-        params: {
-          articleId: this.articleId
-        }
-      }).then(res => {
-        console.log(res)
-        if (res.data.status === 'success' && res.data.data === 'success') {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          });
-          this.$router.push('/Forum')
-        } else {
-          this.$message.error(res.data.data.errMsg);
-        }
-      }).catch(() => {
+    deleteArticle (val) {
+      this.$confirm('确认删除该文章?','警告',{
+        confirmButtonText:'确认',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=> {
+        this.$axios.get('/api/admin/deleteArticle', {
+          params: {
+            articleId: val
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            });
+            this.$router.push('/Forum')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(() => {
 
-      });
+        });
+      })
       this.dialogVisible = false;
     },
     //重审文章
-    recheckArticle () {
-      this.$axios.get('/api/admin/articleReReview', {
-        params: {
-          articleId: this.articleId
-        }
-      }).then(res => {
-        console.log(res)
-        if (res.data.status === 'success' && res.data.data === 'success') {
-          this.$message({
-            type: 'success',
-            message: '文章重审'
-          });
-          this.$router.push('/Forum')
-        } else {
-          this.$message.error(res.data.data.errMsg);
-        }
-      }).catch(() => {
+    recheckArticle (val) {
+      this.$confirm('确认重新审核该文章?','警告',{
+        confirmButtonText:'确认',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=> {
+        this.$axios.get('/api/admin/articleReReview', {
+          params: {
+            articleId: val
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.status === 'success' && res.data.data === 'success') {
+            this.$message({
+              type: 'success',
+              message: '文章重审'
+            });
+            this.$router.push('/Forum')
+          } else {
+            this.$message.error(res.data.data.errMsg);
+          }
+        }).catch(() => {
 
-      });
+        });
+      })
       this.dialogVisible = false;
     },
     //修改文章
@@ -244,8 +256,6 @@ export default {
         let params = new URLSearchParams();
         params.append("comment", this.comment);
         params.append("articleId", this.articleId);
-        params.append("answeredUserId", this.answeredUserId);
-        params.append("parentCommentId",this.parentCommentId);
         this.$axios(
           {
             method: 'post',

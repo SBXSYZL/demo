@@ -1,44 +1,67 @@
 <template>
-  <div class="infinite-list-wrapper" style="overflow:auto">
-    <div v-if="empty">
-      <div class="container nopadding">
-        <el-row>
-          <el-col :span="16" :offset="4">
-            <span>这个人太懒！！！就没写过帖子啊！！！</span>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="16" :offset="4">
-            <span>(╯‵□′)╯︵┻━┻</span>
-          </el-col>
-        </el-row>
+  <div class="container" style="min-width:600px">
+    <!--顶部按钮-->
+    <div style="width: 100%;display: flex;">
+      <!--左侧按钮 回退-->
+      <div style="float: left;width: 82%">
+        <el-page-header @back="goBack" />
       </div>
     </div>
-    <div v-else>
-      <ul
-        class="list"
-        v-infinite-scroll="load"
-        infinite-scroll-disabled="disabled"
-      >
-        <li v-for="i in count" class="list-item" :key="i">
-          <div
-            class="container"
-            style="padding-top:20px;padding-left:10px;padding-bottom:0px"
-          >
+
+    <!--标题-数据-->
+    <div style="width: 100%;height:80px;position:relative; ">
+      <div style="position:absolute;left: 8px;top:0px">
+        <h1 style="text-align: left;margin-top: 15px">{{ info.title }}</h1>
+        <span style="color: skyblue">{{ info.author }}</span>
+        <span style="color: #909399">发布于{{ info.releaseDate }}</span>
+        <span style="color: #909399">阅读数{{ info.viewCnt }}</span>
+        <el-tag
+          size="small"
+          type="danger"
+          style="text-align: center;width: 40px;"
+          >类型</el-tag
+        >
+        &nbsp;&nbsp;{{ info.articleTypeName }}
+        <el-tag
+          size="small"
+          type="danger"
+          style="text-align: center;width: 65px"
+          >事件地区</el-tag
+        >
+        &nbsp;&nbsp;{{ info.releaseArea }}
+      </div>
+    </div>
+
+    <!--正文-->
+    <div
+      class="container"
+      v-html="info.content"
+      style="word-wrap: break-word;word-break: normal;"
+    />
+    <!--评论-->
+    <div class="container" style="margin-top: 5px">
+      <div>
+        <span style="color: #909399;">转发：{{ info.shareCnt }}</span>
+        <el-divider direction="vertical"></el-divider>
+        <span>评论：{{ comment.totail }}</span>
+      </div>
+      <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+        <li v-for="i in comment.totail" class="infinite-list-item" :key="i">
+          <el-divider></el-divider>
+          <div class="container Area">
             <el-row>
-              <el-col :span="3">
-                <el-avatar :size="size" :src="circleUrl"></el-avatar>
-              </el-col>
-              <el-col :span="6">
-                <div style="text-align:left">
-                  <span class="author">{{ userId }}</span
-                  ><br />
+              <el-col :span="24">
+                <el-avatar :src="circleUrl" style=" float: left"></el-avatar>
+                <div style="text-align:left;padding-left: 60px;">
+                  <span class="author">{{
+                    comment.list[i - 1].postUserName
+                  }}</span>
+                  <el-divider direction="vertical"></el-divider>
                   <span class="datefont"
-                    >发布日期：{{ articlelist[i - 1].releaseDate }}</span
+                    >评论日期：{{ comment.list[i - 1].postDate }}</span
                   >
                 </div>
               </el-col>
-              <el-col :span="15"> </el-col>
             </el-row>
 
             <el-card
@@ -46,188 +69,102 @@
               shadow="never"
               style="border:0px;width:100%"
             >
-              <div slot="header" class="clearfix">
-                <span>{{ articlelist[i - 1].title }}</span>
+              <div
+                class="el-card__body"
+                v-html="comment.list[i - 1].commentContent"
+              ></div>
+              <div style="float: right">
+                <el-button type="text">回复</el-button>
               </div>
-              <div class="el-card__body">{{ articlelist[i - 1].content }}</div>
             </el-card>
-            <div slot="bottom " class="clearfix ">
-              <el-row type="flex" justify="end">
-                <el-col :span="12"> </el-col>
-                <el-col :span="3">
-                  <el-button
-                    icon="el-icon-location-outline icon-size"
-                    style="border:0px;"
-                    plain
-                    >厦门</el-button
-                  >
-                </el-col>
-                <el-col :span="3">
-                  <el-button
-                    style="border:0px;"
-                    icon="el-icon-thumb icon-size"
-                    plain
-                    >点赞</el-button
-                  >
-                </el-col>
-                <el-col :span="3">
-                  <el-button
-                    style="border:0px;"
-                    icon="el-icon-chat-dot-round icon-size"
-                    plain
-                    >评论</el-button
-                  >
-                </el-col>
-                <el-col :span="3">
-                  <el-button
-                    style="border:0px;"
-                    icon="el-icon-connection icon-size"
-                    plain
-                    >分享</el-button
-                  >
-                </el-col>
-              </el-row>
-            </div>
           </div>
         </li>
       </ul>
-      <div v-if="loading">
-        <div class="container nopadding">
-          <el-row>
-            <el-col :span="16" :offset="4">
-              <span>努力加载中... \ (^o^) /~</span>
-            </el-col>
-          </el-row>
-        </div>
-      </div>
-      <div v-if="noMore">
-        <div class="container nopadding">
-          <el-row>
-            <el-col :span="16" :offset="4">
-              <span>没有更多了 ╭ (╯^╰) ╮</span>
-            </el-col>
-          </el-row>
-        </div>
-      </div>
     </div>
   </div>
 </template>
-
+<style scoped>
+span {
+  padding-right: 20px;
+}
+</style>
 <script>
 export default {
+  name: 'ForumDetial',
   data () {
     return {
-      userId: -1,
-      pageNo: 1,
-      pageSize: 2,
-      articlelist: [
-        {
-          articleId: '',
-          userId: '',
-          articleTypeId: '',
-          releaseDate: '',
-          title: '',
-          content: ''
-        }
-      ],
-      empty: false,
-      count: 0,
-      total: 1,
-      loading: false,
+      info: [{
+        content: '',
+        articleTypeName: '',
+        releaseDate: '',
+        releaseArea: '',
+        author: '',
+        viewCnt: '',
+        shareCnt: '',
+        title: "",
+        articleId: -1
+      }],
+      comment: {
+        totail: 0,
+        list: []
+      },
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-      size: 40
     }
-  },
-  computed: {
-    noMore () {
-      return this.count == 0 ? false : this.count >= this.total;
-    },
-    disabled () {
-      return this.loading || this.noMore
-    }
-  },
-  created () {
-    this.userId = this.$route.query.id;
-    this.$axios.get('/api/admin/getUserArticle', {
-      params: {
-        "pageNo": this.pageNo,
-        "pageSize": this.pageSize,
-        "userId": this.userId
-      }
-    }).then(res => {
-      let articlelist = res.data.data.list;
-      this.articlelist = articlelist;
-      this.total = res.data.data.pageRows;
-      if (this.total > 1) {
-        this.count = 2;
-      }
-      else {
-        if (this.total == 1) {
-          this.count = 1;
-        }
-      }
-    }).catch(err => {
-      console.log(err);
-    })
   },
   methods: {
-
-    // gotoDetail (val) {
-    //   this.$router.push({ path: '/ForumDetial', query: { id: val } });
-    // },
-
-    load () {
-
-      this.pageNo += 1;
-      this.$axios.get('/api/admin/getUserArticle', {
-        params: {
-          "pageNo": this.pageNo,
-          "pageSize": this.pageSize,
-          "userId": this.userId
-        }
-      }).then(res => {
-        let articlelist = res.data.data.list;
-        if (this.total != 1) {
-          this.loading = true;
-          for (let i in articlelist) {
-            this.articlelist.push(articlelist[i]);
+    getArticleDetail () {
+      this.$axios.get("/api/admin/getArticleDetail",
+        {
+          params: {
+            articleId: this.articleId
           }
-        }
-
-      }).catch(err => {
-        console.log(err);
-      })
-      setTimeout(() => {
-
-        if (this.count + 2 >= this.total) {
-          this.count = this.total;
-        }
-        else {
-          this.count += 2;
-        }
-        if (this.count == 0) {
-          this.empty = true;
-        }
-        this.loading = false
-      }, 2000)
-
-
+        }).then(res => {
+          this.info = res.data.data;
+          //this.comment.totail = 25;
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    getComment () {
+      this.$axios.get("/api/admin/getArticleComment",
+        {
+          params: {
+            articleId: this.articleId,
+            pageNo: '1'
+          }
+        }).then(res => {
+          this.comment.list = res.data.data.list;
+          this.comment.totail = res.data.data.pageRows;
+          console.log(this.comment);
+          //this.comment.totail = 25;
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    goBack () {
+      this.$router.back();
+    },
+    load () { },
+    disabled () {
+      return this.count >= this.comment.totail;
     }
+
+  },
+  activated () {
+    this.articleId = this.$route.query.id;
+    console.log(this.articleId);
+    this.getArticleDetail();
+    this.getComment();
   }
 }
 </script>
 <style>
-.datefont {
-  color: dimgrey;
-  vertical-align: bottom;
-  font-size: 10px;
-}
-
-.author {
-  font-size: 18px;
-}
-
-.icon-size {
-  font-size: 25px;
+.Area {
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-bottom: 0px;
+  min-width: 440px;
+  border: 0px;
 }
 </style>
+

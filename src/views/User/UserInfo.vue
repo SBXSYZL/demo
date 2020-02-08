@@ -129,12 +129,20 @@
             </el-row>
             <div class="el-card__body font1">
               <router-link
-                :to="{ path: '/articleDetail', query: { id: userId } }"
+                :to="{
+                  path: '/articleList',
+                  query: { id: userId, name: info.nickName }
+                }"
               >
                 <el-button type="text font1">查看帖子</el-button>
               </router-link>
               <el-divider />
-              <router-link :to="{ path: '/likeDetail', query: { id: userId } }">
+              <router-link
+                :to="{
+                  path: '/likeList',
+                  query: { id: userId, name: info.nickName }
+                }"
+              >
                 <el-button type="text font1">查看收藏</el-button>
               </router-link>
             </div>

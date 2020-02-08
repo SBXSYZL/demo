@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Base/Home.vue'
 import Login from '../views/Base/Login'
+import ArticleList from '../views/User/ArticleList.vue'
+import LikeList from '../views/User/LikeList.vue'
 import ArticleDetail from '../views/User/ArticleDetail.vue'
 import LikeDetail from '../views/User/LikeDetail.vue'
 
@@ -30,19 +32,29 @@ const routes = [
         component: resolve => require(['../views/User/UserInfo.vue'], resolve),
         children: [
           {
-            path: '/likeDetail',
+            path: '/likeList',
             name: 'like',
-            component: LikeDetail,
+            component: LikeList,
           },
           {
-            path: '/articleDetail',
+            path: '/articleList',
             name: 'article',
-            component: ArticleDetail,
+            component: ArticleList,
           }
         ],
         meta: {
           keepAlive: false
         }
+      },
+      {
+        path: '/articleDetail',
+        name: 'articleDetail',
+        component: ArticleDetail,
+      },
+      {
+        path: '/likeDetail',
+        name: 'likeDetail',
+        component: LikeDetail,
       },
       {
         path: '/foodNews',

@@ -29,149 +29,207 @@
         </el-input>
       </div>
       <el-tabs v-model="activeName" @tab-click="getLists">
-        <el-tab-pane label="成功审核" name="first">
-          <!--标签-->
-          <div>
-            <el-table
-              :data="items"
-              style="width: 100%"
-              @row-click.native="itemClick"
-            >
-              <el-table-column style="width: 80%;position: absolute;">
-                <template slot-scope="scope">
-                  <div style="height: 200px; margin: 15px;">
-                    <div style="width: 100%; ">
-                      <h1>{{ scope.row.title }}</h1>
-                      <h1>{{ scope.row.recipeId }}</h1>
-                      <div style="margin-top:20px;">
-                        {{ scope.row.recipeDesc }}
-                      </div>
-                      <div style="position: absolute;bottom: 0;">
-                        <p>{{ scope.row.recipeDate }}</p>
-                      </div>
+        <el-tag name="first" @click="first1">通过审核</el-tag>
+        <el-tag name="second" @click="second2">未审核</el-tag>
+        <el-tag name="third" @click="third3">驳回</el-tag>
+        <div>
+          <el-table
+            :data="items"
+            style="width: 100%"
+            @row-click.native="itemClick"
+          >
+            <el-table-column style="width: 80%;position: absolute;">
+              <template slot-scope="scope">
+                <div style="height: 200px; margin: 15px;">
+                  <div style="width: 100%; ">
+                    <h1>{{ scope.row.title }}</h1>
+                    <h1>{{ scope.row.recipeId }}</h1>
+                    <div style="margin-top:20px;">
+                      {{ scope.row.recipeDesc }}
+                    </div>
+                    <div style="position: absolute;bottom: 0;">
+                      <p>{{ scope.row.recipeDate }}</p>
                     </div>
                   </div>
-                </template>
-              </el-table-column>
-            </el-table>
-            <!--         删除的弹框-->
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column style="width: 180px" width="180px" >
+              <template slot-scope="scope"   >
+                <el-button :style="{ display: visiblesuccess }"
+                size="mini"
+                  type="danger"
+                  @click="tongguoshenhe(scope.row.recipeId)"
+                  >通过审核
+                </el-button>
+              </template>
+            </el-table-column>
+            <el-table-column style="width: 180px" width="180px">
+              <template slot-scope="scope">
+                <el-button :style="{ display: visiblebohui }"
+                  size="mini"
+                  type="danger"
+                  @click="bohui(scope.row.recipeId)"
+                  >驳回
+                </el-button>
+              </template>
+            </el-table-column>
+            <el-table-column style="width: 180px" width="180px">-->
+              <template slot-scope="scope">
+                <el-button :style="{ display: visiblereview }"
+                  size="mini"
+                  type="danger"
+                  @click="Reshenhe(scope.row.recipeId)"
+                  >重新审核
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
 
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="1"
-              :page-sizes="[10, 20, 30, 40]"
-              :page-size="pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="total"
-            >
-            </el-pagination>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="待审核" name="second">
-          <div>
-            <el-table
-              :data="items"
-              style="width: 100%"
-              @row-click.native="itemClick"
-            >
-              <el-table-column style="width: 80%;position: absolute;">
-                <template slot-scope="scope">
-                  <div style="height: 200px; margin: 15px;">
-                    <div style="width: 100%; ">
-                      <h1>{{ scope.row.title }}</h1>
-                      <h1>{{ scope.row.recipeId }}</h1>
-                      <div style="margin-top:20px;">
-                        {{ scope.row.recipeDesc }}
-                      </div>
-                      <div style="position: absolute;bottom: 0;">
-                        <p>{{ scope.row.recipeDate }}</p>
-                      </div>
-                    </div>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column style="width: 180px" width="180px">
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    type="danger"
-                    @click="tongguoshenhe(scope.row.recipeId)"
-                    >通过审核
-                  </el-button>
-                </template>
-              </el-table-column>
-              <el-table-column style="width: 180px" width="180px">
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    type="danger"
-                    @click="bohui(scope.row.recipeId)"
-                    >驳回
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+<!--        <el-tab-pane label="成功审核" name="first">-->
+<!--          &lt;!&ndash;标签&ndash;&gt;-->
+<!--          <div>-->
+<!--            <el-table-->
+<!--              :data="items"-->
+<!--              style="width: 100%"-->
+<!--              @row-click.native="itemClick"-->
+<!--            >-->
+<!--              <el-table-column style="width: 80%;position: absolute;">-->
+<!--                <template slot-scope="scope">-->
+<!--                  <div style="height: 200px; margin: 15px;">-->
+<!--                    <div style="width: 100%; ">-->
+<!--                      <h1>{{ scope.row.title }}</h1>-->
+<!--                      <h1>{{ scope.row.recipeId }}</h1>-->
+<!--                      <div style="margin-top:20px;">-->
+<!--                        {{ scope.row.recipeDesc }}-->
+<!--                      </div>-->
+<!--                      <div style="position: absolute;bottom: 0;">-->
+<!--                        <p>{{ scope.row.recipeDate }}</p>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </template>-->
+<!--              </el-table-column>-->
+<!--            </el-table>-->
+<!--            &lt;!&ndash;         删除的弹框&ndash;&gt;-->
 
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="1"
-              :page-sizes="[10, 20, 30, 40]"
-              :page-size="pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="total"
-            >
-            </el-pagination>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="驳回" name="third">
-          <div>
-            <el-table
-              :data="items"
-              style="width: 100%"
-              @row-click.native="itemClick"
-            >
-              <el-table-column style="width: 80%;position: absolute;">
-                <template slot-scope="scope">
-                  <div style="height: 200px; margin: 15px;">
-                    <div style="width: 100%; ">
-                      <h1>{{ scope.row.title }}</h1>
-                      <h1>{{ scope.row.recipeId }}</h1>
-                      <div style="margin-top:20px;">
-                        {{ scope.row.recipeDesc }}
-                      </div>
-                      <div style="position: absolute;bottom: 0;">
-                        <p>{{ scope.row.recipeDate }}</p>
-                      </div>
-                    </div>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column style="width: 180px" width="180px">
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    type="danger"
-                    @click="Reshenhe(scope.row.recipeId)"
-                    >重新审核
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+<!--            <el-pagination-->
+<!--              @size-change="handleSizeChange"-->
+<!--              @current-change="handleCurrentChange"-->
+<!--              :current-page="1"-->
+<!--              :page-sizes="[10, 20, 30, 40]"-->
+<!--              :page-size="pageSize"-->
+<!--              layout="total, sizes, prev, pager, next, jumper"-->
+<!--              :total="total"-->
+<!--            >-->
+<!--            </el-pagination>-->
+<!--          </div>-->
+<!--        </el-tab-pane>-->
+<!--        <el-tab-pane label="待审核" name="second">-->
+<!--          <div>-->
+<!--            <el-table-->
+<!--              :data="items"-->
+<!--              style="width: 100%"-->
+<!--              @row-click.native="itemClick"-->
+<!--            >-->
+<!--              <el-table-column style="width: 80%;position: absolute;">-->
+<!--                <template slot-scope="scope">-->
+<!--                  <div style="height: 200px; margin: 15px;">-->
+<!--                    <div style="width: 100%; ">-->
+<!--                      <h1>{{ scope.row.title }}</h1>-->
+<!--                      <h1>{{ scope.row.recipeId }}</h1>-->
+<!--                      <div style="margin-top:20px;">-->
+<!--                        {{ scope.row.recipeDesc }}-->
+<!--                      </div>-->
+<!--                      <div style="position: absolute;bottom: 0;">-->
+<!--                        <p>{{ scope.row.recipeDate }}</p>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </template>-->
+<!--              </el-table-column>-->
+<!--              <el-table-column style="width: 180px" width="180px">-->
+<!--                <template slot-scope="scope">-->
+<!--                  <el-button-->
+<!--                    size="mini"-->
+<!--                    type="danger"-->
+<!--                    @click="tongguoshenhe(scope.row.recipeId)"-->
+<!--                    >通过审核-->
+<!--                  </el-button>-->
+<!--                </template>-->
+<!--              </el-table-column>-->
+<!--              <el-table-column style="width: 180px" width="180px">-->
+<!--                <template slot-scope="scope">-->
+<!--                  <el-button-->
+<!--                    size="mini"-->
+<!--                    type="danger"-->
+<!--                    @click="bohui(scope.row.recipeId)"-->
+<!--                    >驳回-->
+<!--                  </el-button>-->
+<!--                </template>-->
+<!--              </el-table-column>-->
+<!--            </el-table>-->
 
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="1"
-              :page-sizes="[10, 20, 30, 40]"
-              :page-size="pageSize"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="total"
-            >
-            </el-pagination>
-          </div>
-        </el-tab-pane>
+<!--            <el-pagination-->
+<!--              @size-change="handleSizeChange"-->
+<!--              @current-change="handleCurrentChange"-->
+<!--              :current-page="1"-->
+<!--              :page-sizes="[10, 20, 30, 40]"-->
+<!--              :page-size="pageSize"-->
+<!--              layout="total, sizes, prev, pager, next, jumper"-->
+<!--              :total="total"-->
+<!--            >-->
+<!--            </el-pagination>-->
+<!--          </div>-->
+<!--        </el-tab-pane>-->
+<!--        <el-tab-pane label="驳回" name="third">-->
+<!--          <div>-->
+<!--            <el-table-->
+<!--              :data="items"-->
+<!--              style="width: 100%"-->
+<!--              @row-click.native="itemClick"-->
+<!--            >-->
+<!--              <el-table-column style="width: 80%;position: absolute;">-->
+<!--                <template slot-scope="scope">-->
+<!--                  <div style="height: 200px; margin: 15px;">-->
+<!--                    <div style="width: 100%; ">-->
+<!--                      <h1>{{ scope.row.title }}</h1>-->
+<!--                      <h1>{{ scope.row.recipeId }}</h1>-->
+<!--                      <div style="margin-top:20px;">-->
+<!--                        {{ scope.row.recipeDesc }}-->
+<!--                      </div>-->
+<!--                      <div style="position: absolute;bottom: 0;">-->
+<!--                        <p>{{ scope.row.recipeDate }}</p>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </template>-->
+<!--              </el-table-column>-->
+<!--              <el-table-column style="width: 180px" width="180px">-->
+<!--                <template slot-scope="scope">-->
+<!--                  <el-button-->
+<!--                    size="mini"-->
+<!--                    type="danger"-->
+<!--                    @click="Reshenhe(scope.row.recipeId)"-->
+<!--                    >重新审核-->
+<!--                  </el-button>-->
+<!--                </template>-->
+<!--              </el-table-column>-->
+<!--            </el-table>-->
+
+<!--            <el-pagination-->
+<!--              @size-change="handleSizeChange"-->
+<!--              @current-change="handleCurrentChange"-->
+<!--              :current-page="1"-->
+<!--              :page-sizes="[10, 20, 30, 40]"-->
+<!--              :page-size="pageSize"-->
+<!--              layout="total, sizes, prev, pager, next, jumper"-->
+<!--              :total="total"-->
+<!--            >-->
+<!--            </el-pagination>-->
+<!--          </div>-->
+<!--        </el-tab-pane>-->
       </el-tabs>
     </div>
   </div>
@@ -182,6 +240,9 @@ export default {
   name: 'Recipe',
   data () {
     return {
+      visiblesuccess: 'none',
+      visiblebohui: 'none',
+      visiblereview: 'none',
       activeName: 'second',
       items: [],
       searchKey: '',
@@ -289,8 +350,6 @@ export default {
     writerecipeBook () {
       this.$router.push('/WriteRecipe')
     },
-    handleClick () {
-    },
     handleClose () {
       this.dialogVisible = false;
     },
@@ -298,17 +357,34 @@ export default {
       this.dialogVisible = true;
       this.items.splice(row, 1)
     },
-    //Tabs切换点击事件
-    getLists (tab, event) {
-      if (tab.name == "first") {
-        this.pageNo = 1;
-        this.getRecipeList();
-      } else if (tab.name == "second") {
-        this.pageNo = 1;
-        this.getReviewRecipeList();
+    first1 () {
+      this.visiblesuccess = 'none'
+      this.visiblebohui = 'none'
+      this.visiblereview = ''
+      this.getRecipeList()
+    },
+    second2 () {
+      this.visiblesuccess = ''
+      this.visiblebohui = ''
+      this.visiblereview = 'none'
+      this.getReviewRecipeList()
+    },
+    third3 () {
+      this.visiblesuccess = 'none'
+      this.visiblebohui = 'none'
+      this.visiblereview = ''
+      this.getTurnDownRecipeList()
+    },
+    getLists (tag, event) {
+      if (tag.name === 'first') {
+        this.pageNo = 1
+        this.getRecipeList()
+      } else if (tag.name === 'second') {
+        this.pageNo = 1
+        this.getReviewRecipeList()
       } else {
-        this.pageNo = 1;
-        this.getTurnDownRecipeList();
+        this.pageNo = 1
+        this.getTurnDownRecipeList()
       }
     },
     getRecipeList () {

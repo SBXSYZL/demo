@@ -83,11 +83,13 @@
       //修改新闻
      modifyNews() {
        let Id = this.news.newsId          //文章ID
+       let title =this.news.title          //文章标题
        let Content = this.news.content    //文章内容
        let Date = this.news.releaseDate          //文章发布时间
        let Desc = this.news.newsDesc        //文章摘要
-       sessionStorage.setItem("content",Content)
        sessionStorage.setItem("newsId",Id)
+       sessionStorage.setItem("title",title)
+       sessionStorage.setItem("content",Content)
        sessionStorage.setItem("releaseDate",Date)
        sessionStorage.setItem("newsDesc",Desc)
        this.$router.push('/WriteNews')

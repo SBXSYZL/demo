@@ -10,8 +10,6 @@
         <p style="margin-bottom: 5px;">摘要：</p>
         <el-input type="textarea" :rows="4" v-model="inputDesc" placeholder="请输入摘要"></el-input>
       </div>
-
-
     </div>
     <el-tag type="warning">编辑框支持伸缩哦，出现问题请刷新再尝试！</el-tag>
     <TinymceEditor ref="editor"
@@ -136,14 +134,14 @@
           this.dialogVisible = false;
         }
       },
-      getRecipeTypes() {
+      getRecipeTypes () {
         this.$axios.get('/api/admin/getRecipeTypes')
           .then(res => {
             console.log(res);
             this.recipeTypes = res.data.data;
           })
       },
-      writeRecipe() {
+      writeRecipe () {
         this.$axios.get('/api/admin/writeRecipe', {
           params: {
             recipeId: this.FoodrecipeDetails.recipeId

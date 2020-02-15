@@ -29,14 +29,14 @@
         </el-input>
       </div>
       <el-tabs v-model="activeName" @tab-click="getLists">
-        <el-tag name="first" @click="first1">通过审核</el-tag>
+        <el-tag name="first" @click="first1" >通过审核</el-tag>
         <el-tag name="second" @click="second2">未审核</el-tag>
         <el-tag name="third" @click="third3">驳回</el-tag>
         <div>
           <el-table
             :data="items"
             style="width: 100%"
-            @row-click.native="itemClick"
+            @row-click="itemClick"
           >
             <el-table-column style="width: 80%;position: absolute;">
               <template slot-scope="scope">
@@ -85,6 +85,16 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="1"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          >
+          </el-pagination>
         </div>
 
 <!--        <el-tab-pane label="成功审核" name="first">-->
@@ -361,18 +371,45 @@ export default {
       this.visiblesuccess = 'none'
       this.visiblebohui = 'none'
       this.visiblereview = ''
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      setTimeout(() => {
+        loading.close()
+      }, 2000)
       this.getRecipeList()
     },
     second2 () {
       this.visiblesuccess = ''
       this.visiblebohui = ''
       this.visiblereview = 'none'
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      setTimeout(() => {
+        loading.close()
+      }, 2000)
       this.getReviewRecipeList()
     },
     third3 () {
       this.visiblesuccess = 'none'
       this.visiblebohui = 'none'
       this.visiblereview = ''
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      setTimeout(() => {
+        loading.close()
+      }, 2000)
       this.getTurnDownRecipeList()
     },
     getLists (tag, event) {

@@ -1,6 +1,9 @@
 <template>
   <div class="container">
     <div>
+      <div style="float: left;width: 100%">
+        <el-page-header @back="goBack"/>
+      </div>
       <div style="margin: 10px;">
         <p style="margin-bottom: 5px;">标题：</p>
         <el-input v-model="inputTitle" placeholder="请输入标题" />
@@ -61,12 +64,27 @@ export default {
     refresh () {
       this.$router.go(0)
     },
+    //返回
+      goBack() {
+        this.$confirm("返回将不保存页面信息，是否继续?",'提示',{
+          confirmButtonText:'确定',
+          cancelButtonText:'取消',
+          type:'warning'
+        }).then(()=>{
+          sessionStorage.removeItem('content');
+          sessionStorage.removeItem('newsId');
+          sessionStorage.removeItem('title');
+          sessionStorage.removeItem('content');
+          this.$router.push('/FoodNews');
+        }).catch(()=>{
+        });
+      },
     //获取修改文章请求信息
     getItem(){
-      this.content = sessionStorage.getItem("content")
-      this.newsId = sessionStorage.getItem("id")
-      this.inputDesc = sessionStorage.getItem("newsDesc")
-      this.inputTitle = sessionStorage.getItem("title")
+      this.content = sessionStorage.getItem("content")     //文章内容
+      this.newsId = sessionStorage.getItem("id")           //文章id
+      this.inputDesc = sessionStorage.getItem("newsDesc")   //文章摘要
+      this.inputTitle = sessionStorage.getItem("title")    //文章标题
     },
     // 清空内容
     clear () {

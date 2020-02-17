@@ -23,7 +23,7 @@
           v-model="searchKey"
           class="input-with-select"
         >
-          <el-button slot="append" icon="el-icon-search" @click="Search"
+          <el-button slot="append" icon="el-icon-search" @click="getSearchNews"
           />
         </el-input>
       </div>
@@ -158,6 +158,7 @@
         this.dialogVisible=false;
         this.willDeleteId=-1
       },
+      //新闻列表
       getNewsList() {
         this.$axios.get('/api/admin/getNewsList', {
           params: {
@@ -165,27 +166,14 @@
             pageSize: this.pageSize
           }
         }).then(res => {
+          console.log("res:")
           console.log(res)
           this.items = res.data.data.list;
         }).catch(err => {
           console.log(err)
         })
       },
-      search() {
-
-        if (this.searchStatus.searchKey.length > 0) {
-          this.searchStatus.isSearch = true;
-          this.getNewsList();
-        } else {
-          this.$notify({
-            title: '警告',
-            message: '请输入搜索内容',
-            type: 'warning',
-            duration: 1000
-          });
-        }
-
-      },
+      //搜索新闻
       getSearchNews() {
         this.pageNo = 1;
         this.$axios.get('/api/admin/SearchNews', {

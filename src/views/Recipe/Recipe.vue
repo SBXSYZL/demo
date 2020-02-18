@@ -29,9 +29,9 @@
         </el-input>
       </div>
       <el-tabs v-model="activeName" @tab-click="getLists">
-        <el-tag name="first" @click="first1" >通过审核</el-tag>
-        <el-tag name="second" @click="second2">未审核</el-tag>
-        <el-tag name="third" @click="third3">驳回</el-tag>
+        <el-tag name="first" @click="first" >通过审核</el-tag>
+        <el-tag name="second" @click="second">未审核</el-tag>
+        <el-tag name="third" @click="third">驳回</el-tag>
         <div>
           <el-table
             :data="items"
@@ -367,7 +367,7 @@ export default {
       this.dialogVisible = true;
       this.items.splice(row, 1)
     },
-    first1 () {
+    first () {
       this.visiblesuccess = 'none'
       this.visiblebohui = 'none'
       this.visiblereview = ''
@@ -382,7 +382,7 @@ export default {
       }, 2000)
       this.getRecipeList()
     },
-    second2 () {
+    second () {
       this.visiblesuccess = ''
       this.visiblebohui = ''
       this.visiblereview = 'none'
@@ -397,7 +397,7 @@ export default {
       }, 2000)
       this.getReviewRecipeList()
     },
-    third3 () {
+    third () {
       this.visiblesuccess = 'none'
       this.visiblebohui = 'none'
       this.visiblereview = ''

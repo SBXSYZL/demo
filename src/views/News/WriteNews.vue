@@ -75,6 +75,7 @@ export default {
           sessionStorage.removeItem('newsId');
           sessionStorage.removeItem('title');
           sessionStorage.removeItem('content');
+
           this.$router.push('/FoodNews');
         }).catch(()=>{
         });

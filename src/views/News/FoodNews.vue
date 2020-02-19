@@ -47,7 +47,7 @@
           <el-table-column style="width: 180px" width="180px">
             <template slot-scope="scope">
               <el-button size="mini" type="danger"
-                         @click.stop="DeleteNews(scope.$index,scope.row)">删除
+                         @click.stop="DeleteNews(scope.row.newsId)">删除
               </el-button
               >
             </template>
@@ -55,18 +55,18 @@
         </el-table>
 
         <!--         删除的弹框-->
-        <el-dialog
-          title="是否确定删除"
-          :visible.sync="dialogVisible"
-          width="30%"
-          :before-close="handleClose"
-        >
-          <span>确定删除本条新闻？</span>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="CancleDelete">取 消</el-button>
-            <el-button type="primary" @click="confirmDelete">确 定</el-button>
-          </span>
-        </el-dialog>
+<!--        <el-dialog-->
+<!--          title="是否确定删除"-->
+<!--          :visible.sync="dialogVisible"-->
+<!--          width="30%"-->
+<!--          :before-close="handleClose"-->
+<!--        >-->
+<!--          <span>确定删除本条新闻？</span>-->
+<!--          <span slot="footer" class="dialog-footer">-->
+<!--            <el-button @click="CancleDelete">取 消</el-button>-->
+<!--            <el-button type="primary" @click="confirmDelete">确 定</el-button>-->
+<!--          </span>-->
+<!--        </el-dialog>-->
       </div>
     </div>
     <!--    分页-->
@@ -81,6 +81,9 @@
         :total="400"
       >
       </el-pagination>
+    </div>
+    <div>
+      <router-view v-if="isRouterAlive"></router-view>
     </div>
   </div>
 </template>
@@ -98,7 +101,13 @@
         title: '',
         WillDeleteId:' ',
         dialogFormVisible: false,
-        dialogVisible: false
+        dialogVisible: false,
+        isRouterAlive:true
+      }
+    },
+    provide(){
+      return {
+        reload:this.reload
       }
     },
     methods: {
@@ -128,36 +137,41 @@
       handleClose() {
         this.dialogVisible = false;
       },
-      DeleteNews(index,row) {
-        this.dialogVisible = true;
-        this.WillDeleteId=row.newsId;
-      },
+      reload(){
+        this.isRouterAlive=false
+        this.$nextTick(function () {
+           this.isRouterAlive=true
+        })
+     },
       //删除新闻
-      confirmDelete() {
-        this.$axios.get('/api/admin/deleteNews',{
-          params: {
-            newsId: this.willDeleteId
-          }
-        }).then(res => {
-          if (res.data.status === 'success' && res.data.data === 'success' &&res.data.data !=null) {
-            this.$message({
-              message: '删除成功',
-              type: 'success'
-            });
-            this.getNewsList()
-          } else {
-            this.$message.error(res.data.data.errMsg);
-          }
-        }).catch(err => {
-          this.$message.error(err.data.data.errMsg);
-        });
-        this.dialogVisible = false;
-        this.willDeleteId = -1
-      },
-      CancleDelete(){
-        this.dialogVisible=false;
-        this.willDeleteId=-1
-      },
+     DeleteNews(val){
+       this.$confirm('确认删除该文章?','警告',{
+         confirmButtonText:'确认',
+         cancelButtonText:'取消',
+         type:'warning'
+       }).then(()=> {
+         this.$axios.get('/api/admin/deleteNews', {
+           params: {
+            newsId: val
+           }
+         }).then(res => {
+           console.log(res)
+           if (res.data.status === 'success' && res.data.data === 'success') {
+             this.$message({
+               type: 'success',
+               message: '删除成功'
+             });
+             this.$router.push('/foodNews')
+           } else {
+             this.$message.error(res.data.data.errMsg);
+           }
+         }).catch(() => {
+
+         });
+       })
+       this.dialogVisible = false;
+       // location.reload();
+     },
       //新闻列表
       getNewsList() {
         this.$axios.get('/api/admin/getNewsList', {
@@ -174,9 +188,9 @@
         })
       },
       //搜索新闻
-      getSearchNews() {
+      getSearchNews () {
         this.pageNo = 1;
-        this.$axios.get('/api/admin/SearchNews', {
+        this.$axios.get('/api/admin/searchNews', {
           params: {
             pageNo: this.pageNo,
             pageSize: this.pageSize,

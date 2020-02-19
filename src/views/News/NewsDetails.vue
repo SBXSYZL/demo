@@ -9,7 +9,7 @@
       <div style="justify-content: space-between;">
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-button type="danger" round @click="DelectNews()">删除</el-button>
+            <el-button type="danger" round @click="DelectNews(news.newsId)">删除</el-button>
           </el-col>
           <el-col :span="12">
             <el-button type="danger" round @click="modifyNews()">修改</el-button>
@@ -42,7 +42,8 @@
           title: '',
           newsDesc: '',
           content: ''
-        }
+        },
+        dialogVisible:false,
       }
     },
     methods: {
@@ -54,31 +55,31 @@
       },
       //删除新闻
       DelectNews(val){
-        this.$confirm('确定删除该新闻','警告',{
+        this.$confirm('确认删除该文章?','警告',{
           confirmButtonText:'确认',
           cancelButtonText:'取消',
           type:'warning'
-        }).then(() => {
-          this.$axios.get('/api/admin/deleteNews',{
-            params:{
-              newsId:val
+        }).then(()=> {
+          this.$axios.get('/api/admin/deleteNews', {
+            params: {
+              newsId: val
             }
           }).then(res => {
             console.log(res)
-            if(res.data.status ==='success' && res.data.data === 'success'){
+            if (res.data.status === 'success' && res.data.data === 'success') {
               this.$message({
-                type:'success',
-                message:'删除成功'
+                type: 'success',
+                message: '删除成功'
               });
-              this.$router.push('FoodNews')
-            }else {
+              this.$router.push('/foodNews')
+            } else {
               this.$message.error(res.data.data.errMsg);
             }
-          }).catch(() =>{
+          }).catch(() => {
 
           });
-          })
-        this.dialogVisible =false;
+        })
+        this.dialogVisible = false;
       },
       //修改新闻
      modifyNews() {

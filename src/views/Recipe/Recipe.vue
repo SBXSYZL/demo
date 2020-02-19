@@ -29,20 +29,9 @@
         </el-input>
       </div>
       <el-tabs v-model="activeName" @tab-click="getLists">
-        <el-button type="text" name="first" @click="first" >通过审核</el-button>
-        <el-button type="text" name="second" @click="second">未审核</el-button>
-        <el-button type="text" name="third" @click="third">驳回</el-button>
-<!--        <el-tab-pane label="通过审核" name="first" @click="first">-->
-<!--          -->
-<!--        </el-tab-pane>-->
-<!--        <el-tab-pane label="未审核" name="second" @click="second">-->
-<!--          -->
-<!--        </el-tab-pane>-->
-<!--        <el-tab-pane label="驳回" name="third" @click="third">-->
-<!--          -->
-<!--        </el-tab-pane>-->
-
-
+        <el-tab-pane label="通过审核" name="first" @click="first"></el-tab-pane>
+        <el-tab-pane label="未审核" name="second" @click="second"></el-tab-pane>
+        <el-tab-pane label="待审核" name="third" @click="third"></el-tab-pane>
         <div>
           <el-table
             :data="items"
@@ -261,9 +250,9 @@ export default {
   name: 'Recipe',
   data () {
     return {
-      visiblesuccess: 'none',
-      visiblebohui: 'none',
-      visiblereview: 'none',
+      visiblesuccess: '',
+      visiblebohui: '',
+      visiblereview: '',
       activeName: 'second',
       items: [],
       searchKey: '',
@@ -299,7 +288,6 @@ export default {
       });
       this.dialogVisible = false;
       console.log(122)
-
     },
     bohui (val) {
       this.$axios.get('/api/admin/recipeTurnDown', {
@@ -373,7 +361,11 @@ export default {
       this.$router.push('/WriteRecipe')
     },
     handleClose () {
-      this.dialogVisible = false
+      this.dialogVisible = false;
+    },
+    deleteNews (row) {
+      this.dialogVisible = true;
+      this.items.splice(row, 1)
     },
     first () {
       this.visiblesuccess = 'none'

@@ -29,9 +29,20 @@
         </el-input>
       </div>
       <el-tabs v-model="activeName" @tab-click="getLists">
-        <el-tag name="first" @click="first" >通过审核</el-tag>
-        <el-tag name="second" @click="second">未审核</el-tag>
-        <el-tag name="third" @click="third">驳回</el-tag>
+        <el-button type="text" name="first" @click="first" >通过审核</el-button>
+        <el-button type="text" name="second" @click="second">未审核</el-button>
+        <el-button type="text" name="third" @click="third">驳回</el-button>
+<!--        <el-tab-pane label="通过审核" name="first" @click="first">-->
+<!--          -->
+<!--        </el-tab-pane>-->
+<!--        <el-tab-pane label="未审核" name="second" @click="second">-->
+<!--          -->
+<!--        </el-tab-pane>-->
+<!--        <el-tab-pane label="驳回" name="third" @click="third">-->
+<!--          -->
+<!--        </el-tab-pane>-->
+
+
         <div>
           <el-table
             :data="items"
@@ -288,6 +299,7 @@ export default {
       });
       this.dialogVisible = false;
       console.log(122)
+
     },
     bohui (val) {
       this.$axios.get('/api/admin/recipeTurnDown', {
@@ -361,11 +373,7 @@ export default {
       this.$router.push('/WriteRecipe')
     },
     handleClose () {
-      this.dialogVisible = false;
-    },
-    deleteNews (row) {
-      this.dialogVisible = true;
-      this.items.splice(row, 1)
+      this.dialogVisible = false
     },
     first () {
       this.visiblesuccess = 'none'
@@ -379,7 +387,7 @@ export default {
       })
       setTimeout(() => {
         loading.close()
-      }, 2000)
+      }, 500)
       this.getRecipeList()
     },
     second () {
@@ -394,7 +402,7 @@ export default {
       })
       setTimeout(() => {
         loading.close()
-      }, 2000)
+      }, 500)
       this.getReviewRecipeList()
     },
     third () {
@@ -409,7 +417,7 @@ export default {
       })
       setTimeout(() => {
         loading.close()
-      }, 2000)
+      }, 500)
       this.getTurnDownRecipeList()
     },
     getLists (tag, event) {

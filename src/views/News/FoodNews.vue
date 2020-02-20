@@ -159,8 +159,9 @@
            if (res.data.status === 'success' && res.data.data === 'success') {
              this.$message({
                type: 'success',
-               message: '删除成功'
+               message: '删除成功',
              });
+             this.getNewsList()
              this.$router.push('/foodNews')
            } else {
              this.$message.error(res.data.data.errMsg);

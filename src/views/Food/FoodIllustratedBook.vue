@@ -11,7 +11,7 @@
     </div>
     <div class="container" style="min-height: 80%">
       <!--搜索框-->
-      <div style="margin-bottom: 15px;">
+      <div style="margin-bottom: 5px;">
         <el-input placeholder="请输入内容" v-model="searchStatus.searchKey" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="search"/>
         </el-input>
@@ -31,7 +31,7 @@
       </div>
       <hr style="margin: 5px">
       <!--卡片-->
-      <div v-loading="load" style="margin-top: 10px;">
+      <div v-loading="load" style="margin-top: 10px;overflow-y: scroll" :style="screen">
         <el-row>
           <el-col :span="5" v-for="item in foodList" :key="item.foodId" style="margin: 10px">
             <el-card :body-style="{ padding: '0px',minHeight:'300px',marginTop:'5px',margin:'5px'}"
@@ -46,18 +46,17 @@
             </el-card>
           </el-col>
         </el-row>
-
-        <el-pagination
-          style="margin-top: 20px"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="params.pageNo"
-          :page-sizes="[10, 20, 30, 40]"
-          :page-size="params.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-        </el-pagination>
       </div>
+      <el-pagination
+        style="margin-top: 20px"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="params.pageNo"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="params.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -89,7 +88,7 @@
     methods: {
       //获取屏幕高度
       getScreenHeight() {
-        this.screen.height = window.innerHeight - 50 + 'px';
+        this.screen.height = window.innerHeight - 400 + 'px';
       },
       //卡片点击事件
       itemClick(id) {
@@ -191,6 +190,11 @@
       },
       foodTypeManage() {
         this.$router.push('/foodTypeManage')
+      }
+    },
+    mounted() {
+      window.onresize = () => {
+        this.getScreenHeight()
       }
     },
     created() {

@@ -29,7 +29,7 @@
       </div>
       <!--标签-->
       <div>
-        <el-table :data="items" style="width: 100%" @row-click="itemClick">
+        <el-table :height="height" :data="items" style="width: 100%" @row-click="itemClick">
           <el-table-column style="width: 80%;position: absolute;">
             <template slot-scope="scope">
               <div style="height: 100px; margin: 15px;">
@@ -55,18 +55,18 @@
         </el-table>
 
         <!--         删除的弹框-->
-<!--        <el-dialog-->
-<!--          title="是否确定删除"-->
-<!--          :visible.sync="dialogVisible"-->
-<!--          width="30%"-->
-<!--          :before-close="handleClose"-->
-<!--        >-->
-<!--          <span>确定删除本条新闻？</span>-->
-<!--          <span slot="footer" class="dialog-footer">-->
-<!--            <el-button @click="CancleDelete">取 消</el-button>-->
-<!--            <el-button type="primary" @click="confirmDelete">确 定</el-button>-->
-<!--          </span>-->
-<!--        </el-dialog>-->
+        <!--        <el-dialog-->
+        <!--          title="是否确定删除"-->
+        <!--          :visible.sync="dialogVisible"-->
+        <!--          width="30%"-->
+        <!--          :before-close="handleClose"-->
+        <!--        >-->
+        <!--          <span>确定删除本条新闻？</span>-->
+        <!--          <span slot="footer" class="dialog-footer">-->
+        <!--            <el-button @click="CancleDelete">取 消</el-button>-->
+        <!--            <el-button type="primary" @click="confirmDelete">确 定</el-button>-->
+        <!--          </span>-->
+        <!--        </el-dialog>-->
       </div>
     </div>
     <!--    分页-->
@@ -99,15 +99,16 @@
         pageSize: 10,
         searchKey: '',
         title: '',
-        WillDeleteId:' ',
+        WillDeleteId: ' ',
         dialogFormVisible: false,
         dialogVisible: false,
-        isRouterAlive:true
+        isRouterAlive: true,
+        height: 0
       }
     },
-    provide(){
+    provide() {
       return {
-        reload:this.reload
+        reload: this.reload
       }
     },
     methods: {
@@ -137,42 +138,42 @@
       handleClose() {
         this.dialogVisible = false;
       },
-      reload(){
-        this.isRouterAlive=false
+      reload() {
+        this.isRouterAlive = false
         this.$nextTick(function () {
-           this.isRouterAlive=true
+          this.isRouterAlive = true
         })
-     },
+      },
       //删除新闻
-     DeleteNews(val){
-       this.$confirm('确认删除该文章?','警告',{
-         confirmButtonText:'确认',
-         cancelButtonText:'取消',
-         type:'warning'
-       }).then(()=> {
-         this.$axios.get('/api/admin/deleteNews', {
-           params: {
-            newsId: val
-           }
-         }).then(res => {
-           console.log(res)
-           if (res.data.status === 'success' && res.data.data === 'success') {
-             this.$message({
-               type: 'success',
-               message: '删除成功',
-             });
-             this.getNewsList()
-             this.$router.push('/foodNews')
-           } else {
-             this.$message.error(res.data.data.errMsg);
-           }
-         }).catch(() => {
+      DeleteNews(val) {
+        this.$confirm('确认删除该文章?', '警告', {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios.get('/api/admin/deleteNews', {
+            params: {
+              newsId: val
+            }
+          }).then(res => {
+            console.log(res)
+            if (res.data.status === 'success' && res.data.data === 'success') {
+              this.$message({
+                type: 'success',
+                message: '删除成功',
+              });
+              this.getNewsList()
+              this.$router.push('/foodNews')
+            } else {
+              this.$message.error(res.data.data.errMsg);
+            }
+          }).catch(() => {
 
-         });
-       })
-       this.dialogVisible = false;
-       // location.reload();
-     },
+          });
+        })
+        this.dialogVisible = false;
+        // location.reload();
+      },
       //新闻列表
       getNewsList() {
         this.$axios.get('/api/admin/getNewsList', {
@@ -189,7 +190,7 @@
         })
       },
       //搜索新闻
-      getSearchNews () {
+      getSearchNews() {
         this.pageNo = 1;
         this.$axios.get('/api/admin/searchNews', {
           params: {
@@ -214,8 +215,14 @@
         this.getNewsList();
       },
     },
-   created() {
+    mounted() {
+      window.onresize = () => {
+        this.height = window.innerHeight - 370
+      }
+    },
+    created() {
       this.getNewsList();
+      this.height = window.innerHeight - 370
     }
   }
 

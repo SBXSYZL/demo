@@ -15,7 +15,7 @@
     "element-ui": "^2.13.0",
     "mocks": "0.0.15",
     "qs": "^6.9.1",
-    "tinymce": "^5.1.5",
+    "tinymce": "^5.7.1",
     "v-distpicker": "^1.2.2",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.5",
